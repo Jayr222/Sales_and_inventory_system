@@ -1,0 +1,247 @@
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'sign_up_screen.dart';
+import 'admin_dashboard.dart';
+import 'manager_dashboard.dart';
+import 'staff_dashboard.dart';
+
+class LoginPageScreen extends StatefulWidget {
+  const LoginPageScreen({super.key});
+
+  @override
+  _LoginPageScreenState createState() => _LoginPageScreenState();
+}
+
+class _LoginPageScreenState extends State<LoginPageScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  Future<void> _login() async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      print("Login successful: ${userCredential.user?.email}");
+
+      // Fetch the user role from Firestore
+      DocumentSnapshot userDoc = await _firestore
+          .collection('users')
+          .doc(userCredential.user?.uid)
+          .get();
+
+      if (userDoc.exists) {
+        String role = userDoc.get('role');
+
+        // Navigate to the correct dashboard based on the user's role
+        if (role == 'Admin') {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const AdminDashboard()));
+        } else if (role == 'Manager') {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const ManagerDashboard()));
+        } else if (role == 'Staff') {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const StaffDashboard()));
+        } else {
+          print("Invalid role assigned.");
+        }
+      } else {
+        print("No role assigned to this user.");
+      }
+    } catch (e) {
+      print("Login failed: $e");
+      // Optionally show an error message to the user here
+    }
+  }
+
+  Future<void> _loginWithGoogle() async {
+    print("Google sign-in tapped");
+    // Add Google sign-in logic here
+  }
+
+  Future<void> _loginWithFacebook() async {
+    print("Facebook sign-in tapped");
+    // Add Facebook sign-in logic here
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Color lightPeach = const Color.fromARGB(255, 255, 224, 189);
+
+    return Scaffold(
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Image.asset(
+                  'lib/assets/Shoppingicon.png',
+                  width: 125,
+                  height: 125,
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                height: MediaQuery.of(context).size.height * 0.8,
+                padding: const EdgeInsets.symmetric(
+                    vertical: 20.0, horizontal: 20.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color:
+                          const Color.fromARGB(255, 0, 0, 0).withOpacity(0.1),
+                      spreadRadius: 1,
+                      blurRadius: 3,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Welcome Back!',
+                        style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text('Email:',
+                          style: TextStyle(color: Colors.black, fontSize: 14)),
+                    ),
+                    const SizedBox(height: 5),
+                    TextField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        hintText: 'Enter your email',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide(color: lightPeach),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 10),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text('Password:',
+                          style: TextStyle(color: Colors.black, fontSize: 14)),
+                    ),
+                    const SizedBox(height: 5),
+                    TextField(
+                      controller: _passwordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        hintText: 'Enter your password',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide(color: lightPeach),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 10),
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {
+                          print("Forgot password tapped");
+                        },
+                        child: const Text('Forgot your password?',
+                            style: TextStyle(color: Colors.black)),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: _login,
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.black,
+                          backgroundColor:
+                              const Color.fromARGB(255, 243, 192, 168),
+                          minimumSize: const Size(double.infinity, 50),
+                        ),
+                        child: const Text('Login'),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SignUpScreen(),
+                          ),
+                        );
+                      },
+                      child: const Text('Don\'t have an account? Sign up',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.black)),
+                    ),
+                    const SizedBox(height: 20),
+                    const Text('-------or-------', textAlign: TextAlign.center),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: _loginWithGoogle,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: const EdgeInsets.all(8.0),
+                            child: Image.asset(
+                              'lib/assets/google.png',
+                              width: 25,
+                              height: 25,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        InkWell(
+                          onTap: _loginWithFacebook,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: const EdgeInsets.all(8.0),
+                            child: Image.asset(
+                              'lib/assets/facebook.png',
+                              width: 25,
+                              height: 25,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
