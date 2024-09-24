@@ -17,7 +17,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
     const Center(child: Text('Inventory')), // Inventory tab
     const Center(child: Text('History')), // History tab
     const Center(child: Text('Settings')), // Settings tab
-    const Center(child: Text('Sales')),
+    const Center(child: Text('Sales')), // Sales tab
   ];
 
   // Function to handle tab selection
@@ -58,7 +58,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
             label: 'Settings', // Ensure a label is provided
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart), label: 'Sales')
+            icon: Icon(Icons.shopping_cart),
+            label: 'Sales',
+          )
         ],
       ),
     );
