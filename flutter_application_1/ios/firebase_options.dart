@@ -26,12 +26,14 @@ class DefaultFirebaseOptions {
   // Web Configuration
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyCTlelmAVIbSfm4wnIK5jxOgHF-QuwvMYw', // Your web API key
-    appId: 'com.example.flutter_app', // Replace with your web app ID
+    appId:
+        '1:910848159267:web:1eb8c6c04827117d264b96', // Replace with your web app ID
     messagingSenderId: '769516460679',
     projectId: 'my-project-20e8a',
     authDomain: 'my-project-20e8a.firebaseapp.com', // Correct web authDomain
-    storageBucket: 'salesandinventorysystem-105e8.appspot.com',
-    measurementId: '', // Optional, only if you're using Google Analytics
+    storageBucket: 'my-project-20e8a.appspot.com',
+    measurementId:
+        'G-GCWE9MYRD2', // Optional, only if you're using Google Analytics
   );
 
   // Android Configuration

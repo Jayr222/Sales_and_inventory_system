@@ -12,7 +12,6 @@ void main() async {
     // Check if Firebase has already been initialized
     if (Firebase.apps.isEmpty) {
       await Firebase.initializeApp(
-        name: "my-project-20e8a",
         options: DefaultFirebaseOptions.currentPlatform,
       );
       print('Firebase initialized successfully!');

@@ -23,54 +23,59 @@ class DefaultFirebaseOptions {
     }
   }
 
-  // Web Configuration
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCTlelmAVIbSfm4wnIK5jxOgHF-QuwvMYw', // Your web API key
-    appId: 'com.example.flutter_app', // Replace with your web app ID
-    messagingSenderId: '769516460679',
+    apiKey: 'AIzaSyDUDYyMnL0WY0Cmj9PfGqYiYcVDu4n7j0g',
+    appId: '1:910848159267:web:1eb8c6c04827117d264b96',
+    messagingSenderId: '910848159267',
     projectId: 'my-project-20e8a',
-    authDomain: 'my-project-20e8a.firebaseapp.com', // Correct web authDomain
-    storageBucket: 'salesandinventorysystem-105e8.appspot.com',
-    measurementId: '', // Optional, only if you're using Google Analytics
+    authDomain: 'my-project-20e8a.firebaseapp.com',
+    storageBucket: 'my-project-20e8a.appspot.com',
+    measurementId: 'G-GCWE9MYRD2',
+  );
+
+  // Web Configuration
+
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyCTlelmAVIbSfm4wnIK5jxOgHF-QuwvMYw',
+    appId: '1:910848159267:android:361fa713121435f2264b96',
+    messagingSenderId: '910848159267',
+    projectId: 'my-project-20e8a',
+    storageBucket: 'my-project-20e8a.appspot.com',
   );
 
   // Android Configuration
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCTlelmAVIbSfm4wnIK5jxOgHF-QuwvMYw',
-    appId: 'com.example.flutter_app', // Your Android app ID
-    messagingSenderId: '769516460679',
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyDCsSrq2K_A4VK7PSreRlnTwhIVUBqVxy4',
+    appId: '1:910848159267:ios:d3283e9a9a8ac6d9264b96',
+    messagingSenderId: '910848159267',
     projectId: 'my-project-20e8a',
-    storageBucket: 'salesandinventorysystem-105e8.appspot.com',
+    storageBucket: 'my-project-20e8a.appspot.com',
+    iosBundleId: 'com.example.flutterApplication1',
   );
 
   // iOS Configuration
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCTlelmAVIbSfm4wnIK5jxOgHF-QuwvMYw',
-    appId: '1:769516460679:ios:appID-for-ios', // Your iOS app ID
-    messagingSenderId: '769516460679',
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyDCsSrq2K_A4VK7PSreRlnTwhIVUBqVxy4',
+    appId: '1:910848159267:ios:d3283e9a9a8ac6d9264b96',
+    messagingSenderId: '910848159267',
     projectId: 'my-project-20e8a',
-    storageBucket: 'salesandinventorysystem-105e8.appspot.com',
-    iosBundleId: 'com.example.flutter_app', // Replace with your iOS bundle ID
+    storageBucket: 'my-project-20e8a.appspot.com',
+    iosBundleId: 'com.example.flutterApplication1',
   );
 
   // macOS Configuration
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCTlelmAVIbSfm4wnIK5jxOgHF-QuwvMYw',
-    appId: '1:769516460679:macos:appID-for-macos', // Your macOS app ID
-    messagingSenderId: '769516460679',
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyDUDYyMnL0WY0Cmj9PfGqYiYcVDu4n7j0g',
+    appId: '1:910848159267:web:b8e04b7d7dcc3c1b264b96',
+    messagingSenderId: '910848159267',
     projectId: 'my-project-20e8a',
-    storageBucket: 'salesandinventorysystem-105e8.appspot.com',
-    iosBundleId: 'com.example.flutter_app', // Same as iOS bundle ID
+    authDomain: 'my-project-20e8a.firebaseapp.com',
+    storageBucket: 'my-project-20e8a.appspot.com',
+    measurementId: 'G-XF3REH1YXD',
   );
 
   // Windows Configuration
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCTlelmAVIbSfm4wnIK5jxOgHF-QuwvMYw',
-    appId: '1:769516460679:windows:appID-for-windows', // Your Windows app ID
-    messagingSenderId: '769516460679',
-    projectId: 'my-project-20e8a',
-    authDomain: 'my-project-20e8a.firebaseapp.com',
-    storageBucket: 'salesandinventorysystem-105e8.appspot.com',
-    measurementId: 'G-YOUR_MEASUREMENT_ID', // Can be removed if not used
-  );
 }
