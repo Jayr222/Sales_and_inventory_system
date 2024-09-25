@@ -100,20 +100,20 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                   ),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  height: MediaQuery.of(context).size.height * 0.8,
+                  width: MediaQuery.of(context).size.width * 10,
+                  height: MediaQuery.of(context).size.height * 0.9,
                   padding: const EdgeInsets.symmetric(
                       vertical: 20.0, horizontal: 20.0),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15.0),
+                    borderRadius: BorderRadius.circular(50.0),
+                    color: const Color(0xFFFFFFFF),
                     boxShadow: [
                       BoxShadow(
-                        color:
-                            const Color.fromARGB(255, 0, 0, 0).withOpacity(0.1),
-                        spreadRadius: 1,
-                        blurRadius: 3,
-                        offset: const Offset(0, 2),
+                        color: const Color.fromARGB(255, 255, 255, 255)
+                            .withOpacity(0.1),
+                        spreadRadius: 10,
+                        blurRadius: 20,
+                        offset: const Offset(0, 7),
                       ),
                     ],
                   ),
@@ -125,9 +125,10 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                         child: Text(
                           'Welcome Back!',
                           style: TextStyle(
-                              fontSize: 24,
+                              fontFamily: 'Roboto',
+                              fontSize: 32,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black),
+                              color: Color.fromARGB(255, 32, 31, 31)),
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -137,7 +138,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: 'Lato',
-                              color: Color.fromARGB(255, 0, 0, 0),
+                              color: Color.fromARGB(255, 32, 31, 31),
                             )),
                       ),
                       const SizedBox(height: 5),
@@ -146,10 +147,10 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                         decoration: InputDecoration(
                           hintText: 'Enter your email',
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
+                            borderRadius: BorderRadius.circular(20.0),
                           ),
                           contentPadding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 10),
+                              vertical: 15, horizontal: 12),
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -169,10 +170,10 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                         decoration: InputDecoration(
                           hintText: 'Enter your password',
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
+                            borderRadius: BorderRadius.circular(20.0),
                           ),
                           contentPadding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 10),
+                              vertical: 15, horizontal: 12),
                         ),
                       ),
                       const SizedBox(height: 5),
@@ -194,6 +195,9 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                         child: ElevatedButton(
                           onPressed: _login,
                           style: ElevatedButton.styleFrom(
+                            textStyle: const TextStyle(
+                              fontSize: 20,
+                            ),
                             foregroundColor:
                                 const Color.fromARGB(255, 255, 253, 253),
                             backgroundColor:
