@@ -38,36 +38,8 @@ class _AdminDashboardState extends State<AdminDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 245, 247, 129),
-      body: _screens[_currentIndex], // Display the current screen
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: onTabTapped,
-        type: BottomNavigationBarType.fixed, // Use shifting or fixed
-        selectedItemColor:
-            const Color.fromARGB(255, 0, 0, 0), // Color of selected icon
-        unselectedItemColor:
-            const Color.fromARGB(255, 29, 29, 29), // Color of unselected icon
-        backgroundColor: const Color.fromARGB(
-            255, 255, 226, 139), // Background color of navbar
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.inventory),
-            label: 'Inventory',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Account',
-          )
-        ],
+      appBar: AppBar(
+        title: Text('Big tite'),
       ),
     );
   }

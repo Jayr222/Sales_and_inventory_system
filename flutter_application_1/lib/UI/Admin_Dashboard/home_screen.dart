@@ -80,7 +80,7 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Container(
                         width: 360,
-                        height: 120,
+                        height: 108,
                         decoration: BoxDecoration(
                             color: const Color.fromARGB(255, 246, 232, 248),
                             borderRadius: BorderRadius.circular(20)),
@@ -94,14 +94,33 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         Container(
                           width: 360,
-                          height: 120,
+                          height: 108,
                           decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 246, 232, 248),
+                              color: const Color.fromARGB(255, 255, 253, 206),
                               borderRadius: BorderRadius.circular(20)),
                         )
                       ],
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    // ignore: avoid_unnecessary_containers
+                    child: Container(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          print('Add Stocks button pressed');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor:
+                              const Color.fromARGB(255, 0, 0, 0), // Text color
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 50, vertical: 12), // Button padding
+                        ),
+                        child: const Text('ADD STOCKS'),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

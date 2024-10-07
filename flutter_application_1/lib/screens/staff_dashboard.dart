@@ -6,8 +6,12 @@ class StaffDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Staff Dashboard')),
-      body: const Center(child: Text('Welcome, Staff!')),
+      appBar: AppBar(
+        title: const Text('Staff Dashboard'),
+      ),
+      body: const Center(
+        child: Text('Welcome, Staff!'),
+      ),
     );
   }
 }
