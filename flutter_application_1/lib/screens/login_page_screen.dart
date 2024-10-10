@@ -92,11 +92,11 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(vertical: 50.0),
                   child: Image.asset(
                     'lib/assets/Shoppingicon.png',
-                    width: 180,
-                    height: 120,
+                    width: 75,
+                    height: 75,
                   ),
                 ),
                 Container(
