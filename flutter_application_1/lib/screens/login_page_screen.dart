@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/screens/staff_dashboard.dart';
 import 'sign_up_screen.dart';
 import 'admin_dashboard.dart';
 import 'manager_dashboard.dart';
-import 'staff_dashboard.dart';
 
 class LoginPageScreen extends StatefulWidget {
   const LoginPageScreen({super.key});
 
   @override
   _LoginPageScreenState createState() => _LoginPageScreenState();
-}
+} 
 
 class _LoginPageScreenState extends State<LoginPageScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -73,8 +73,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Color lightPeach = const Color.fromARGB(255, 255, 224, 189);
-
+    Color lightPeach = const Color.fromARGB(255, 255, 224, 168);
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(

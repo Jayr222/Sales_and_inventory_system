@@ -7,7 +7,7 @@ class ManagerDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Manager Dashboard')),
-      body: const Center(child: Text('Welcome, Manager!')),
+      body: const Center(child: Text('Welcome, Manager!'), ),
     );
   }
 }
