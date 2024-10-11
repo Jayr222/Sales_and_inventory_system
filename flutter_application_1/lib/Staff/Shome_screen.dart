@@ -1,10 +1,90 @@
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+<<<<<<< HEAD
+=======
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Row(
+          children: [
+            Expanded(
+              // Adjustment For Textfield SearchBar
+              child: SizedBox(
+                height: 45,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white
+                        .withOpacity(0.5), // Background color of the TextField
+                    borderRadius: BorderRadius.circular(30), // Rounded corners
+                    boxShadow: const [
+                      BoxShadow(
+                        spreadRadius: 2,
+                      ),
+                    ],
+                  ),
+                  // Textfield Search Bar/Icon
+                  child: const TextField(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor:
+                          Colors.transparent, // Make the TextField transparent
+                      hintStyle: TextStyle(color: Colors.black),
+                      hintText: 'Search...',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(30),
+                        ),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: EdgeInsets.symmetric(vertical: 5),
+                      prefixIcon: Padding(
+                        padding: EdgeInsets.only(
+                          left: 10,
+                        ),
+                        child: Icon(
+                          Icons.search,
+                          size: 25,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        // Notification Icon
+        actions: [
+          SizedBox(
+            width: 70,
+            child: IconButton(
+              onPressed: () {},
+              icon: const DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Color(0xFF2C3E50),
+                  shape:
+                      BoxShape.circle, // Background color, // Rounded corners
+                ),
+                child: Center(
+                  child: Icon(
+                    Icons.notifications_active,
+                    color: Colors.white,
+                    size: 26, // Icon size
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+>>>>>>> 2a5ebe4b18475f6802f8f25b66904f41405e3cd2
       //Home Page body
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -60,7 +140,10 @@ class HomeScreen extends StatelessWidget {
                         padding: EdgeInsets.only(left: 10),
                         child: Text(
                           'Welcome Back!',
-                          style: TextStyle(fontWeight: FontWeight.normal, fontSize: 25, color: Colors.white),
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 25,
+                              color: Colors.white),
                         ),
                       ),
                     ],
@@ -194,7 +277,12 @@ class HomeScreen extends StatelessWidget {
                                 ),
                                 Text(
                                   'FEEDBACK',
-                                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.normal, fontSize: 45, decoration: TextDecoration.underline, decorationColor: Colors.white),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 45,
+                                      decoration: TextDecoration.underline,
+                                      decorationColor: Colors.white),
                                 ),
                               ],
                             ),

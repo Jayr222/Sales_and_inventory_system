@@ -2,10 +2,39 @@ import 'package:flutter/material.dart';
 
 // The custom SettingsScreen widget with your desired layout
 class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+<<<<<<< HEAD
+=======
+      // App BAR :)
+      appBar: AppBar(
+        title: const Padding(
+          padding: EdgeInsets.only(top: 10),
+          child: Row(
+            children: [
+              Icon(
+                Icons.settings,
+                size: 45,
+                color: Color(0xFF2C3E50),
+              ),
+              Text(
+                'Settings',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                    color: Color(0xFF2C3E50)),
+              ),
+            ],
+          ),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 5,
+      ),
+>>>>>>> 2a5ebe4b18475f6802f8f25b66904f41405e3cd2
       // Settings body <3
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -82,7 +111,8 @@ class SettingsScreen extends StatelessWidget {
                               height: 55,
                               width: 320,
                               child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
                                     padding: EdgeInsets.only(left: 15),
@@ -94,7 +124,8 @@ class SettingsScreen extends StatelessWidget {
                                   ),
                                   Text(
                                     'Email',
-                                    style: TextStyle(fontSize: 20, color: Colors.white),
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.white),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(right: 15),
@@ -117,7 +148,8 @@ class SettingsScreen extends StatelessWidget {
                               height: 55,
                               width: 320,
                               child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
                                     padding: EdgeInsets.only(left: 15),
@@ -129,7 +161,8 @@ class SettingsScreen extends StatelessWidget {
                                   ),
                                   Text(
                                     'Password',
-                                    style: TextStyle(fontSize: 20, color: Colors.white),
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.white),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(right: 15),
@@ -154,7 +187,8 @@ class SettingsScreen extends StatelessWidget {
                               height: 55,
                               width: 320,
                               child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
                                     padding: EdgeInsets.only(left: 15),
@@ -194,7 +228,8 @@ class SettingsScreen extends StatelessWidget {
                               height: 55,
                               width: 320,
                               child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
                                     padding: EdgeInsets.only(left: 15),
@@ -234,7 +269,8 @@ class SettingsScreen extends StatelessWidget {
                               height: 55,
                               width: 320,
                               child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
                                     padding: EdgeInsets.only(left: 15),
@@ -277,10 +313,14 @@ class SettingsScreen extends StatelessWidget {
                                 children: [
                                   Text(
                                     'Log-Out',
-                                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
                                   ),
                                   SizedBox(width: 10),
-                                  Icon(Icons.exit_to_app_outlined, color: Colors.white),
+                                  Icon(Icons.exit_to_app_outlined,
+                                      color: Colors.white),
                                 ],
                               ),
                             ),

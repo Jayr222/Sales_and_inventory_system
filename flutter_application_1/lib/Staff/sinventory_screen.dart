@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 // The custom InventoryScreen widget with your desired layout
 class InventoryScreen extends StatelessWidget {
+  const InventoryScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(

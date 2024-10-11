@@ -19,7 +19,7 @@ class _StaffDashboardState extends State<StaffDashboard> {
   static final List<Widget> _pages = <Widget>[
     HomeScreen(), // Home Screen layout
     InventoryScreen(), // Inventory Screen layout
-    HistoryScreen(), // History Screen layout
+    const HistoryScreen(), // History Screen layout
     AccountScreen(), // Placeholder for Account Screen
     SettingsScreen(), // Placeholder for Settings Screen
   ];
@@ -39,7 +39,10 @@ class _StaffDashboardState extends State<StaffDashboard> {
             ),
             Text(
               label,
-              style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.w500), // Color remains black
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500), // Color remains black
             ),
           ],
         ),
