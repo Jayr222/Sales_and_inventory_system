@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 // The custom AccountScreen widget with your desired layout
 class AccountScreen extends StatelessWidget {
+  const AccountScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,6 +18,6 @@ class AccountScreen extends StatelessWidget {
           ),
         ),
       ),
-    );    
+    );
   }
 }

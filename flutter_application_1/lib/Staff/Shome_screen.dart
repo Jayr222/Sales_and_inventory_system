@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,7 +17,8 @@ class HomeScreen extends StatelessWidget {
                 height: 45,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.5), // Background color of the TextField
+                    color: Colors.white
+                        .withOpacity(0.5), // Background color of the TextField
                     borderRadius: BorderRadius.circular(30), // Rounded corners
                     boxShadow: const [
                       BoxShadow(
@@ -27,7 +30,8 @@ class HomeScreen extends StatelessWidget {
                   child: const TextField(
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.transparent, // Make the TextField transparent
+                      fillColor:
+                          Colors.transparent, // Make the TextField transparent
                       hintStyle: TextStyle(color: Colors.black),
                       hintText: 'Search...',
                       border: OutlineInputBorder(
@@ -63,7 +67,8 @@ class HomeScreen extends StatelessWidget {
               icon: const DecoratedBox(
                 decoration: BoxDecoration(
                   color: Color(0xFF2C3E50),
-                  shape: BoxShape.circle, // Background color, // Rounded corners
+                  shape:
+                      BoxShape.circle, // Background color, // Rounded corners
                 ),
                 child: Center(
                   child: Icon(
@@ -116,7 +121,10 @@ class HomeScreen extends StatelessWidget {
                         padding: EdgeInsets.only(left: 10),
                         child: Text(
                           'Welcome Back!',
-                          style: TextStyle(fontWeight: FontWeight.normal, fontSize: 25, color: Colors.white),
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 25,
+                              color: Colors.white),
                         ),
                       ),
                     ],
@@ -250,7 +258,12 @@ class HomeScreen extends StatelessWidget {
                                 ),
                                 Text(
                                   'FEEDBACK',
-                                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.normal, fontSize: 45, decoration: TextDecoration.underline, decorationColor: Colors.white),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 45,
+                                      decoration: TextDecoration.underline,
+                                      decorationColor: Colors.white),
                                 ),
                               ],
                             ),
