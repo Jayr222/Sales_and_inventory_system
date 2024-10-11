@@ -5,85 +5,13 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Row(
-          children: [
-            Expanded(
-              // Adjustment For Textfield SearchBar
-              child: SizedBox(
-                height: 45,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.5), // Background color of the TextField
-                    borderRadius: BorderRadius.circular(30), // Rounded corners
-                    boxShadow: const [
-                      BoxShadow(
-                        spreadRadius: 2,
-                      ),
-                    ],
-                  ),
-                  // Textfield Search Bar/Icon
-                  child: const TextField(
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.transparent, // Make the TextField transparent
-                      hintStyle: TextStyle(color: Colors.black),
-                      hintText: 'Search...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(30),
-                        ),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: EdgeInsets.symmetric(vertical: 5),
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.only(
-                          left: 10,
-                        ),
-                        child: Icon(
-                          Icons.search,
-                          size: 25,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        // Notification Icon
-        actions: [
-          SizedBox(
-            width: 70,
-            child: IconButton(
-              onPressed: () {},
-              icon: const DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Color(0xFF2C3E50),
-                  shape: BoxShape.circle, // Background color, // Rounded corners
-                ),
-                child: Center(
-                  child: Icon(
-                    Icons.notifications_active,
-                    color: Colors.white,
-                    size: 26, // Icon size
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
       //Home Page body
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           //Page Title, Greetings, Container for (Orders,Delivers,Feedback)
           const SizedBox(
-            height: 10,
+            height: 5,
           ),
           Center(
             child: Container(
@@ -91,23 +19,39 @@ class HomeScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(35),
                 color: const Color(0xFF2C3E50),
               ),
-              height: 705,
+              height: 690,
               width: double.infinity,
               //Title Page
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 10),
-                    child: Text(
-                      'Staff Dashboard',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 45,
-                        color: Colors.white,
+                  const SizedBox(height: 30),
+                    const SizedBox(
+                      width: 350,
+                      child: TextField(
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white, // Make the TextField transparent
+                        hintStyle: TextStyle(color: Colors.black),
+                        hintText: 'Search...',
+                        border: OutlineInputBorder( 
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(vertical: 5),
+                        prefixIcon: Padding(
+                          padding: EdgeInsets.only(
+                            left: 10,
+                          ),
+                          child: Icon(
+                            Icons.search,
+                            size: 25,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
                       ),
                     ),
-                  ),
+
                   const SizedBox(height: 20),
                   const Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,7 +65,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 20),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -146,7 +90,7 @@ class HomeScreen extends StatelessWidget {
                                 )
                               ],
                             ),
-                            height: 150,
+                            height: 130,
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -194,7 +138,7 @@ class HomeScreen extends StatelessWidget {
                                 )
                               ],
                             ),
-                            height: 160,
+                            height: 130,
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -239,7 +183,7 @@ class HomeScreen extends StatelessWidget {
                                 )
                               ],
                             ),
-                            height: 150,
+                            height: 130,
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [

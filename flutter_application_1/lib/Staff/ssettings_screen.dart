@@ -1,44 +1,42 @@
 import 'package:flutter/material.dart';
 
-
 // The custom SettingsScreen widget with your desired layout
 class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // App BAR :)
-      appBar: AppBar(
-        title: const Padding(
-          padding: EdgeInsets.only(top: 10),
-          child: Row(
-            children: [
-              Icon(
-                Icons.settings,
-                size: 45,
-                color: Color(0xFF2C3E50),
-              ),
-              Text(
-                'Settings',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, color: Color(0xFF2C3E50)),
-              ),
-            ],
-          ),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 5,
-      ),
       // Settings body <3
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(height: 8),
           // Inside of Setting's body
+          const Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 10),
+                child: Icon(
+                  Icons.settings,
+                  size: 45,
+                  color:  Color(0xFF2C3E50),
+                ),
+              ),
+              Text(
+                'Settings',
+                style: TextStyle(
+                  color:  Color(0xFF2C3E50),
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            ],
+          ),
+          const SizedBox(height: 10),
           Center(
             child: Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(5),
               child: Container(
-                height: 650,
+                height: 630,
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(
@@ -46,7 +44,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      spreadRadius: 0.75,
+                      spreadRadius: 1,
                       color: Color(0xFF2C3E50),
                     ),
                   ],
@@ -55,12 +53,14 @@ class SettingsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // First Text
-                    const SizedBox(height: 30),
-                    const Text(
-                      'Account & Settings',
-                      style: TextStyle(
-                        color: Color(0xFF2C3E50),
-                        fontSize: 25,
+                    const Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      child: Text(
+                        'Account & Settings',
+                        style: TextStyle(
+                          color: Color(0xFF2C3E50),
+                          fontSize: 25,
+                        ),
                       ),
                     ),
                     // Inside of Setting's body
@@ -262,7 +262,7 @@ class SettingsScreen extends StatelessWidget {
                               ),
                             ),
                             // Log-Out Last Container
-                            const SizedBox(height: 130),
+                            const SizedBox(height: 100),
                             Container(
                               decoration: const BoxDecoration(
                                 color: Color(0xFF2C3E50),
@@ -286,7 +286,7 @@ class SettingsScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        ),
+                      ),
                     ),
                   ],
                 ),
