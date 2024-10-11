@@ -7,60 +7,73 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-<<<<<<< HEAD
-=======
-      // App BAR :)
       appBar: AppBar(
-        title: const Padding(
-          padding: EdgeInsets.only(top: 10),
+        backgroundColor: Colors.white,
+        toolbarHeight: 80, // Set the height of the AppBar
+        title: Padding(
+          padding: const EdgeInsets.only(bottom: 5),
           child: Row(
             children: [
-              Icon(
-                Icons.settings,
-                size: 45,
-                color: Color(0xFF2C3E50),
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle, // Ensures the container is circular
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5), // Shadow color
+                      spreadRadius: 0.9, // Spread of the shadow
+                      offset: const Offset(2, 2),
+                    ),
+                  ],
+                ),
+                child: const CircleAvatar(
+                  backgroundColor: Colors.white,
+                  backgroundImage: AssetImage(
+                    'lib/assets/Shoppingicon.png',
+                  ),
+                  radius: 25,
+                ),
               ),
-              Text(
-                'Settings',
+              const SizedBox(width: 15),
+              const Text(
+                'SETTINGS',
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30,
-                    color: Color(0xFF2C3E50)),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                  color: Color.fromARGB(255, 44, 62, 80), // You can adjust the size as needed
+                ),
               ),
             ],
           ),
         ),
-        backgroundColor: Colors.white,
-        elevation: 5,
+        // Notification Icon
+        actions: [
+          SizedBox(
+            width: 60,
+            child: IconButton(
+              onPressed: () {},
+              icon: const DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Color(0xFF2C3E50),
+                  shape: BoxShape.circle, // Rounded corners for circular background
+                ),
+                child: Center(
+                  child: Icon(
+                    Icons.notifications_active,
+                    color: Colors.white,
+                    size: 35, // Icon size
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
->>>>>>> 2a5ebe4b18475f6802f8f25b66904f41405e3cd2
+      backgroundColor: Colors.white,
       // Settings body <3
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Inside of Setting's body
-          const Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 10),
-                child: Icon(
-                  Icons.settings,
-                  size: 45,
-                  color:  Color(0xFF2C3E50),
-                ),
-              ),
-              Text(
-                'Settings',
-                style: TextStyle(
-                  color:  Color(0xFF2C3E50),
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
-              )
-            ],
-          ),
-          const SizedBox(height: 10),
           Center(
             child: Padding(
               padding: const EdgeInsets.all(5),

@@ -6,77 +6,60 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-<<<<<<< HEAD
-=======
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Row(
-          children: [
-            Expanded(
-              // Adjustment For Textfield SearchBar
-              child: SizedBox(
-                height: 45,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white
-                        .withOpacity(0.5), // Background color of the TextField
-                    borderRadius: BorderRadius.circular(30), // Rounded corners
-                    boxShadow: const [
-                      BoxShadow(
-                        spreadRadius: 2,
-                      ),
-                    ],
-                  ),
-                  // Textfield Search Bar/Icon
-                  child: const TextField(
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor:
-                          Colors.transparent, // Make the TextField transparent
-                      hintStyle: TextStyle(color: Colors.black),
-                      hintText: 'Search...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(30),
-                        ),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: EdgeInsets.symmetric(vertical: 5),
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.only(
-                          left: 10,
-                        ),
-                        child: Icon(
-                          Icons.search,
-                          size: 25,
-                          color: Colors.white,
-                        ),
-                      ),
+        toolbarHeight: 80, // Set the height of the AppBar
+        title: Padding(
+          padding: const EdgeInsets.only(bottom: 5),
+          child: Row(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle, // Ensures the container is circular
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5), // Shadow color
+                      spreadRadius: 0.9, // Spread of the shadow
+                      offset: const Offset(2, 2),
                     ),
+                  ],
+                ),
+                child: const CircleAvatar(
+                  backgroundColor: Colors.white,
+                  backgroundImage: AssetImage(
+                    'lib/assets/Shoppingicon.png',
                   ),
+                  radius: 25,
                 ),
               ),
-            ),
-          ],
+              const SizedBox(width: 15),
+              const Text(
+                'STAFF DASHBOARD',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                  color: Color.fromARGB(255, 44, 62, 80), // You can adjust the size as needed
+                ),
+              ),
+            ],
+          ),
         ),
         // Notification Icon
         actions: [
           SizedBox(
-            width: 70,
+            width: 60,
             child: IconButton(
               onPressed: () {},
               icon: const DecoratedBox(
                 decoration: BoxDecoration(
                   color: Color(0xFF2C3E50),
-                  shape:
-                      BoxShape.circle, // Background color, // Rounded corners
+                  shape: BoxShape.circle, // Rounded corners for circular background
                 ),
                 child: Center(
                   child: Icon(
                     Icons.notifications_active,
                     color: Colors.white,
-                    size: 26, // Icon size
+                    size: 35, // Icon size
                   ),
                 ),
               ),
@@ -84,7 +67,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
->>>>>>> 2a5ebe4b18475f6802f8f25b66904f41405e3cd2
+      backgroundColor: Colors.white,
       //Home Page body
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
