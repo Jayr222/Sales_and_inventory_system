@@ -46,6 +46,7 @@ class _StaffDashboardState extends State<StaffDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< HEAD
       body: _pages[_selectedIndex], // Display the corresponding screen
       // Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
@@ -700,6 +701,13 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
         ],
+=======
+      appBar: AppBar(
+        title: const Text('Staff Dashboard'),
+      ),
+      body: const Center(
+        child: Text('Welcome, Staff!'),
+>>>>>>> 7e7b0c2f013a69c93bc6ebf28a082fe19edf8689
       ),
     );
   }

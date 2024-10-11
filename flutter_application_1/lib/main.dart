@@ -33,7 +33,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Firebase Test',
+      theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.teal,
+          titleTextStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
       initialRoute: '/', // Start with the intro animation
       routes: {
         '/': (context) =>
@@ -43,4 +52,20 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+}
+
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Row(
+        children: [
+          Image.asset(
+            'lib/assets/Shoppingicon.png',
+            height: 40,
+          ),
+        ],
+      ),
+    ),
+  );
 }

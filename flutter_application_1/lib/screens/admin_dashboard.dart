@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/UI/Admin_Dashboard/home_screen.dart';
+import 'package:flutter_application_1/UI/Admin_Dashboard/account_screen.dart';
+import 'package:flutter_application_1/UI/Admin_Dashboard/settings_screen.dart';
+import 'package:flutter_application_1/UI/Admin_Dashboard/inventory_screen.dart';
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({super.key});
@@ -11,14 +15,17 @@ class AdminDashboard extends StatefulWidget {
 class _AdminDashboardState extends State<AdminDashboard> {
   int _currentIndex = 0; // Track the selected tab index
 
-  // List of widgets for each tab
-  final List<Widget> _children = [
-    const Center(child: Text('Welcome, Admin!')), // Dashboard tab
-    const Center(child: Text('Inventory')), // Inventory tab
-    const Center(child: Text('History')), // History tab
-    const Center(child: Text('Settings')), // Settings tab
-    const Center(child: Text('Sales')),
+  // List of screens to display for each tab
+  final List<Widget> _screens = [
+    const HomeScreen(), // Replaced AdminDashboard with a separate DashboardScreen
+    const InventoryScreen(),
+    const SettingsScreen(),
+    const AccountScreen(),
   ];
+  void _addStock() {
+    // Your logic for adding stock
+    print('Stock added');
+  }
 
   // Function to handle tab selection
   void onTabTapped(int index) {
@@ -27,40 +34,21 @@ class _AdminDashboardState extends State<AdminDashboard> {
     });
   }
 
+  // Function to Handle NavBar
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Admin Dashboard'),
-      ),
-      body: _children[_currentIndex], // Show the selected tab's content
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex, // Highlight the current tab
-        onTap: onTabTapped, // Change tab when an item is tapped
-        selectedItemColor: const Color.fromARGB(255, 0, 0, 0),
-        unselectedItemColor: const Color.fromARGB(255, 255, 0, 0),
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: 'Dashboard', // Ensure a label is provided
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.inventory),
-            label: 'Inventory', // Ensure a label is provided
-          ),
-          BottomNavigationBarItem(
-            // Added the History tab
-            icon: Icon(Icons.history),
-            label: 'History', // Ensure a label is provided
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings', // Ensure a label is provided
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart), label: 'Sales')
-        ],
+        title: Text('Big tite'),
       ),
     );
   }
 }
+
+// Separate widget for the Dashboard screen
+
+// screen for Account
+
+// screen for Settings
+
+// Screen for Inventory

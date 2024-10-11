@@ -1,0 +1,16 @@
+platform :ios, '13.0'  # Ensure this is set to 13.0 or higher
+
+flutter_root = '/Users/yhel0810/development/flutter'  # Ensure this path is correct
+load File.join(flutter_root, 'packages', 'flutter_tools', 'bin', 'podhelper.rb')
+
+target 'Runner' do
+  use_frameworks!
+
+  # This line installs all the necessary iOS pods for Flutter
+  flutter_install_all_ios_pods(File.dirname(File.realpath(__FILE__)))
+
+  target 'RunnerTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+end
