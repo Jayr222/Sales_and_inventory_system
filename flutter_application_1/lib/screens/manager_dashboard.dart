@@ -27,10 +27,6 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-<<<<<<< HEAD
-      appBar: AppBar(title: const Text('Manager Dashboard')),
-      body: const Center(child: Text('Welcome, Manager!'), ),
-=======
             appBar: AppBar(
               backgroundColor: const Color.fromARGB(255, 255, 255, 255),
               toolbarHeight: 80, // Set the height of the AppBar
@@ -144,7 +140,6 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
           ),
         ),
       ),
->>>>>>> 7e7b0c2f013a69c93bc6ebf28a082fe19edf8689
     );
   }
 }

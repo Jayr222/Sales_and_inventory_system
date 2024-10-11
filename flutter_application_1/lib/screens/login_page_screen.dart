@@ -73,10 +73,6 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
-    Color lightPeach = const Color.fromARGB(255, 255, 224, 168);
-=======
->>>>>>> 7e7b0c2f013a69c93bc6ebf28a082fe19edf8689
     return Scaffold(
       body: Container(
         // Adding gradient background
