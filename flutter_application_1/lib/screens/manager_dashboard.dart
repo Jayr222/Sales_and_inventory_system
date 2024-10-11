@@ -1,164 +1,143 @@
 import 'package:flutter/material.dart';
 
+import '../Manager/maccount_screen.dart';
+import '../Manager/mhistory_screen.dart';
+import '../Manager/mhome_screen.dart';
+import '../Manager/minventory_screen.dart';
+import '../Manager/msettings_screen.dart';
+
+  
 class ManagerDashboard extends StatefulWidget {
   const ManagerDashboard({super.key});
-
   @override
-  _ManagerDashboardState createState() => _ManagerDashboardState();
+  State<ManagerDashboard> createState() => _ManagerDashboardState();
 }
-
 class _ManagerDashboardState extends State<ManagerDashboard> {
-  int _selectedIndex = 0; // Track the selected tab index
+  int _selectedIndex = 0; // to track the current tab
 
-  // List of widgets for each tab
-  static const List<Widget> _pages = <Widget>[
-    Center(child: Text('Dashboard Page', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Inventory Page', style: TextStyle(fontSize: 24))),
-    Center(child: Text('Settings Page', style: TextStyle(fontSize: 24))),
+  // List of pages, each corresponds to a screen in your app
+  static final List<Widget> _pages = <Widget>[
+    const HomeScreen(),  // Home Screen layout
+    const InventoryScreen(),  // Inventory Screen layout
+    const HistoryScreen(), // Placeholder for History Screen
+    const AccountScreen(), // Placeholder for Account Screen
+    const SettingsScreen(), // Placeholder for Settings Screen
   ];
-
-  // Handle tab switching
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            color: const Color.fromARGB(255, 255, 174, 168), // Peach background color
-            child: _selectedIndex == 0
-                ? _buildManagerWelcome() // Show welcome screen on the first tab
-                : _pages[_selectedIndex], // Switch to other pages
-          ),
-          // Positioned Bottom Navigation Bar
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: BottomNavigationBar(
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.dashboard),
-                  label: 'Dashboard',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.inventory),
-                  label: 'Inventory',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.settings),
-                  label: 'Settings',
+            appBar: AppBar(
+              backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+              toolbarHeight: 80, // Set the height of the AppBar
+                leading: Padding(
+                  padding: const EdgeInsets.only(left: 25.0), // Optional: Adjust padding for the icon
+                  child: Image.asset(
+                    'lib/assets/Shoppingicon.png',
+                    width: 70,
+                    height: 70, // Keep height consistent for better apRpearance]
+                    fit: BoxFit.contain,
+                    ),
+                  ),
+            title: const Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'MANAGER DASHBOARD',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                      color: Color.fromARGB(255, 44, 62, 80), // You can adjust the size as needed
+                    ),
+                  ),
                 ),
               ],
-              currentIndex: _selectedIndex, // Highlight the selected tab
-              selectedItemColor: const Color.fromARGB(255, 255, 194, 168), // Color of the selected item
-              backgroundColor: const Color.fromARGB(255, 255, 174, 168), // Match background color
-              onTap: _onItemTapped, // Handle tab taps
             ),
-          ),
-          // Placeholder for text at the top
-          const Positioned(
-            top: 35,
-            left: 5,
-            right: 30,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start, // Aligns text to the start
-                children: [
-                  Text(
-                    'Welcome Manager!',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold, // Make the text bold
-                      color: Color.fromARGB(255, 0, 0, 0),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.circle_notifications, 
+                    color: Color.fromARGB(255, 44, 62, 80),
+                    size: 35,
                     ),
-                  ),
-                  SizedBox(height: 40), // Space between the texts
-                  Text(
-                    'Placeholder (name of user)',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Color.fromARGB(255, 0, 0, 0),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Widget to display welcome message
-  Widget _buildManagerWelcome() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 80, bottom: 61), // Adjusted top padding and added bottom space
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 32.0), // Padding inside the container for top and bottom
-                width: double.infinity, // Stretch the container to fill the entire width
-                decoration: const BoxDecoration(
-                  color: Colors.white, // White background for the container
-                  borderRadius: BorderRadius.all(Radius.circular(50.0)), // Rounded corners
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center, // Center items vertically
-                  children: [
-                    // Welcome text centered in the container
-                    const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Welcome, Manager!',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 85, 30, 30),
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Icon(
-                          Icons.supervisor_account,
-                          size: 100,
-                          color: Colors.blue,
-                        ),
-                        SizedBox(height: 20), // Add spacing at the bottom
-                      ],
-                    ),
-                    // Elevated button at the bottom
-                    ElevatedButton(
-                      onPressed: () {
-                        // Define what happens when the button is pressed
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 85, 30, 30), // Background color of the button
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0), // Rounded corners for the button
-                        ),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0), // Padding for the button
-                        child: Text(
-                          'Action Button', // Button text
-                          style: TextStyle(fontSize: 18), // Text style for the button
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                    onPressed: () {
+                // Add functionality to notification icon
+                }
               ),
             ),
           ],
+        ),
+
+
+      // Body that changes based on the selected tab
+      body: _pages[_selectedIndex], // Display the corresponding screen
+      // Bottom Navigation Bar
+      bottomNavigationBar: Container(
+        color: const Color.fromRGBO(255, 255, 255, 1),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0),
+          child: BottomNavigationBar(
+            elevation: 0,
+            currentIndex: _selectedIndex,
+            onTap: (index) {
+              setState(() {
+                _selectedIndex = index; // Switch to the selected tab
+              });
+            },
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home_outlined,
+                  size: 35,
+                  color: Color.fromARGB(255, 44, 62, 80),
+                ),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.inventory_2_outlined,
+                  size: 35,
+                  color: Color.fromARGB(255, 44, 62, 80),
+                ),
+                label: 'Inventory',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.history,
+                  size: 35,
+                  color: Color.fromARGB(255, 44, 62, 80),
+                ),
+                label: 'History',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.account_circle_rounded,
+                  size: 35,
+                  color: Color.fromARGB(255, 44, 62, 80),
+                ),
+                label: 'Account',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.settings,
+                  size: 35,
+                  color: Color.fromARGB(255, 44, 62, 80),
+                ),
+                label: 'Settings',
+              ),
+            ],
+            //interaction and state with icons in bottom navbar
+            selectedItemColor: const Color.fromARGB(255, 44, 62, 80),
+            unselectedItemColor: const Color.fromARGB(255, 28, 39, 50),
+            selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+            unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.normal),
+            showSelectedLabels: true, // Always show selected labels
+            showUnselectedLabels: true, // Always show unselected labels
+          ),
         ),
       ),
     );

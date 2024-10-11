@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/UI/Admin_Dashboard/home_screen.dart';
+import 'package:flutter_application_1/UI/Admin_Dashboard/account_screen.dart';
+import 'package:flutter_application_1/UI/Admin_Dashboard/settings_screen.dart';
+import 'package:flutter_application_1/UI/Admin_Dashboard/inventory_screen.dart';
 
 import '../Admin/aaccount_screen.dart';
 import '../Admin/ahistory_screen.dart';
@@ -16,6 +20,7 @@ class AdminDashboard extends StatefulWidget {
 class _AdminDashboardState extends State<AdminDashboard> {
   int _selectedIndex = 0; // to track the current tab
 
+<<<<<<< HEAD
   // List of pages, each corresponds to a screen in your app
   static final List<Widget> _pages = <Widget>[
     HomeScreen(), // Home Screen layout
@@ -23,7 +28,19 @@ class _AdminDashboardState extends State<AdminDashboard> {
     HistoryScreen(), // History Screen layout
     AccountScreen(), // Placeholder for Account Screen
     SettingsScreen(), // Placeholder for Settings Screen
+=======
+  // List of screens to display for each tab
+  final List<Widget> _screens = [
+    const HomeScreen(), // Replaced AdminDashboard with a separate DashboardScreen
+    const InventoryScreen(),
+    const SettingsScreen(),
+    const AccountScreen(),
+>>>>>>> 7601fb2fbf0e524ffd2478c3768dfe748bae6111
   ];
+  void _addStock() {
+    // Your logic for adding stock
+    print('Stock added');
+  }
 
   // Helper function to build BottomNavigationBarItem
   BottomNavigationBarItem buildNavItem(IconData icon, String label, int index) {
@@ -52,9 +69,11 @@ class _AdminDashboardState extends State<AdminDashboard> {
     );
   }
 
+  // Function to Handle NavBar
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< HEAD
       body: _pages[_selectedIndex], // Display the corresponding screen
       // Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
@@ -80,7 +99,19 @@ class _AdminDashboardState extends State<AdminDashboard> {
         unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.normal),
         showSelectedLabels: true, // Always show selected labels
         showUnselectedLabels: true, // Always show unselected labels
+=======
+      appBar: AppBar(
+        title: Text('Big tite'),
+>>>>>>> 7601fb2fbf0e524ffd2478c3768dfe748bae6111
       ),
     );
   }
 }
+
+// Separate widget for the Dashboard screen
+
+// screen for Account
+
+// screen for Settings
+
+// Screen for Inventory
