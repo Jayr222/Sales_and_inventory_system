@@ -8,7 +8,6 @@ class AdminDashboard extends StatefulWidget {
   const AdminDashboard({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _AdminDashboardState createState() => _AdminDashboardState();
 }
 
@@ -17,15 +16,11 @@ class _AdminDashboardState extends State<AdminDashboard> {
 
   // List of screens to display for each tab
   final List<Widget> _screens = [
-    const HomeScreen(), // Replaced AdminDashboard with a separate DashboardScreen
+    HomeScreen(),
     const InventoryScreen(),
     const SettingsScreen(),
     const AccountScreen(),
   ];
-  void _addStock() {
-    // Your logic for adding stock
-    print('Stock added');
-  }
 
   // Function to handle tab selection
   void onTabTapped(int index) {
@@ -34,21 +29,42 @@ class _AdminDashboardState extends State<AdminDashboard> {
     });
   }
 
-  // Function to Handle NavBar
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Big tite'),
+      // This will display the currently selected screen
+      body: _screens[_currentIndex],
+
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed, // Ensures background color works
+        currentIndex: _currentIndex, // Set the current tab
+        onTap: onTabTapped, // Handle the tab tap
+
+        backgroundColor: const Color.fromARGB(
+            255, 255, 255, 255), // Set the background color
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.inventory),
+            label: 'Inventory',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: 'Account',
+          ),
+        ],
+        selectedItemColor:
+            const Color.fromARGB(255, 42, 51, 59), // Active tab color
+        unselectedItemColor:
+            const Color.fromARGB(255, 0, 0, 0), // Inactive tab color
       ),
     );
   }
 }
-
-// Separate widget for the Dashboard screen
-
-// screen for Account
-
-// screen for Settings
-
-// Screen for Inventory

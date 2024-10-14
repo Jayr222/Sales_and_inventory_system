@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart'; // This is where the FirebaseOptions will come from
+import 'firebase_options.dart';
 import 'screens/login_page_screen.dart';
 import 'screens/sign_up_screen.dart';
-import 'Animations/intro_animation.dart'; // Import the intro animation
+import 'screens/stock_management_screen.dart'; // Import the stock management screen
+import 'Animations/intro_animation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   try {
-    // Check if Firebase has already been initialized
     if (Firebase.apps.isEmpty) {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
@@ -32,40 +32,29 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.teal,
+          backgroundColor: Color(0xFF2C3E50),
           titleTextStyle: TextStyle(
             color: Colors.white,
             fontSize: 25,
             fontWeight: FontWeight.bold,
           ),
+          iconTheme: IconThemeData(
+            color: Colors.white,
+            size: 30,
+          ),
         ),
       ),
-      initialRoute: '/', // Start with the intro animation
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/',
       routes: {
-        '/': (context) =>
-            const IntroAnimation(), // Start with the intro animation
+        '/': (context) => const IntroAnimation(),
         '/login': (context) => const LoginPageScreen(),
         '/signup': (context) => const SignUpScreen(),
+        '/stock_management': (context) =>
+            const StockManagementScreen(), // Add this line
       },
     );
   }
-}
-
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: Row(
-        children: [
-          Image.asset(
-            'lib/assets/Shoppingicon.png',
-            height: 40,
-          ),
-        ],
-      ),
-    ),
-  );
 }
