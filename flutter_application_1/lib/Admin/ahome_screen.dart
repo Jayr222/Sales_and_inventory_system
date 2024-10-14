@@ -19,8 +19,6 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.only(left: 25.0),
           child: Image.asset(
             'lib/assets/Shoppingicon.png',
-            width: 70,
-            height: 70,
             fit: BoxFit.contain,
           ),
         ),
@@ -28,8 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
           'MANAGER DASHBOARD',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 15,
-            color: Color.fromARGB(255, 44, 62, 80),
+            fontSize: 19,
+            color: Color.fromARGB(255, 0, 0, 0),
           ),
         ),
         actions: [
