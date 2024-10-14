@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../Staff/Shome_screen.dart';
-import '../Staff/saccount_screen.dart';
-import '../Staff/shistory_screen.dart';
-import '../Staff/sinventory_screen.dart';
-import '../Staff/ssettings_screen.dart';
+import '../UI/Staff_Dashboard/Staff/home_screen.dart';
+import '../UI/Staff_Dashboard/Staff/account_screen.dart';
+import '../UI/Staff_Dashboard/Staff/history_screen.dart';
+import '../UI/Staff_Dashboard/Staff/inventory_screen.dart';
+import '../UI/Staff_Dashboard/Staff/settings_screen.dart';
 
 class StaffDashboard extends StatefulWidget {
   const StaffDashboard({super.key});
