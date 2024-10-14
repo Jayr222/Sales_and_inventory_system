@@ -112,8 +112,8 @@ class IntroAnimationState extends State<IntroAnimation>
                           child: Transform.rotate(
                             angle: _animationRotation.value,
                             child: SizedBox(
-                              width: 300,
-                              height: 250,
+                              width: 75,
+                              height: 75,
                               child: Image.asset('lib/assets/Shoppingicon.png'),
                             ),
                           ),

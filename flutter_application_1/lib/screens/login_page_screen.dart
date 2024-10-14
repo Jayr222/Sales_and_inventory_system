@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/screens/staff_dashboard.dart';
 import 'sign_up_screen.dart';
 import 'admin_dashboard.dart';
 import 'manager_dashboard.dart';
-import 'staff_dashboard.dart';
 
 class LoginPageScreen extends StatefulWidget {
   const LoginPageScreen({super.key});
 
   @override
   _LoginPageScreenState createState() => _LoginPageScreenState();
-}
+} 
 
 class _LoginPageScreenState extends State<LoginPageScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -92,11 +92,11 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(vertical: 50.0),
                   child: Image.asset(
                     'lib/assets/Shoppingicon.png',
-                    width: 180,
-                    height: 120,
+                    width: 75,
+                    height: 75,
                   ),
                 ),
                 Container(
