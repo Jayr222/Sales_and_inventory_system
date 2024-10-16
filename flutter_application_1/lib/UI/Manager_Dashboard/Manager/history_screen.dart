@@ -49,9 +49,8 @@ class HistoryScreen extends StatelessWidget {
             child: Container(
               width: double.infinity,
               height: 900,
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 44, 62, 80), // Inner container color
-                borderRadius: BorderRadius.circular(25.0),
+              decoration: const BoxDecoration(
+                color:Color.fromARGB(255, 44, 62, 80), // Inner container color
               )
             )
           )

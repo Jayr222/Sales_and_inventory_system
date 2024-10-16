@@ -17,11 +17,11 @@ class _StaffDashboardState extends State<StaffDashboard> {
 
   // List of pages, each corresponds to a screen in your app
   static final List<Widget> _pages = <Widget>[
-    HomeScreen(), // Home Screen layout
-    InventoryScreen(), // Inventory Screen layout
+    const HomeScreen(), // Home Screen layout
+    const InventoryScreen(), // Inventory Screen layout
     const HistoryScreen(), // History Screen layout
-    AccountScreen(), // Placeholder for Account Screen
-    SettingsScreen(), // Placeholder for Settings Screen
+    const AccountScreen(), // Placeholder for Account Screen
+    const SettingsScreen(), // Placeholder for Settings Screen
   ];
 
   // Helper function to build BottomNavigationBarItem
