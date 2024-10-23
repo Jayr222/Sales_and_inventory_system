@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,10 +79,11 @@ class SettingsScreen extends StatelessWidget {
                       // First Text
                       const SizedBox(height: 30),
                       const Text(
-                        'Account & Settings',
+                        'ACCOUNT & SETTINGS',
                         style: TextStyle(
                           color: Color(0xFF2C3E50),
                           fontSize: 25,
+                          fontWeight: FontWeight.bold
                         ),
                       ),
                       // Inside of Setting's body
@@ -93,9 +96,10 @@ class SettingsScreen extends StatelessWidget {
                               // Email First Container
                               Container(
                                 alignment: Alignment.center,
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFF2C3E50),
-                                  boxShadow: [
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF2C3E50),
+                                  borderRadius: BorderRadius.circular(50),
+                                  boxShadow: const [
                                     BoxShadow(spreadRadius: 1.5),
                                   ],
                                 ),
@@ -130,9 +134,10 @@ class SettingsScreen extends StatelessWidget {
                               // Password Second Container
                               Container(
                                 alignment: Alignment.center,
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFF2C3E50),
-                                  boxShadow: [BoxShadow(spreadRadius: 1.5)],
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF2C3E50),
+                                  borderRadius: BorderRadius.circular(50),
+                                  boxShadow: const [BoxShadow(spreadRadius: 1.5)],
                                 ),
                                 height: 55,
                                 width: 320,
@@ -165,9 +170,10 @@ class SettingsScreen extends StatelessWidget {
                               // Contacts Third Container
                               Container(
                                 alignment: Alignment.center,
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFF2C3E50),
-                                  boxShadow: [
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF2C3E50),
+                                  borderRadius: BorderRadius.circular(50),
+                                  boxShadow: const [
                                     BoxShadow(spreadRadius: 1.5),
                                   ],
                                 ),
@@ -205,9 +211,10 @@ class SettingsScreen extends StatelessWidget {
                               // About Fourth Container
                               Container(
                                 alignment: Alignment.center,
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFF2C3E50),
-                                  boxShadow: [
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF2C3E50),
+                                  borderRadius: BorderRadius.circular(50),
+                                  boxShadow: const [
                                     BoxShadow(spreadRadius: 1.5),
                                   ],
                                 ),
@@ -245,9 +252,10 @@ class SettingsScreen extends StatelessWidget {
                               // Terms and Condition Fifth Container
                               Container(
                                 alignment: Alignment.center,
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFF2C3E50),
-                                  boxShadow: [
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF2C3E50),
+                                  borderRadius: BorderRadius.circular(50),
+                                  boxShadow: const [
                                     BoxShadow(spreadRadius: 1.5),
                                   ],
                                 ),
@@ -284,9 +292,10 @@ class SettingsScreen extends StatelessWidget {
                               // Log-Out Last Container
                               const SizedBox(height: 130),
                               Container(
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFF2C3E50),
-                                  boxShadow: [
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF2C3E50),
+                                  borderRadius: BorderRadius.circular(50),
+                                  boxShadow: const [
                                     BoxShadow(spreadRadius: 2),
                                   ],
                                 ),

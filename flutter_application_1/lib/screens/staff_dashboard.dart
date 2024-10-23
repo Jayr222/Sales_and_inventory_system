@@ -20,8 +20,8 @@ class _StaffDashboardState extends State<StaffDashboard> {
     const HomeScreen(), // Home Screen layout
     const InventoryScreen(), // Inventory Screen layout
     const HistoryScreen(), // History Screen layout
-    const AccountScreen(), // Account Screen layout
-    const SettingsScreen(), // Settings Screen layout
+    AccountScreen(), // Placeholder for Account Screen
+    SettingsScreen(), // Placeholder for Settings Screen
   ];
 
   // Helper function to build BottomNavigationBarItem
