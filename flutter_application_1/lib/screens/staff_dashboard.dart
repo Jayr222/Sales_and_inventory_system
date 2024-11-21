@@ -20,8 +20,8 @@ class _StaffDashboardState extends State<StaffDashboard> {
     const HomeScreen(), // Home Screen layout
     const InventoryScreen(), // Inventory Screen layout
     const HistoryScreen(), // History Screen layout
-    const AccountScreen(), // Placeholder for Account Screen
-    const SettingsScreen(), // Placeholder for Settings Screen
+    AccountScreen(), // Placeholder for Account Screen
+    SettingsScreen(), // Placeholder for Settings Screen
   ];
 
   // Helper function to build BottomNavigationBarItem
@@ -54,8 +54,18 @@ class _StaffDashboardState extends State<StaffDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selectedIndex], // Display the corresponding screen
-      // Bottom Navigation Bar
+      appBar: AppBar(
+        leading: Image.asset('lib/assets/Shoppingicon.png'),
+        title: const Text('Staff Dashboard'),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 10),
+            child: Icon(Icons.notification_add),
+          )
+        ],
+      ),
+      body: _pages[
+          _selectedIndex], // Display the corresponding screen based on the selected tab
       bottomNavigationBar: BottomNavigationBar(
         elevation: 10,
         currentIndex: _selectedIndex,

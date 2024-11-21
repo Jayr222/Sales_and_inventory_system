@@ -15,7 +15,7 @@ class SettingsScreen extends StatelessWidget {
           child: Image.asset(
             'lib/assets/Shoppingicon.png',
             width: 70,
-            height: 70, // Keep height consistent for better apRpearance]
+            height: 70, // Keep height consistent for better appearance
             fit: BoxFit.contain,
           ),
         ),
@@ -101,6 +101,9 @@ class SettingsScreen extends StatelessWidget {
                                   boxShadow: [
                                     BoxShadow(spreadRadius: 1.5),
                                   ],
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                          10)), // Added borderRadius
                                 ),
                                 height: 55,
                                 width: 320,
@@ -119,7 +122,9 @@ class SettingsScreen extends StatelessWidget {
                                     Text(
                                       'Email',
                                       style: TextStyle(
-                                          fontSize: 20, color: Colors.white),
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(right: 15),
@@ -138,6 +143,9 @@ class SettingsScreen extends StatelessWidget {
                                 decoration: const BoxDecoration(
                                   color: Color(0xFF2C3E50),
                                   boxShadow: [BoxShadow(spreadRadius: 1.5)],
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                          10)), // Added borderRadius
                                 ),
                                 height: 55,
                                 width: 320,
@@ -156,7 +164,9 @@ class SettingsScreen extends StatelessWidget {
                                     Text(
                                       'Password',
                                       style: TextStyle(
-                                          fontSize: 20, color: Colors.white),
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(right: 15),
@@ -177,6 +187,9 @@ class SettingsScreen extends StatelessWidget {
                                   boxShadow: [
                                     BoxShadow(spreadRadius: 1.5),
                                   ],
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                          10)), // Added borderRadius
                                 ),
                                 height: 55,
                                 width: 320,
@@ -218,6 +231,9 @@ class SettingsScreen extends StatelessWidget {
                                   boxShadow: [
                                     BoxShadow(spreadRadius: 1.5),
                                   ],
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                          10)), // Added borderRadius
                                 ),
                                 height: 55,
                                 width: 320,
@@ -259,6 +275,9 @@ class SettingsScreen extends StatelessWidget {
                                   boxShadow: [
                                     BoxShadow(spreadRadius: 1.5),
                                   ],
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                          10)), // Added borderRadius
                                 ),
                                 height: 55,
                                 width: 320,
