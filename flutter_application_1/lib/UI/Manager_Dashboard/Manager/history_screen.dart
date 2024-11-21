@@ -8,7 +8,7 @@ class HistoryScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        toolbarHeight: 80, 
+        toolbarHeight: 80,
         leading: Padding(
           padding: const EdgeInsets.only(left: 25.0),
           child: Image.asset(
@@ -44,17 +44,14 @@ class HistoryScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Container(
-          color: const Color.fromARGB(255, 255, 255, 255), // Background color
-          child: Center(
-            child: Container(
-              width: double.infinity,
-              height: 900,
-              decoration: const BoxDecoration(
-                color:Color.fromARGB(255, 44, 62, 80), // Inner container color
-              )
-            )
-          )
-        ),
+            color: const Color.fromARGB(255, 255, 255, 255),
+            child: Center(
+                child: Container(
+                    width: double.infinity,
+                    height: 900,
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 44, 62, 80),
+                    )))),
       ),
     );
   }
