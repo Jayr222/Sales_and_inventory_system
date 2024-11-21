@@ -129,7 +129,8 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
             selectedItemColor: const Color.fromARGB(255, 44, 62, 80),
             unselectedItemColor: const Color.fromARGB(255, 28, 39, 50),
             selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-            unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.normal),
+            unselectedLabelStyle:
+                const TextStyle(fontWeight: FontWeight.normal),
             showSelectedLabels: true, // Always show selected labels
             showUnselectedLabels: true, // Always show unselected labels
           ),
