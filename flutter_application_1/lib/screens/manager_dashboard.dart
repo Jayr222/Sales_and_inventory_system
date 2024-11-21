@@ -6,24 +6,24 @@ import '../UI/Manager_Dashboard/Manager/home_screen.dart';
 import '../UI/Manager_Dashboard/Manager/inventory_screen.dart';
 import '../UI/Manager_Dashboard/Manager/settings_screen.dart';
 
-  
 class ManagerDashboard extends StatefulWidget {
   const ManagerDashboard({super.key});
   @override
   State<ManagerDashboard> createState() => _ManagerDashboardState();
 }
+
 class _ManagerDashboardState extends State<ManagerDashboard> {
   int _selectedIndex = 0; // to track the current tab
 
   // List of pages, each corresponds to a screen in your app
   static final List<Widget> _pages = <Widget>[
-    const HomeScreen(),  // Home Screen layout
-    const InventoryScreen(),  // Inventory Screen layout
+    const HomeScreen(), // Home Screen layout
+    const InventoryScreen(), // Inventory Screen layout
     const HistoryScreen(), // Placeholder for History Screen
     const AccountScreen(), // Placeholder for Account Screen
-    SettingsScreen(), // Placeholder for Settings Screen
+    const SettingsScreen(), // Placeholder for Settings Screen
   ];
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,7 +90,8 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
             selectedItemColor: const Color.fromARGB(255, 44, 62, 80),
             unselectedItemColor: const Color.fromARGB(255, 28, 39, 50),
             selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-            unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.normal),
+            unselectedLabelStyle:
+                const TextStyle(fontWeight: FontWeight.normal),
             showSelectedLabels: true, // Always show selected labels
             showUnselectedLabels: true, // Always show unselected labels
           ),
