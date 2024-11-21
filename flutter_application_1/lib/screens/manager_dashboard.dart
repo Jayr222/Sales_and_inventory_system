@@ -1,34 +1,78 @@
 import 'package:flutter/material.dart';
 
-import '../UI/Manager_Dashboard/Manager/account_screen.dart';
 import '../UI/Manager_Dashboard/Manager/history_screen.dart';
 import '../UI/Manager_Dashboard/Manager/home_screen.dart';
 import '../UI/Manager_Dashboard/Manager/inventory_screen.dart';
-import '../UI/Manager_Dashboard/Manager/settings_screen.dart';
 
-  
 class ManagerDashboard extends StatefulWidget {
   const ManagerDashboard({super.key});
   @override
   State<ManagerDashboard> createState() => _ManagerDashboardState();
 }
+
 class _ManagerDashboardState extends State<ManagerDashboard> {
   int _selectedIndex = 0; // to track the current tab
 
-  // List of pages, each corresponds to a screen in your app
+  // List of pages,
   static final List<Widget> _pages = <Widget>[
-    const HomeScreen(),  // Home Screen layout
-    const InventoryScreen(),  // Inventory Screen layout
+    const HomeScreen(), // Home Screen layout
+    const InventoryScreen(), // Inventory Screen layout
     const HistoryScreen(), // Placeholder for History Screen
-    const AccountScreen(), // Placeholder for Account Screen
-    SettingsScreen(), // Placeholder for Settings Screen
   ];
-  
+
+  // Function to show the alert dialog
+  void _showAlertDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text("Are you sure you want to logout?"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min, // Adjust size to fit content
+          children: [
+            const SizedBox(height: 50),
+            const Text("Press the button below to confirm logout."),
+            const SizedBox(height: 50),
+            ElevatedButton(
+              onPressed: () {
+                //logic placeholder
+                Navigator.of(context).pop(); 
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Logged out successfully!")),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 44, 62, 80), // Button color
+                foregroundColor: Colors.white, // Text color
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24.0,
+                  vertical: 12.0,
+                ), // Button padding
+              ),
+              child: const Text("Logout"),
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Close the dialog
+            },
+            child: const Text("Cancel"),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // Body that changes based on the selected tab
-      body: _pages[_selectedIndex], // Display the corresponding screen
+      body: _selectedIndex < 3 ? _pages[_selectedIndex] : const SizedBox(),
+
       // Bottom Navigation Bar
       bottomNavigationBar: Container(
         color: const Color.fromRGBO(255, 255, 255, 1),
@@ -38,9 +82,13 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
             elevation: 0,
             currentIndex: _selectedIndex,
             onTap: (index) {
-              setState(() {
-                _selectedIndex = index; // Switch to the selected tab
-              });
+              if (index == 3) {
+                _showAlertDialog(context); // Trigger the alert dialog for the 4th button
+              } else {
+                setState(() {
+                  _selectedIndex = index; // Switch to the selected tab
+                });
+              }
             },
             type: BottomNavigationBarType.fixed,
             backgroundColor: const Color.fromARGB(255, 255, 255, 255),
@@ -71,22 +119,13 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.account_circle_rounded,
+                  Icons.logout,
                   size: 35,
                   color: Color.fromARGB(255, 44, 62, 80),
                 ),
-                label: 'Account',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.settings,
-                  size: 35,
-                  color: Color.fromARGB(255, 44, 62, 80),
-                ),
-                label: 'Settings',
+                label: 'Logout', // Special button for triggering an alert
               ),
             ],
-            //interaction and state with icons in bottom navbar
             selectedItemColor: const Color.fromARGB(255, 44, 62, 80),
             unselectedItemColor: const Color.fromARGB(255, 28, 39, 50),
             selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
