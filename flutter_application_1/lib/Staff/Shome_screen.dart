@@ -32,13 +32,17 @@ class HomeScreen extends StatelessWidget {
                   radius: 25,
                 ),
               ),
-              const SizedBox(width: 15),
-              const Text(
-                'STAFF DASHBOARD',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22,
-                  color: Color.fromARGB(255, 44, 62, 80), // You can adjust the size as needed
+              const SizedBox(width: 10),
+              const Padding(
+                padding: EdgeInsets.only(top: 5),
+                child: Text(
+                  'STAFF DASHBOARD',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w300,
+                    fontSize: 30,
+                    fontFamily: 'AntonSC',
+                    color: Color.fromARGB(255, 44, 62, 80), // You can adjust the size as needed
+                  ),
                 ),
               ),
             ],
@@ -84,192 +88,175 @@ class HomeScreen extends StatelessWidget {
               ),
               height: 690,
               width: double.infinity,
+
               //Title Page
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 30),
-                    const SizedBox(
-                      width: 350,
-                      child: TextField(
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white, // Make the TextField transparent
-                        hintStyle: TextStyle(color: Colors.black),
-                        hintText: 'Search...',
-                        border: OutlineInputBorder( 
-                          borderSide: BorderSide.none,
-                        ),
-                        contentPadding: EdgeInsets.symmetric(vertical: 5),
-                        prefixIcon: Padding(
-                          padding: EdgeInsets.only(
-                            left: 10,
-                          ),
-                          child: Icon(
-                            Icons.search,
-                            size: 25,
-                            color: Colors.black,
-                          ),
-                        ),
+                  const SizedBox(height: 20),
+
+                  //Search Box
+                  SizedBox(
+                    width: 370,
+                    height: 45,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: const [
+                          BoxShadow(spreadRadius: 2.5),
+                        ],
                       ),
+                      child: const TextField(
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          hintText: 'Search...',
+                          hintStyle: TextStyle(color: Color(0xFF2C3E50), 
+                          fontSize: 20),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(30),
+                            ),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(vertical: 10),
+                          prefixIcon: Icon(
+                            Icons.search_off_outlined,
+                            color: Color(0xFF2C3E50),
+                            size: 25,
+                          ),
+                        ),
                       ),
                     ),
+                  ),
 
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
+
+                  //Greeting, Sub Greetings Title
                   const Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text(
-                          'Welcome Back!',
-                          style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 25,
-                              color: Colors.white),
-                        ),
+                      Column(
+                        children: [
+                          Text(
+                            "Welcome to your Dashboard",
+                            style: TextStyle(color: Colors.white, fontSize: 30, fontFamily: 'NanumGothicCoding', fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "Let's make today productive!",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontFamily: 'NanumGothicCoding',
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
+
                   const SizedBox(height: 20),
+
+                  //Three Containers w/ Sections
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // First Container Order
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            print('Pressed');
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.only(
-                                bottomRight: Radius.circular(40),
-                                topRight: Radius.circular(40),
-                              ),
-                              color: Colors.white.withOpacity(0.5),
-                              boxShadow: const [
-                                BoxShadow(
-                                  spreadRadius: 3,
-                                  offset: Offset(5, 2),
-                                )
-                              ],
-                            ),
-                            height: 130,
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(
-                                  Icons.add_shopping_cart,
-                                  size: 100,
-                                  color: Colors.white,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(right: 15),
-                                  child: Text(
-                                    'ORDERS',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 60,
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                      const SizedBox(height: 3),
+
+                      //First Container W/ Title
+                      Container(
+                        width: 370,
+                        height: 140,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [BoxShadow(spreadRadius: 2)],
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(30),
                           ),
                         ),
-                      ),
-                      // Second Container Delivery
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            print('Pressed');
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.only(
-                                bottomRight: Radius.circular(40),
-                                topRight: Radius.circular(40),
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'DELIVERY',
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF2C3E50),
                               ),
-                              color: Colors.white.withOpacity(0.5),
-                              boxShadow: const [
-                                BoxShadow(
-                                  spreadRadius: 3,
-                                  offset: Offset(5, 2),
-                                )
-                              ],
                             ),
-                            height: 130,
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(
-                                  Icons.fire_truck,
-                                  size: 100,
-                                  color: Colors.white,
-                                ),
-                                Text(
-                                  'DELIVERY',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 50,
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: Colors.white,
-                                  ),
-                                ),
-                              ],
+                            Icon(
+                              Icons.shopping_cart_outlined,
+                              size: 80,
+                              color: Color(0xFF2C3E50),
                             ),
-                          ),
+                          ],
                         ),
                       ),
-                      // Third Container Feedback
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            print('Pressed');
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.only(
-                                bottomRight: Radius.circular(40),
-                                topRight: Radius.circular(40),
-                              ),
-                              color: Colors.white.withOpacity(0.5),
-                              boxShadow: const [
-                                BoxShadow(
-                                  spreadRadius: 3,
-                                  offset: Offset(5, 2),
-                                )
-                              ],
-                            ),
-                            height: 130,
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  size: 100,
-                                  color: Colors.white,
-                                ),
-                                Text(
-                                  'FEEDBACK',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 45,
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: Colors.white),
-                                ),
-                              ],
-                            ),
+
+                      const SizedBox(height: 30),
+
+                      // Second Container w/ Section
+                      Container(
+                        width: 370,
+                        height: 140,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [BoxShadow(spreadRadius: 2)],
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(30),
                           ),
+                        ),
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'ORDERS',
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF2C3E50),
+                              ),
+                            ),
+                            Icon(
+                              Icons.shopping_bag_outlined,
+                              size: 80,
+                              color: Color(0xFF2C3E50),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 30),
+
+                      // Third Container w/ Section
+                      Container(
+                        width: 370,
+                        height: 140,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [BoxShadow(spreadRadius: 2)],
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(30),
+                          ),
+                        ),
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'FEEDBACK',
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF2C3E50),
+                              ),
+                            ),
+                            Icon(
+                              Icons.star_border_outlined,
+                              size: 80,
+                              color: Color(0xFF2C3E50),
+                            ),
+                          ],
                         ),
                       ),
                     ],

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../Staff/Shome_screen.dart';
-import '../Staff/saccount_screen.dart';
 import '../Staff/shistory_screen.dart';
 import '../Staff/sinventory_screen.dart';
-import '../Staff/ssettings_screen.dart';
+import '../Staff/slogout_screen.dart';
+
 
 class StaffDashboard extends StatefulWidget {
   const StaffDashboard({super.key});
@@ -17,11 +17,10 @@ class _StaffDashboardState extends State<StaffDashboard> {
 
   // List of pages, each corresponds to a screen in your app
   static final List<Widget> _pages = <Widget>[
-    HomeScreen(), // Home Screen layout
-    InventoryScreen(), // Inventory Screen layout
+    const HomeScreen(), // Home Screen layout
+    const InventoryScreen(), // Inventory Screen layout
     const HistoryScreen(), // History Screen layout
-    AccountScreen(), // Placeholder for Account Screen
-    SettingsScreen(), // Placeholder for Settings Screen
+    const LogoutScreen(), // Placeholder for Account Screen
   ];
 
   // Helper function to build BottomNavigationBarItem
@@ -71,7 +70,6 @@ class _StaffDashboardState extends State<StaffDashboard> {
           buildNavItem(Icons.inventory_outlined, 'Inventory', 1),
           buildNavItem(Icons.checklist_rtl, 'History', 2),
           buildNavItem(Icons.account_circle_outlined, 'Account', 3),
-          buildNavItem(Icons.settings, 'Settings', 4),
         ],
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.black,

@@ -33,13 +33,17 @@ class InventoryScreen extends StatelessWidget {
                   radius: 25,
                 ),
               ),
-              const SizedBox(width: 15),
-              const Text(
-                'INVENTORY',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22,
-                  color: Color.fromARGB(255, 44, 62, 80), // You can adjust the size as needed
+              const SizedBox(width: 10),
+              const Padding(
+                padding: EdgeInsets.only(top: 5),
+                child: Text(
+                  'INVENTORY',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w300,
+                    fontSize: 30,
+                    fontFamily: 'AntonSC',
+                    color: Color.fromARGB(255, 44, 62, 80), // You can adjust the size as needed
+                  ),
                 ),
               ),
             ],
@@ -68,18 +72,8 @@ class InventoryScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Container(
-        color: const Color.fromARGB(255, 255, 226, 139), // Background color
-        child: Center(
-          child: Container(
-            width: double.infinity,
-            height: 900,
-            decoration: BoxDecoration(
-              color: Colors.black, // Inner container color
-              borderRadius: BorderRadius.circular(45.0),
-            ),
-          ),
-        ),
+      backgroundColor:const Color(0xFF2C3E50),
+      body: const Column(
       ),
     );
   }
