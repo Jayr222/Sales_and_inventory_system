@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/login_page_screen.dart';
 
 import '../UI/Manager_Dashboard/Manager/history_screen.dart';
 import '../UI/Manager_Dashboard/Manager/home_screen.dart';
@@ -38,10 +39,14 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
                 onPressed: () async {
                   try {
                     await FirebaseAuth.instance.signOut();
-
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Logged out successfully!")),
+                    );
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LoginPageScreen()),
                     );
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(
