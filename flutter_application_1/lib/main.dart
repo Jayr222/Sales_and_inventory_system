@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'screens/login_page_screen.dart';
 import 'screens/sign_up_screen.dart';
-import 'screens/stock_management_screen.dart'; // Import the stock management screen
+import 'screens/stock_management_screen.dart';
 import 'Animations/intro_animation.dart';
 
 void main() async {
@@ -52,8 +52,8 @@ class MyApp extends StatelessWidget {
         '/': (context) => const IntroAnimation(),
         '/login': (context) => const LoginPageScreen(),
         '/signup': (context) => const SignUpScreen(),
-        '/stock_management': (context) =>
-            const StockManagementScreen(), // Add this line
+        '/stock_management': (context) => const LoginPageScreen(),
+        '/signout': (context) => const LoginPageScreen(),
       },
     );
   }
