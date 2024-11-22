@@ -90,9 +90,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
         child: Center(
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal:
-                      20.0), // Add horizontal padding to ensure no content is too close to the screen edges.
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
                 children: [
                   Padding(
@@ -103,179 +101,178 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                       height: 75,
                     ),
                   ),
-                  LayoutBuilder(builder: (context, constraints) {
-                    double containerWidth = constraints.maxWidth * 0.8;
-                    double containerHeight = constraints.maxHeight *
-                        0.6; // Reduced height for better fit
-                    return Container(
-                      width: containerWidth,
-                      height: containerHeight,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 20.0, horizontal: 20.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50.0),
-                        color: const Color(0xFFFFFFFF),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color.fromARGB(255, 255, 255, 255)
-                                .withOpacity(0.1),
-                            spreadRadius: 10,
-                            blurRadius: 20,
-                            offset: const Offset(0, 7),
+                  // Use Expanded or a fixed size for the container
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20.0, horizontal: 20.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50.0),
+                      color: const Color(0xFFFFFFFF),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color.fromARGB(255, 255, 255, 255)
+                              .withOpacity(0.1),
+                          spreadRadius: 10,
+                          blurRadius: 20,
+                          offset: const Offset(0, 7),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Welcome Back!',
+                            style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 32, 31, 31)),
                           ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          const Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Welcome Back!',
+                        ),
+                        const SizedBox(height: 20),
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('Email:',
                               style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 32, 31, 31)),
+                                fontSize: 20,
+                                fontFamily: 'Lato',
+                                color: Color.fromARGB(255, 32, 31, 31),
+                              )),
+                        ),
+                        const SizedBox(height: 5),
+                        TextField(
+                          controller: _emailController,
+                          decoration: InputDecoration(
+                            hintText: 'Enter your email',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
                             ),
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 12),
                           ),
-                          const SizedBox(height: 20),
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text('Email:',
+                        ),
+                        const SizedBox(height: 20),
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('Password:',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontFamily: 'Lato',
+                              )),
+                        ),
+                        const SizedBox(height: 5),
+                        TextField(
+                          controller: _passwordController,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            hintText: 'Enter your password',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 12),
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () {
+                              print("Forgot password tapped");
+                            },
+                            child: const Text('Forgot your password?',
                                 style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: 'Lato',
-                                  color: Color.fromARGB(255, 32, 31, 31),
-                                )),
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold)),
                           ),
-                          const SizedBox(height: 5),
-                          TextField(
-                            controller: _emailController,
-                            decoration: InputDecoration(
-                              hintText: 'Enter your email',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        const SizedBox(height: 20),
+                        Center(
+                          child: ElevatedButton(
+                            onPressed: _login,
+                            style: ElevatedButton.styleFrom(
+                              textStyle: const TextStyle(
+                                fontSize: 20,
                               ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 12),
+                              foregroundColor:
+                                  const Color.fromARGB(255, 255, 253, 253),
+                              backgroundColor:
+                                  const Color.fromARGB(255, 32, 31, 31),
+                              minimumSize: Size(
+                                  MediaQuery.of(context).size.width - 40, 50),
                             ),
+                            child: const Text('Login'),
                           ),
-                          const SizedBox(height: 20),
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text('Password:',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontFamily: 'Lato',
-                                )),
-                          ),
-                          const SizedBox(height: 5),
-                          TextField(
-                            controller: _passwordController,
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              hintText: 'Enter your password',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        const SizedBox(height: 20),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SignUpScreen(),
                               ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 12),
-                            ),
+                            );
+                          },
+                          child: const Text(
+                            'Don\'t have an account? Sign up',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(height: 5),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: TextButton(
-                              onPressed: () {
-                                print("Forgot password tapped");
-                              },
-                              child: const Text('Forgot your password?',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          Center(
-                            child: ElevatedButton(
-                              onPressed: _login,
-                              style: ElevatedButton.styleFrom(
-                                textStyle: const TextStyle(
-                                  fontSize: 20,
+                        ),
+                        const SizedBox(height: 20),
+                        const Text(
+                          '-------or-------',
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: _loginWithGoogle,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                                foregroundColor:
-                                    const Color.fromARGB(255, 255, 253, 253),
-                                backgroundColor:
-                                    const Color.fromARGB(255, 32, 31, 31),
-                                minimumSize: Size(containerWidth, 50),
-                              ),
-                              child: const Text('Login'),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const SignUpScreen(),
-                                  ),
-                                );
-                              },
-                              child: const Text(
-                                  'Don\'t have an account? Sign up',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold))),
-                          const SizedBox(height: 20),
-                          const Text('-------or-------',
-                              textAlign: TextAlign.center),
-                          const SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              InkWell(
-                                onTap: _loginWithGoogle,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.asset(
-                                    'lib/assets/google.png',
-                                    width: 25,
-                                    height: 25,
-                                  ),
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.asset(
+                                  'lib/assets/google.png',
+                                  width: 25,
+                                  height: 25,
                                 ),
                               ),
-                              const SizedBox(width: 20),
-                              InkWell(
-                                onTap: _loginWithFacebook,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.asset(
-                                    'lib/assets/facebook.png',
-                                    width: 25,
-                                    height: 25,
-                                  ),
+                            ),
+                            const SizedBox(width: 20),
+                            InkWell(
+                              onTap: _loginWithFacebook,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.asset(
+                                  'lib/assets/facebook.png',
+                                  width: 25,
+                                  height: 25,
                                 ),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
