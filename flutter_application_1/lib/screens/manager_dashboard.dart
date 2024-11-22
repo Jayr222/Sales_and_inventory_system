@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../UI/Manager_Dashboard/Manager/history_screen.dart';
@@ -22,50 +23,57 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
 
   // Function to show the alert dialog
   void _showAlertDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text("Are you sure you want to logout?"),
-        content: Column(
-          mainAxisSize: MainAxisSize.min, // Adjust size to fit content
-          children: [
-            const SizedBox(height: 50),
-            const Text("Press the button below to confirm logout."),
-            const SizedBox(height: 50),
-            ElevatedButton(
-              onPressed: () {
-                //logic placeholder
-                Navigator.of(context).pop(); 
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Logged out successfully!")),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 44, 62, 80), // Button color
-                foregroundColor: Colors.white, // Text color
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24.0,
-                  vertical: 12.0,
-                ), // Button padding
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Are you sure you want to logout?"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min, // Adjust size to fit content
+            children: [
+              const SizedBox(height: 50),
+              const Text("Press the button below to confirm logout."),
+              const SizedBox(height: 50),
+              ElevatedButton(
+                onPressed: () async {
+                  try {
+                    await FirebaseAuth.instance.signOut();
+
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Logged out successfully!")),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Error logging out: $e")),
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      const Color.fromARGB(255, 44, 62, 80), // Button color
+                  foregroundColor: Colors.white, // Text color
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0,
+                    vertical: 12.0,
+                  ), // Button padding
+                ),
+                child: const Text("Logout"),
               ),
-              child: const Text("Logout"),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text("Cancel"),
             ),
           ],
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); // Close the dialog
-            },
-            child: const Text("Cancel"),
-          ),
-        ],
-      );
-    },
-  );
-}
-
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +91,8 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
             currentIndex: _selectedIndex,
             onTap: (index) {
               if (index == 3) {
-                _showAlertDialog(context); // Trigger the alert dialog for the 4th button
+                _showAlertDialog(
+                    context); // Trigger the alert dialog for the 4th button
               } else {
                 setState(() {
                   _selectedIndex = index; // Switch to the selected tab
