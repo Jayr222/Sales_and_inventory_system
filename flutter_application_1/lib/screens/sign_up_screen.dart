@@ -6,7 +6,6 @@ class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
@@ -16,40 +15,61 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  String _selectedRole = 'Staff'; // Default role
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  String _selectedRole = 'Staff';
+  bool _isLoading = false;
 
   Future<void> _signUp() async {
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
-      print("Email and Password cannot be empty");
-      return; // Optionally show an error message
+    if (_emailController.text.isEmpty ||
+        _passwordController.text.isEmpty ||
+        _confirmPasswordController.text.isEmpty) {
+      _showErrorMessage("Email and Password cannot be empty");
+      return;
+    }
+
+    if (_passwordController.text != _confirmPasswordController.text) {
+      _showErrorMessage("Passwords do not match");
+      return;
     }
 
     try {
+      setState(() {
+        _isLoading = true;
+      });
+
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
 
-      // Get the user ID
       String uid = userCredential.user!.uid;
 
-      try {
-        // Create a document in Firestore
-        await _firestore.collection('users').doc(uid).set({
-          'email': _emailController.text.trim(),
-          'role': _selectedRole, // Save the selected role
-        });
-        print("User role assigned: $_selectedRole");
-      } catch (e) {
-        print("Error saving user data: $e");
-      }
+      await _firestore.collection('users').doc(uid).set({
+        'email': _emailController.text.trim(),
+        'role': _selectedRole,
+      });
+
+      setState(() {
+        _isLoading = false;
+      });
 
       print("Sign-up successful: ${userCredential.user?.email}");
-      // Optionally navigate to a different screen or show a success message
+      // Optionally navigate to a different screen
     } catch (e) {
-      print("Error signing up: $e");
+      setState(() {
+        _isLoading = false;
+      });
+
+      _showErrorMessage("Error signing up: $e");
     }
+  }
+
+  void _showErrorMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
   }
 
   @override
@@ -135,6 +155,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
+                        'Confirm Password:',
+                        style: TextStyle(color: Colors.black, fontSize: 14),
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    TextField(
+                      controller: _confirmPasswordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        hintText: 'Confirm your password',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          borderSide: BorderSide(color: lightPeach),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 10),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
                         'Role:',
                         style: TextStyle(color: Colors.black, fontSize: 14),
                       ),
@@ -158,14 +200,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const SizedBox(height: 50),
                     Center(
                       child: ElevatedButton(
-                        onPressed: _signUp,
+                        onPressed: _isLoading ? null : _signUp,
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.black,
                           backgroundColor:
                               const Color.fromARGB(255, 243, 192, 168),
                           minimumSize: const Size(double.infinity, 50),
                         ),
-                        child: const Text('Create'),
+                        child: _isLoading
+                            ? const CircularProgressIndicator(
+                                color: Colors.white)
+                            : const Text('Create'),
                       ),
                     ),
                     const SizedBox(height: 20),

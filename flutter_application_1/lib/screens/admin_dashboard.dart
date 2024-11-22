@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../Admin/aaccount_screen.dart';
-import '../Admin/ahistory_screen.dart';
-import '../Admin/ahome_screen.dart';
-import '../Admin/ainventory_screen.dart';
-import '../Admin/asettings_screen.dart';
+import '../UI/Admin_Dashboard/Admin/account_screen.dart';
+import '../UI/Admin_Dashboard/Admin/history_screen.dart';
+import '../UI/Admin_Dashboard/Admin/home_screen.dart';
+import '../UI/Admin_Dashboard/Admin/inventory_screen.dart';
+import '../UI/Admin_Dashboard/Admin/settings_screen.dart';
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({super.key});
@@ -24,10 +24,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
     const AccountScreen(), // Placeholder for Account Screen
     const SettingsScreen(), // Placeholder for Settings Screen
   ];
-  void _addStock() {
-    // Your logic for adding stock
-    print('Stock added');
-  }
 
   // Helper function to build BottomNavigationBarItem
   BottomNavigationBarItem buildNavItem(IconData icon, String label, int index) {
@@ -56,7 +52,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
     );
   }
 
-  // Function to Handle NavBar
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,11 +84,3 @@ class _AdminDashboardState extends State<AdminDashboard> {
     );
   }
 }
-
-// Separate widget for the Dashboard screen
-
-// screen for Account
-
-// screen for Settings
-
-// Screen for Inventory

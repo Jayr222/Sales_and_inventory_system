@@ -1,78 +1,91 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/login_page_screen.dart';
 
-import '../Manager/maccount_screen.dart';
-import '../Manager/mhistory_screen.dart';
-import '../Manager/mhome_screen.dart';
-import '../Manager/minventory_screen.dart';
-import '../Manager/msettings_screen.dart';
+import '../UI/Manager_Dashboard/Manager/history_screen.dart';
+import '../UI/Manager_Dashboard/Manager/home_screen.dart';
+import '../UI/Manager_Dashboard/Manager/inventory_screen.dart';
 
-  
 class ManagerDashboard extends StatefulWidget {
   const ManagerDashboard({super.key});
   @override
   State<ManagerDashboard> createState() => _ManagerDashboardState();
 }
+
 class _ManagerDashboardState extends State<ManagerDashboard> {
   int _selectedIndex = 0; // to track the current tab
 
-  // List of pages, each corresponds to a screen in your app
+  // List of pages,
   static final List<Widget> _pages = <Widget>[
-    const HomeScreen(),  // Home Screen layout
-    const InventoryScreen(),  // Inventory Screen layout
+    const HomeScreen(), // Home Screen layout
+    const InventoryScreen(), // Inventory Screen layout
     const HistoryScreen(), // Placeholder for History Screen
-    const AccountScreen(), // Placeholder for Account Screen
-    const SettingsScreen(), // Placeholder for Settings Screen
   ];
-  
+
+  // Function to show the alert dialog
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Are you sure you want to logout?"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min, // Adjust size to fit content
+            children: [
+              const SizedBox(height: 50),
+              const Text("Press the button below to confirm logout."),
+              const SizedBox(height: 50),
+              ElevatedButton(
+                onPressed: () async {
+                  try {
+                    await FirebaseAuth.instance.signOut();
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Logged out successfully!")),
+                    );
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LoginPageScreen()),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Error logging out: $e")),
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      const Color.fromARGB(255, 44, 62, 80), // Button color
+                  foregroundColor: Colors.white, // Text color
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0,
+                    vertical: 12.0,
+                  ), // Button padding
+                ),
+                child: const Text("Logout"),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text("Cancel"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            appBar: AppBar(
-              backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-              toolbarHeight: 80, // Set the height of the AppBar
-                leading: Padding(
-                  padding: const EdgeInsets.only(left: 25.0), // Optional: Adjust padding for the icon
-                  child: Image.asset(
-                    'lib/assets/Shoppingicon.png',
-                    width: 70,
-                    height: 70, // Keep height consistent for better apRpearance]
-                    fit: BoxFit.contain,
-                    ),
-                  ),
-            title: const Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'MANAGER DASHBOARD',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                      color: Color.fromARGB(255, 44, 62, 80), // You can adjust the size as needed
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.circle_notifications, 
-                    color: Color.fromARGB(255, 44, 62, 80),
-                    size: 35,
-                    ),
-                    onPressed: () {
-                // Add functionality to notification icon
-                }
-              ),
-            ),
-          ],
-        ),
-
-
       // Body that changes based on the selected tab
-      body: _pages[_selectedIndex], // Display the corresponding screen
+      body: _selectedIndex < 3 ? _pages[_selectedIndex] : const SizedBox(),
+
       // Bottom Navigation Bar
       bottomNavigationBar: Container(
         color: const Color.fromRGBO(255, 255, 255, 1),
@@ -82,9 +95,14 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
             elevation: 0,
             currentIndex: _selectedIndex,
             onTap: (index) {
-              setState(() {
-                _selectedIndex = index; // Switch to the selected tab
-              });
+              if (index == 3) {
+                _showAlertDialog(
+                    context); // Trigger the alert dialog for the 4th button
+              } else {
+                setState(() {
+                  _selectedIndex = index; // Switch to the selected tab
+                });
+              }
             },
             type: BottomNavigationBarType.fixed,
             backgroundColor: const Color.fromARGB(255, 255, 255, 255),
@@ -115,26 +133,18 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.account_circle_rounded,
+                  Icons.logout,
                   size: 35,
                   color: Color.fromARGB(255, 44, 62, 80),
                 ),
-                label: 'Account',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.settings,
-                  size: 35,
-                  color: Color.fromARGB(255, 44, 62, 80),
-                ),
-                label: 'Settings',
+                label: 'Logout', // Special button for triggering an alert
               ),
             ],
-            //interaction and state with icons in bottom navbar
             selectedItemColor: const Color.fromARGB(255, 44, 62, 80),
             unselectedItemColor: const Color.fromARGB(255, 28, 39, 50),
             selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-            unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.normal),
+            unselectedLabelStyle:
+                const TextStyle(fontWeight: FontWeight.normal),
             showSelectedLabels: true, // Always show selected labels
             showUnselectedLabels: true, // Always show unselected labels
           ),

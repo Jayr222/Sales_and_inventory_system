@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import '../Staff/Shome_screen.dart';
 import '../Staff/shistory_screen.dart';
 import '../Staff/sinventory_screen.dart';
 import '../Staff/slogout_screen.dart';
 
+=======
+import '../UI/Staff_Dashboard/Staff/home_screen.dart';
+import '../UI/Staff_Dashboard/Staff/account_screen.dart';
+import '../UI/Staff_Dashboard/Staff/history_screen.dart';
+import '../UI/Staff_Dashboard/Staff/inventory_screen.dart';
+import '../UI/Staff_Dashboard/Staff/settings_screen.dart';
+>>>>>>> c5b41fd384dd8c700d42537a9ed787f0681a4788
 
 class StaffDashboard extends StatefulWidget {
   const StaffDashboard({super.key});
@@ -20,7 +28,12 @@ class _StaffDashboardState extends State<StaffDashboard> {
     const HomeScreen(), // Home Screen layout
     const InventoryScreen(), // Inventory Screen layout
     const HistoryScreen(), // History Screen layout
+<<<<<<< HEAD
     const LogoutScreen(), // Placeholder for Account Screen
+=======
+    const AccountScreen(), // Placeholder for Account Screen
+    const SettingsScreen(), // Placeholder for Settings Screen
+>>>>>>> c5b41fd384dd8c700d42537a9ed787f0681a4788
   ];
 
   // Helper function to build BottomNavigationBarItem
@@ -53,8 +66,18 @@ class _StaffDashboardState extends State<StaffDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selectedIndex], // Display the corresponding screen
-      // Bottom Navigation Bar
+      appBar: AppBar(
+        leading: Image.asset('lib/assets/Shoppingicon.png'),
+        title: const Text('Staff Dashboard'),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 10),
+            child: Icon(Icons.notification_add),
+          )
+        ],
+      ),
+      body: _pages[
+          _selectedIndex], // Display the corresponding screen based on the selected tab
       bottomNavigationBar: BottomNavigationBar(
         elevation: 10,
         currentIndex: _selectedIndex,
