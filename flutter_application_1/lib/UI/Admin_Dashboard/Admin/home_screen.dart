@@ -26,8 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
           'MANAGER DASHBOARD',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 19,
-            color: Color.fromARGB(255, 0, 0, 0),
+            fontSize: 15,
+            color: Color.fromARGB(255, 44, 62, 80),
           ),
         ),
         actions: [

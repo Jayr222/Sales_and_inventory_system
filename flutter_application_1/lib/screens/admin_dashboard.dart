@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
 import '../UI/Admin_Dashboard/Admin/account_screen.dart';
 import '../UI/Admin_Dashboard/Admin/history_screen.dart';
 import '../UI/Admin_Dashboard/Admin/home_screen.dart';
 import '../UI/Admin_Dashboard/Admin/inventory_screen.dart';
 import '../UI/Admin_Dashboard/Admin/settings_screen.dart';
+import '../UI/Admin_Dashboard/Admin/payment_screen.dart';
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({super.key});
@@ -21,8 +21,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
     const HomeScreen(), // Home Screen layout
     const InventoryScreen(), // Inventory Screen layout
     const HistoryScreen(), // History Screen layout
-    const AccountScreen(), // Placeholder for Account Screen
-    const SettingsScreen(), // Placeholder for Settings Screen
+    const AccountScreen(), // Account Screen layout
+    const SettingsScreen(), // Settings Screen layout
+    const PaymentScreen(),
   ];
 
   // Helper function to build BottomNavigationBarItem
@@ -36,14 +37,14 @@ class _AdminDashboardState extends State<AdminDashboard> {
             Icon(
               icon,
               size: 30,
-              color: Colors.black, // Color remains black
+              color: Colors.black,
             ),
             Text(
               label,
               style: const TextStyle(
                   color: Colors.black,
                   fontSize: 15,
-                  fontWeight: FontWeight.w500), // Color remains black
+                  fontWeight: FontWeight.w500),
             ),
           ],
         ),
@@ -56,13 +57,13 @@ class _AdminDashboardState extends State<AdminDashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_selectedIndex], // Display the corresponding screen
-      // Bottom Navigation Bar
+
       bottomNavigationBar: BottomNavigationBar(
         elevation: 10,
         currentIndex: _selectedIndex,
         onTap: (index) {
           setState(() {
-            _selectedIndex = index; // Switch to the selected tab
+            _selectedIndex = index;
           });
         },
         type: BottomNavigationBarType.fixed,
@@ -73,6 +74,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
           buildNavItem(Icons.checklist_rtl, 'History', 2),
           buildNavItem(Icons.account_circle_outlined, 'Account', 3),
           buildNavItem(Icons.settings, 'Settings', 4),
+          buildNavItem(Icons.payment, 'Payment', 5),
         ],
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.black,

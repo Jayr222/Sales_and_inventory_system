@@ -104,9 +104,9 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                   // Use Expanded or a fixed size for the container
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 20.0),
+                        vertical: 30.0, horizontal: 20.0),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50.0),
+                      borderRadius: BorderRadius.circular(25.0),
                       color: const Color(0xFFFFFFFF),
                       boxShadow: [
                         BoxShadow(

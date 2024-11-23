@@ -14,7 +14,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        toolbarHeight: 80, 
+        toolbarHeight: 80,
         leading: Padding(
           padding: const EdgeInsets.only(left: 25.0),
           child: Image.asset(
@@ -57,7 +57,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: Color.fromARGB(255, 44, 62, 80),
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 20.0),
                 child: Column(
                   children: [
                     // Remove the nested SingleChildScrollView, not needed here
@@ -75,7 +76,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 _buildInvBox('INVENTORY', Icons.inventory),
-                                _buildStatBox("MONTHLY SALES", Icons.point_of_sale),
+                                _buildStatBox(
+                                    "MONTHLY SALES", Icons.point_of_sale),
                               ],
                             ),
                           ),
@@ -85,12 +87,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 _buildStatBox("DAILY SALES", Icons.add_chart),
-                                _buildStatBox("YEARLY REPORT", Icons.note_alt_outlined),
+                                _buildStatBox(
+                                    "YEARLY REPORT", Icons.note_alt_outlined),
                               ],
                             ),
                           ),
                           const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 20.0, horizontal: 10),
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
@@ -107,7 +111,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Container(
                               width: double.infinity,
-                              height: 1000, // You can adjust or remove this if you want it flexible
+                              height:
+                                  1000, // You can adjust or remove this if you want it flexible
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(15),
@@ -129,52 +134,88 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-
-  Widget _buildInvBox(String label, IconData icon) {
-    return Container(
-      width: 175,
-      height: 175,
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 44, 62, 80),
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Column(
-              children: [
-                Row(
+Widget _buildInvBox(String label, IconData icon) {
+  return Container(
+    width: 175,
+    height: 175,
+    decoration: BoxDecoration(
+      color: const Color.fromARGB(255, 44, 62, 80),
+      borderRadius: BorderRadius.circular(15),
+    ),
+    child: Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    label,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                      color: const Color.fromARGB(255, 255, 255, 255),
+                      shadows: [
+                        const Shadow(
+                          blurRadius: 20.0, // Glow effect intensity
+                          color:
+                              Color.fromARGB(255, 185, 185, 185), // Glow color
+                          offset: Offset(0, 0), // Position of the shadow
+                        ),
+                        Shadow(
+                          blurRadius: 30.0,
+                          color: const Color.fromARGB(255, 185, 185, 185)
+                              .withOpacity(0.5), // Softer glow
+                          offset: const Offset(0, 0),
+                        ),
+                      ],
+                      decoration: TextDecoration.underline,
+                      decorationColor:
+                          Colors.white, // Optional: Underline color
+                      decorationThickness: 2,
+                    ),
+                  ),
+                  const SizedBox(width: 5),
+                ],
+              ),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'OVERVIEW:',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 10,
+                      color: Color.fromARGB(255, 255, 255, 255),
+                    ),
+                  ),
+                ],
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      label,
+                      'DATA',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 25,
-                        color: const Color.fromARGB(255, 255, 255, 255),
-                        shadows: [
-                          const Shadow(
-                            blurRadius: 20.0, // Glow effect intensity
-                            color: Color.fromARGB(255, 185, 185, 185), // Glow color
-                            offset: Offset(0, 0), // Position of the shadow
-                          ),
-                            Shadow(
-                              blurRadius: 30.0,
-                              color: const Color.fromARGB(255, 185, 185, 185).withOpacity(0.5), // Softer glow
-                              offset: const Offset(0, 0),
-                          ),
-                        ],
-                        decoration: TextDecoration.underline,
-                        decorationColor: Colors.white, // Optional: Underline color
-                        decorationThickness: 2,
+                        color: Color.fromARGB(255, 255, 255, 255),
                       ),
                     ),
-                    const SizedBox(width: 5),
                   ],
                 ),
-                const Row(mainAxisAlignment: MainAxisAlignment.start,
+              ),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text('OVERVIEW:', style: TextStyle(
+                    Text(
+                      'STOCK VALUE:',
+                      style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 10,
                         color: Color.fromARGB(255, 255, 255, 255),
@@ -182,104 +223,80 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 10),
-                  child: Row(mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text('DATA', style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                          color: Color.fromARGB(255, 255, 255, 255),
-                        ),
-                      ),
-                    ],
-                  ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                width: 180,
+                height: 45,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(50),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.grey,
+                      blurRadius: 5.0,
+                      spreadRadius: 2.0,
+                    ),
+                  ],
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(bottom: 15),
-                  child: Row(mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text('STOCK VALUE:', style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 10,
-                          color: Color.fromARGB(255, 255, 255, 255),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  width: 180,
-                  height: 45,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(50),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.grey,
-                        blurRadius: 5.0,
-                        spreadRadius: 2.0,
-                        ),
-                      ],
-                  ),
-                  child: const Text('10/10/24', style: TextStyle(
+                child: const Text(
+                  '10/10/24',
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
                     color: Color.fromARGB(255, 44, 62, 80),
-                    ),
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
 
-  // Helper function to build the statistic boxes
-  Widget _buildStatBox(String label, IconData icon) {
-    return Container(
-      width: 175,
-      height: 175,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.grey,
-            blurRadius: 5.0,
-            spreadRadius: 2.0,
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-            child: Row(
-              children: [
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 44, 62, 80),
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: Icon(icon, color: Colors.white, size: 20),
+Widget _buildStatBox(String label, IconData icon) {
+  return Container(
+    width: 175,
+    height: 175,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(15),
+      boxShadow: const [
+        BoxShadow(
+          color: Colors.grey,
+          blurRadius: 5.0,
+          spreadRadius: 2.0,
+        ),
+      ],
+    ),
+    child: Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 44, 62, 80),
+                  borderRadius: BorderRadius.circular(50),
                 ),
-                const SizedBox(width: 10), // Add spacing between icon and text
-                Text(
-                  label,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                  ),
+                child: Icon(icon, color: Colors.white, size: 20),
+              ),
+              const SizedBox(width: 10), // Add spacing between icon and text
+              Text(
+                label,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
+        ),
       ],
     ),
   );
