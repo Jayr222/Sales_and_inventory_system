@@ -148,23 +148,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Text(
                       label,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 25,
-                        color: const Color.fromARGB(255, 255, 255, 255),
-                        shadows: [
-                          const Shadow(
-                            blurRadius: 20.0, // Glow effect intensity
-                            color: Color.fromARGB(255, 185, 185, 185), // Glow color
-                            offset: Offset(0, 0), // Position of the shadow
-                          ),
-                            Shadow(
-                              blurRadius: 30.0,
-                              color: const Color.fromARGB(255, 185, 185, 185).withOpacity(0.5), // Softer glow
-                              offset: const Offset(0, 0),
-                          ),
-                        ],
-                        decoration: TextDecoration.underline,
+                        color:  Color.fromARGB(255, 255, 255, 255),
                         decorationColor: Colors.white, // Optional: Underline color
                         decorationThickness: 2,
                       ),
@@ -215,13 +202,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(50),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.grey,
-                        blurRadius: 5.0,
-                        spreadRadius: 2.0,
-                        ),
-                      ],
                   ),
                   child: const Text('10/10/24', style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -245,14 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
       height: 175,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.grey,
-            blurRadius: 5.0,
-            spreadRadius: 2.0,
-          ),
-        ],
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         children: [
