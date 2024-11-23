@@ -1,285 +1,286 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
+// ignore: unused_element
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        toolbarHeight: 80, // Set the height of the AppBar
-        title: Padding(
-          padding: const EdgeInsets.only(bottom: 5),
-          child: Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle, // Ensures the container is circular
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5), // Shadow color
-                      spreadRadius: 0.9, // Spread of the shadow
-                      offset: const Offset(2, 2),
-                    ),
-                  ],
-                ),
-                child: const CircleAvatar(
-                  backgroundColor: Colors.white,
-                  backgroundImage: AssetImage(
-                    'lib/assets/Shoppingicon.png',
-                  ),
-                  radius: 25,
-                ),
-              ),
-              const SizedBox(width: 15),
-              const Text(
-                'STAFF DASHBOARD',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22,
-                  color: Color.fromARGB(255, 44, 62, 80), // You can adjust the size as needed
-                ),
-              ),
-            ],
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        toolbarHeight: 80, 
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 25.0),
+          child: Image.asset(
+            'lib/assets/Shoppingicon.png',
+            width: 70,
+            height: 70,
+            fit: BoxFit.contain,
           ),
         ),
-        // Notification Icon
+        title: const Text(
+          'STAFF DASHBOARD',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 15,
+            color: Color.fromARGB(255, 44, 62, 80),
+          ),
+        ),
         actions: [
-          SizedBox(
-            width: 60,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
             child: IconButton(
-              onPressed: () {},
-              icon: const DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Color(0xFF2C3E50),
-                  shape: BoxShape.circle, // Rounded corners for circular background
-                ),
-                child: Center(
-                  child: Icon(
-                    Icons.notifications_active,
-                    color: Colors.white,
-                    size: 35, // Icon size
-                  ),
-                ),
+              icon: const Icon(
+                Icons.circle_notifications,
+                color: Color.fromARGB(255, 44, 62, 80),
+                size: 35,
               ),
+              onPressed: () {
+                // Add functionality to notification icon
+              },
             ),
           ),
         ],
       ),
-      backgroundColor: Colors.white,
-      //Home Page body
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          //Page Title, Greetings, Container for (Orders,Delivers,Feedback)
-          const SizedBox(
-            height: 5,
-          ),
-          Center(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(35),
-                color: const Color(0xFF2C3E50),
+      // Wrap the entire body in a SingleChildScrollView
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 44, 62, 80),
               ),
-              height: 690,
-              width: double.infinity,
-              //Title Page
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 30),
-                    const SizedBox(
-                      width: 350,
-                      child: TextField(
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white, // Make the TextField transparent
-                        hintStyle: TextStyle(color: Colors.black),
-                        hintText: 'Search...',
-                        border: OutlineInputBorder( 
-                          borderSide: BorderSide.none,
-                        ),
-                        contentPadding: EdgeInsets.symmetric(vertical: 5),
-                        prefixIcon: Padding(
-                          padding: EdgeInsets.only(
-                            left: 10,
-                          ),
-                          child: Icon(
-                            Icons.search,
-                            size: 25,
-                            color: Colors.black,
-                          ),
-                        ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                child: Column(
+                  children: [
+                    // Remove the nested SingleChildScrollView, not needed here
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 44, 62, 80),
+                        borderRadius: BorderRadius.circular(30.0),
                       ),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                _buildInvBox('INVENTORY', Icons.inventory),
+                                _buildStatBox("MONTHLY SALES", Icons.point_of_sale),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0, top: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                _buildStatBox("DAILY SALES", Icons.add_chart),
+                                _buildStatBox("YEARLY REPORT", Icons.note_alt_outlined),
+                              ],
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Order Overview',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Container(
+                              width: double.infinity,
+                              height: 1000, // You can adjust or remove this if you want it flexible
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                        ],
                       ),
                     ),
-
-                  const SizedBox(height: 20),
-                  const Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text(
-                          'Welcome Back!',
-                          style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 25,
-                              color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // First Container Order
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            print('Pressed');
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.only(
-                                bottomRight: Radius.circular(40),
-                                topRight: Radius.circular(40),
-                              ),
-                              color: Colors.white.withOpacity(0.5),
-                              boxShadow: const [
-                                BoxShadow(
-                                  spreadRadius: 3,
-                                  offset: Offset(5, 2),
-                                )
-                              ],
-                            ),
-                            height: 130,
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(
-                                  Icons.add_shopping_cart,
-                                  size: 100,
-                                  color: Colors.white,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(right: 15),
-                                  child: Text(
-                                    'ORDERS',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 60,
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      // Second Container Delivery
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            print('Pressed');
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.only(
-                                bottomRight: Radius.circular(40),
-                                topRight: Radius.circular(40),
-                              ),
-                              color: Colors.white.withOpacity(0.5),
-                              boxShadow: const [
-                                BoxShadow(
-                                  spreadRadius: 3,
-                                  offset: Offset(5, 2),
-                                )
-                              ],
-                            ),
-                            height: 130,
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(
-                                  Icons.fire_truck,
-                                  size: 100,
-                                  color: Colors.white,
-                                ),
-                                Text(
-                                  'DELIVERY',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 50,
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      // Third Container Feedback
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            print('Pressed');
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.only(
-                                bottomRight: Radius.circular(40),
-                                topRight: Radius.circular(40),
-                              ),
-                              color: Colors.white.withOpacity(0.5),
-                              boxShadow: const [
-                                BoxShadow(
-                                  spreadRadius: 3,
-                                  offset: Offset(5, 2),
-                                )
-                              ],
-                            ),
-                            height: 130,
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  size: 100,
-                                  color: Colors.white,
-                                ),
-                                Text(
-                                  'FEEDBACK',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 45,
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: Colors.white),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                  ],
+                ),
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+  Widget _buildInvBox(String label, IconData icon) {
+    return Container(
+      width: 175,
+      height: 175,
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 44, 62, 80),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      label,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                        color: const Color.fromARGB(255, 255, 255, 255),
+                        shadows: [
+                          const Shadow(
+                            blurRadius: 20.0, // Glow effect intensity
+                            color: Color.fromARGB(255, 185, 185, 185), // Glow color
+                            offset: Offset(0, 0), // Position of the shadow
+                          ),
+                            Shadow(
+                              blurRadius: 30.0,
+                              color: const Color.fromARGB(255, 185, 185, 185).withOpacity(0.5), // Softer glow
+                              offset: const Offset(0, 0),
+                          ),
+                        ],
+                        decoration: TextDecoration.underline,
+                        decorationColor: Colors.white, // Optional: Underline color
+                        decorationThickness: 2,
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                  ],
+                ),
+                const Row(mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text('OVERVIEW:', style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 10,
+                        color: Color.fromARGB(255, 255, 255, 255),
+                      ),
+                    ),
+                  ],
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 10),
+                  child: Row(mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text('DATA', style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 15),
+                  child: Row(mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text('STOCK VALUE:', style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  width: 180,
+                  height: 45,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(50),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.grey,
+                        blurRadius: 5.0,
+                        spreadRadius: 2.0,
+                        ),
+                      ],
+                  ),
+                  child: const Text('10/10/24', style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: Color.fromARGB(255, 44, 62, 80),
+                    ),
+                  ),
+                )
+              ],
             ),
           ),
         ],
       ),
     );
   }
+
+  // Helper function to build the statistic boxes
+  Widget _buildStatBox(String label, IconData icon) {
+    return Container(
+      width: 175,
+      height: 175,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.grey,
+            blurRadius: 5.0,
+            spreadRadius: 2.0,
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+            child: Row(
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 44, 62, 80),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: Icon(icon, color: Colors.white, size: 20),
+                ),
+                const SizedBox(width: 10), // Add spacing between icon and text
+                Text(
+                  label,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+      ],
+    ),
+  );
 }

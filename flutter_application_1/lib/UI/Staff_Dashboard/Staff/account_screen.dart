@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// The custom AccountScreen widget with your desired layout
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
 
@@ -39,7 +38,8 @@ class AccountScreen extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 22,
-                  color: Color.fromARGB(255, 44, 62, 80), // You can adjust the size as needed
+                  color: Color.fromARGB(
+                      255, 44, 62, 80), // You can adjust the size as needed
                 ),
               ),
             ],
@@ -54,7 +54,8 @@ class AccountScreen extends StatelessWidget {
               icon: const DecoratedBox(
                 decoration: BoxDecoration(
                   color: Color(0xFF2C3E50),
-                  shape: BoxShape.circle, // Rounded corners for circular background
+                  shape: BoxShape
+                      .circle, // Rounded corners for circular background
                 ),
                 child: Center(
                   child: Icon(
