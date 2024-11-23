@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:http/http.dart' as http;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
@@ -52,6 +53,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
         var orderId = await _createPayPalOrder(accessToken, _totalPrice);
 
         if (orderId != null) {
+          // Save to Firestore
+          await _saveTransactionHistory(orderId);
+
           _showMessage('Payment successful! Order ID: $orderId');
           setState(() {
             _cart.clear();
@@ -66,6 +70,20 @@ class _PaymentScreenState extends State<PaymentScreen> {
     } else {
       _showMessage('No items in the cart to process payment!');
     }
+  }
+
+  Future<void> _saveTransactionHistory(String orderId) async {
+    final timestamp = DateTime.now().toIso8601String();
+    final transaction = {
+      'orderId': orderId,
+      'timestamp': timestamp,
+      'totalPrice': _totalPrice,
+      'cartItems': _cart,
+    };
+
+    await FirebaseFirestore.instance
+        .collection('transactions')
+        .add(transaction);
   }
 
   // Step 1: Get PayPal Access Token
