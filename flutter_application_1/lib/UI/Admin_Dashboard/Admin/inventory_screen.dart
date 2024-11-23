@@ -30,11 +30,10 @@ class _InventoryScreenState extends State<InventoryScreen> {
       var items = await firestoreService.getInventoryItems();
       setState(() {
         inventoryItems = items;
-        // Explicitly cast to List<String>
+
         documentIds = List<String>.from(items.map((item) => item['id']));
       });
     } catch (e) {
-      // Error handling: Log the error or show a message
       print('Error fetching items: $e');
     } finally {
       setState(() => isLoading = false);
@@ -128,7 +127,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
                 int amount = int.tryParse(_amountController.text) ?? 0;
 
                 if (name.isEmpty || description.isEmpty || amount <= 0) {
-                  // Validation: show error message or return
                   return;
                 }
 
@@ -211,7 +209,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Search',
                 border: OutlineInputBorder(),
                 suffixIcon: Icon(Icons.search),

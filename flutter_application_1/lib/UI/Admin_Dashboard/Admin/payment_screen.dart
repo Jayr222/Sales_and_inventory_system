@@ -11,35 +11,31 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
-  final List<Map<String, dynamic>> _cart = []; // Stores items in the cart
-  double _totalPrice = 0.0; // Total price for all items
+  final List<Map<String, dynamic>> _cart = [];
+  double _totalPrice = 0.0;
 
-  // Mock database of products
   final Map<String, dynamic> _productsDatabase = {
     '12345': {'name': 'Product A', 'price': 50.0},
     '67890': {'name': 'Product B', 'price': 30.0},
     '11122': {'name': 'Product C', 'price': 20.0},
   };
 
-  // Function to scan barcode and add item to cart
   Future<void> _scanAndProcessPayment() async {
     try {
-      var result = await BarcodeScanner.scan(); // Scan the barcode
+      var result = await BarcodeScanner.scan();
       String scannedCode = result.rawContent;
 
       if (_productsDatabase.containsKey(scannedCode)) {
         var product = _productsDatabase[scannedCode];
 
-        // Add product to cart
         setState(() {
           _cart.add({
             'name': product['name'],
             'price': product['price'],
           });
-          _totalPrice += product['price']; // Update total price
+          _totalPrice += product['price'];
         });
 
-        // Automatically process payment (Mock Payment)
         _processPayment();
       } else {
         _showMessage('Product not found!');
@@ -49,22 +45,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
     }
   }
 
-  // Function to simulate payment processing
   void _processPayment() async {
     if (_cart.isNotEmpty) {
       try {
-        // Step 1: Get PayPal Access Token
         var accessToken = await _getPayPalAccessToken();
-
-        // Step 2: Create PayPal Order
         var orderId = await _createPayPalOrder(accessToken, _totalPrice);
 
         if (orderId != null) {
-          // Step 3: Mock approval (Replace with real approval in production)
           _showMessage('Payment successful! Order ID: $orderId');
           setState(() {
-            _cart.clear(); // Clear cart after payment
-            _totalPrice = 0.0; // Reset total price
+            _cart.clear();
+            _totalPrice = 0.0;
           });
         } else {
           _showMessage('Payment failed! Please try again.');
@@ -99,7 +90,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
     }
   }
 
-  // Helper: Create Basic Auth Header
   Map<String, String> headersWithBasicAuth(String clientId, String secret) {
     var basicAuth = 'Basic ${base64Encode(utf8.encode('$clientId:$secret'))}';
     return {
@@ -108,7 +98,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
     };
   }
 
-  // Step 2: Create PayPal Order
   Future<String?> _createPayPalOrder(String accessToken, double amount) async {
     const orderUrl = 'https://api-m.sandbox.paypal.com/v2/checkout/orders';
 
@@ -133,13 +122,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
     if (response.statusCode == 201) {
       var data = jsonDecode(response.body);
-      return data['id']; // PayPal Order ID
+      return data['id'];
     } else {
       throw Exception('Failed to create PayPal order');
     }
   }
 
-  // Function to show messages
   void _showMessage(String message) {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
