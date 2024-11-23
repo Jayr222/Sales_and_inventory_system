@@ -5,8 +5,6 @@ import 'package:flutter_application_1/UI/Staff_Dashboard/Staff/home_screen.dart'
 import 'package:flutter_application_1/UI/Staff_Dashboard/Staff/inventory_screen.dart';
 import 'package:flutter_application_1/screens/login_page_screen.dart';
 
-
-
 class StaffDashboard extends StatefulWidget {
   const StaffDashboard({super.key});
   @override
@@ -47,7 +45,7 @@ class _StaffDashboard extends State<StaffDashboard> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => LoginPageScreen()),
+                          builder: (context) => const LoginPageScreen()),
                     );
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -95,7 +93,7 @@ class _StaffDashboard extends State<StaffDashboard> {
           child: BottomNavigationBar(
             elevation: 0,
             currentIndex: _selectedIndex,
-            onTap: (index) { 
+            onTap: (index) {
               if (index == 3) {
                 _showAlertDialog(
                     context); // Trigger the alert dialog for the 4th button
