@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/UI/Manager_Dashboard/Manager/payment_screen.dart';
 import 'package:flutter_application_1/screens/login_page_screen.dart';
 
 import '../UI/Manager_Dashboard/Manager/history_screen.dart';
@@ -20,6 +21,7 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
     const HomeScreen(), // Home Screen layout
     const InventoryScreen(), // Inventory Screen layout
     const HistoryScreen(), // Placeholder for History Screen
+    const PaymentScreen(), //Placeholder for payment screen
   ];
 
   // Function to show the alert dialog
@@ -84,7 +86,7 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       // Body that changes based on the selected tab
-      body: _selectedIndex < 3 ? _pages[_selectedIndex] : const SizedBox(),
+      body: _selectedIndex < 4 ? _pages[_selectedIndex] : const SizedBox(),
 
       // Bottom Navigation Bar
       bottomNavigationBar: Container(
@@ -95,7 +97,7 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
             elevation: 0,
             currentIndex: _selectedIndex,
             onTap: (index) {
-              if (index == 3) {
+              if (index == 4) {
                 _showAlertDialog(
                     context); // Trigger the alert dialog for the 4th button
               } else {
@@ -130,6 +132,14 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
                   color: Color.fromARGB(255, 44, 62, 80),
                 ),
                 label: 'History',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.payment,
+                  size: 35,
+                  color: Color.fromARGB(255, 44, 62, 80),
+              ),
+                label: 'Payment'
               ),
               BottomNavigationBarItem(
                 icon: Icon(
