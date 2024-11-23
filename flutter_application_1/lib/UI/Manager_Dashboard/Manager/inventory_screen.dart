@@ -15,10 +15,9 @@ class _InventoryScreenState extends State<InventoryScreen> {
   List<Widget> containerList = [];
   List<int> amounts = [];
 
-  // Function for adding the containers
   void addContainer(String name, String description, int amount) {
     setState(() {
-      amounts.add(amount); // Store the initial amount for the item
+      amounts.add(amount);
 
       containerList.add(
         StatefulBuilder(builder: (context, setStateContainer) {
@@ -111,7 +110,21 @@ class _InventoryScreenState extends State<InventoryScreen> {
                                   ),
                                 ),
                               ],
-                            )
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    sellItem(name);
+                                  },
+                                  icon: const Icon(
+                                    Icons.shopping_cart_outlined,
+                                    color: Colors.green,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
@@ -140,7 +153,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                       },
                       icon: const Icon(Icons.arrow_drop_down,
                           color: Color.fromARGB(255, 44, 62, 80)),
-                    )
+                    ),
                   ],
                 ),
               ],
@@ -154,8 +167,25 @@ class _InventoryScreenState extends State<InventoryScreen> {
   void deleteContainer(int index) {
     setState(() {
       containerList.removeAt(index);
-      amounts.removeAt(index); // Remove amount for deleted container
+      amounts.removeAt(index);
     });
+  }
+
+  void sellItem(String name) {
+    // Find the index of the item in the inventory
+    int index = containerList.indexWhere((container) {
+      // Identify the item based on name (or any other unique property)
+      return container.toString().contains(name);
+    });
+
+    if (index != -1) {
+      // Decrease the amount of the item
+      setState(() {
+        if (amounts[index] > 0) {
+          amounts[index]--;
+        }
+      });
+    }
   }
 
   void _showDescriptionDialog(String description) {
@@ -174,22 +204,18 @@ class _InventoryScreenState extends State<InventoryScreen> {
           ),
           content: Container(
             constraints: const BoxConstraints(
-              maxHeight: 300, // Adjust height
-              maxWidth: 400, // Adjust width
+              maxHeight: 300,
+              maxWidth: 400,
             ),
-            padding:
-                const EdgeInsets.all(20), // Adjust padding inside the dialog
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius:
-                  BorderRadius.circular(15), // Add border radius if needed
+              borderRadius: BorderRadius.circular(15),
             ),
             child: SingleChildScrollView(
               child: Column(
-                mainAxisSize: MainAxisSize
-                    .min, // Ensures the dialog doesn't exceed content size
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  // You can add more custom widgets here
                   const Icon(Icons.description,
                       size: 50, color: Color.fromARGB(255, 44, 62, 80)),
                   const SizedBox(height: 20),
@@ -202,7 +228,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 20),
-
                   Container(
                     child: Text(
                       "Amount $amounts",
@@ -213,9 +238,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 20),
-
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
@@ -227,8 +250,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.of(context)
-                          .pop(); // Close dialog on button press
+                      Navigator.of(context).pop();
                     },
                     child: const Text(
                       'Close',
@@ -244,7 +266,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
     );
   }
 
-  // Function for the alert dialogue to add new item
   void _showAddDialog() {
     showDialog(
       context: context,
@@ -263,7 +284,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Name input field
                 TextFormField(
                   controller: _nameController,
                   decoration: const InputDecoration(
@@ -272,7 +292,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                // Description input field
                 TextFormField(
                   controller: _descriptionController,
                   decoration: const InputDecoration(
@@ -281,7 +300,6 @@ class _InventoryScreenState extends State<InventoryScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                // Amount input field
                 TextFormField(
                   controller: _amountController,
                   decoration: const InputDecoration(
@@ -297,7 +315,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                // Clear fields after pressing cancel
+
                 _nameController.clear();
                 _descriptionController.clear();
                 _amountController.clear();
@@ -307,22 +325,23 @@ class _InventoryScreenState extends State<InventoryScreen> {
             ),
             TextButton(
               onPressed: () {
-                // Get values from input strings
                 String name = _nameController.text;
                 String description = _descriptionController.text;
-                int amount = int.tryParse(_amountController.text) ??
-                    0; // Convert amount to integer
+                int amount = int.tryParse(_amountController.text) ?? 0;
 
-                addContainer(name, description, amount);
+                if (name.isNotEmpty && description.isNotEmpty) {
+                  addContainer(name, description, amount);
+                  Navigator.of(context).pop();
 
-                // Clear the text fields
-                _nameController.clear();
-                _descriptionController.clear();
-                _amountController.clear();
-
-                Navigator.of(context).pop();
+                  _nameController.clear();
+                  _descriptionController.clear();
+                  _amountController.clear();
+                }
               },
-              child: const Text("Add"),
+              child: const Text(
+                "Add",
+                style: TextStyle(color: Color.fromARGB(255, 44, 62, 80)),
+              ),
             ),
           ],
         );
@@ -333,44 +352,20 @@ class _InventoryScreenState extends State<InventoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 44, 62, 80),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        toolbarHeight: 80,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 25.0),
-          child: Image.asset(
-            'lib/assets/Shoppingicon.png',
-            width: 70,
-            height: 70,
-            fit: BoxFit.contain,
-          ),
-        ),
-        title: const Text(
-          'INVENTORY',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
-            color: Color.fromARGB(255, 44, 62, 80),
-          ),
-        ),
+        backgroundColor: const Color.fromARGB(255, 44, 62, 80),
+        title: const Text("Inventory"),
         actions: [
           IconButton(
-            icon: const Icon(Icons.circle_notifications,
-                color: Color.fromARGB(255, 44, 62, 80), size: 35),
-            onPressed: () {},
+            onPressed: () {
+              _showAddDialog();
+            },
+            icon: const Icon(Icons.add),
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: containerList,
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.white,
-        onPressed: _showAddDialog,
-        child: const Icon(Icons.add, color: Color.fromARGB(255, 44, 62, 80)),
+      body: ListView(
+        children: containerList,
       ),
     );
   }

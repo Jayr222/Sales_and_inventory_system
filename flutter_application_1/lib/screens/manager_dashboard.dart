@@ -46,7 +46,7 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => LoginPageScreen()),
+                          builder: (context) => const LoginPageScreen()),
                     );
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(

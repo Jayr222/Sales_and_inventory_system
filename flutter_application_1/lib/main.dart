@@ -4,6 +4,7 @@ import 'firebase_options.dart';
 import 'screens/login_page_screen.dart';
 import 'screens/sign_up_screen.dart';
 import 'Animations/intro_animation.dart';
+import 'UI/Admin_Dashboard/Admin/inventory_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPageScreen(),
         '/signup': (context) => const SignUpScreen(),
         '/stock_management': (context) => const LoginPageScreen(),
+        '/inventory': (context) => const InventoryScreen(),
       },
     );
   }
