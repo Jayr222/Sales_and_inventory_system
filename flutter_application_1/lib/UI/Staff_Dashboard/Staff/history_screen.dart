@@ -8,69 +8,42 @@ class HistoryScreen extends StatelessWidget {
     return Scaffold(
 
       //App Bar
-      appBar: AppBar(
-        backgroundColor: Colors.white,
+    appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         toolbarHeight: 80,
-        title: Padding(
-          padding: const EdgeInsets.only(bottom: 5),
-          child: Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 0.9,
-                      offset: const Offset(2, 2),
-                    ),
-                  ],
-                ),
-                child: const CircleAvatar(
-                  backgroundColor: Colors.white,
-                  backgroundImage: AssetImage('lib/assets/Shoppingicon.png'),
-                  radius: 25,
-                ),
-              ),
-              const SizedBox(width: 10),
-              const Padding(
-                padding: EdgeInsets.only(top: 5),
-                child: Text(
-                  'HISTORY',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w300,
-                    fontSize: 30,
-                    fontFamily: 'AntonSC',
-                    color: Color.fromARGB(255, 44, 62, 80),
-                  ),
-                ),
-              ),
-            ],
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 25.0),
+          child: Image.asset(
+            'lib/assets/Shoppingicon.png',
+            width: 70,
+            height: 70,
+            fit: BoxFit.contain,
+          ),
+        ),
+        title: const Text(
+          'HISTORY',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 15,
+            color: Color.fromARGB(255, 44, 62, 80),
           ),
         ),
         actions: [
-          SizedBox(
-            width: 60,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
             child: IconButton(
-              onPressed: () {},
-              icon: const DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Color(0xFF2C3E50),
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: Icon(
-                    Icons.notifications_active,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-                ),
+              icon: const Icon(
+                Icons.circle_notifications,
+                color: Color.fromARGB(255, 44, 62, 80),
+                size: 35,
               ),
+              onPressed: () {
+                // Add functionality to notification icon
+              },
             ),
           ),
         ],
       ),
-
       //Main body
       backgroundColor: const Color(0xFF2C3E50),
 
@@ -97,13 +70,6 @@ class HistoryScreen extends StatelessWidget {
                         borderRadius: const BorderRadius.all(
                           Radius.circular(15),
                         ),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.black,
-                            blurRadius: 5,
-                            spreadRadius: 1.5,
-                          ),
-                        ],
                         border: Border.all(
                           color: Colors.grey,
                           width: 2.0,
@@ -133,13 +99,6 @@ class HistoryScreen extends StatelessWidget {
                         borderRadius: const BorderRadius.all(
                           Radius.circular(15),
                         ),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.black,
-                            blurRadius: 5,
-                            spreadRadius: 1.5,
-                          ),
-                        ],
                         border: Border.all(
                           color: Colors.grey,
                           width: 2.0,
@@ -190,11 +149,6 @@ class HistoryScreen extends StatelessWidget {
                           borderRadius: BorderRadius.all(
                             Radius.circular(25),
                           ),
-                          boxShadow: [
-                            BoxShadow(
-                              spreadRadius: 3,
-                            )
-                          ],
                         ),
                         child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
