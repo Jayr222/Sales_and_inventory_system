@@ -20,7 +20,7 @@ class _StaffDashboard extends State<StaffDashboard> {
     const HomeScreen(), // Home Screen layout
     const InventoryScreen(), // Inventory Screen layout
     const HistoryScreen(), // Placeholder for History Screen
-    const PaymentScreen(),// Placeholder/Screen layout for Payment
+    const PaymentScreen(), // Placeholder/Screen layout for Payment
   ];
 
   // Function to show the alert dialog
@@ -95,7 +95,7 @@ class _StaffDashboard extends State<StaffDashboard> {
           child: BottomNavigationBar(
             elevation: 0,
             currentIndex: _selectedIndex,
-            onTap: (index) { 
+            onTap: (index) {
               if (index == 4) {
                 _showAlertDialog(
                     context); // Trigger the alert dialog for the 4th button

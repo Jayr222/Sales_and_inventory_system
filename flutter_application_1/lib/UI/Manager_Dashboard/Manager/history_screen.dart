@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart'; // Import intl for date formatting
 
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Reference to Firestore 'transactions' collection
+    CollectionReference transactions =
+        FirebaseFirestore.instance.collection('transactions');
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
@@ -42,165 +48,82 @@ class HistoryScreen extends StatelessWidget {
           ),
         ],
       ),
-      //Main body
-      backgroundColor: const Color(0xFF2C3E50),
+      body: Container(
+        color: const Color.fromARGB(255, 255, 255, 255), // Background color
+        child: StreamBuilder<QuerySnapshot>(
+          // Real-time data from Firestore
+          stream: transactions.snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-        //Main body
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 10),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
 
-                    // First Container
-                    Container(
-                      width: 190,
-                      height: 90,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(15),
-                        ),
-                        border: Border.all(
-                          color: Colors.grey,
-                          width: 2.0,
-                        ),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'DATA',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                            ),
-                            Icon(Icons.arrow_drop_up),
-                          ],
-                        ),
-                      ),
+            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+              return const Center(child: Text('No transactions found.'));
+            }
+
+            // Data available, display it
+            var transactionsList = snapshot.data!.docs;
+
+            return ListView.builder(
+              itemCount: transactionsList.length,
+              itemBuilder: (context, index) {
+                var transaction = transactionsList[index];
+                var transactionData =
+                    transaction.data() as Map<String, dynamic>;
+
+                // Extract relevant fields
+                var name = transactionData['name'] ?? 'Unnamed Product';
+                var amount = transactionData['amount'] ?? 'N/A';
+                var price = transactionData['price'] ?? 0.0;
+                var barcode = transactionData['barcode'] ?? 'No Barcode';
+                var description =
+                    transactionData['description'] ?? 'No Description';
+                var date = transactionData['date'] != null
+                    ? (transactionData['date'] as Timestamp).toDate()
+                    : null;
+
+                // Format the date if available
+                String formattedDate = date != null
+                    ? DateFormat('yyyy-MM-dd – HH:mm').format(date)
+                    : 'Not Available';
+
+                // Calculate total price
+                var totalPrice = price * (amount is int ? amount : 1);
+
+                return Card(
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  elevation: 5,
+                  child: ListTile(
+                    title: Text(
+                      name,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16),
                     ),
-                    // Second Container
-                    Container(
-                      width: 190,
-                      height: 90,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(15),
-                        ),
-                        border: Border.all(
-                          color: Colors.grey,
-                          width: 2.0,
-                        ),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'DATA',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                            ),
-                            Icon(Icons.arrow_drop_down,),
-                          ],
-                        ),
-                      ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Amount: $amount'),
+                        Text('Price: \$$price'),
+                        Text('Total: \$$totalPrice'),
+                        Text('Barcode: $barcode'),
+                        Text('Description: $description'),
+                        Text('Date: $formattedDate'),
+                      ],
                     ),
-                  ],
-                ),
-
-                const SizedBox(height: 30),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 20, bottom: 5),
-                      child: Text(
-                        'Transaction Data',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'NanumGothicCoding',
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Container(
-                        width: 120,
-                        height: 40,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(25),
-                          ),
-                        ),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.filter_list,
-                              size: 30,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 10.0),
-                              child: Text(
-                                'Filter',
-                                style: TextStyle(color: Color(0xFF2C3E50), fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 5),
-                const Divider(thickness: 2, color: Colors.white),
-              ],
-            ),
-
-            const SizedBox(height: 10),
-
-            // Main Container for Transaction History
-            Center(
-              child: Container(
-                width: 380,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(15),
+                    trailing: const Icon(Icons.arrow_forward_ios),
                   ),
-                ),
-                child: Column(
-                  children: List.generate(10, (index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(vertical: 5),
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Center(child: Text('Transaction ${index + 1}')),
-                    );
-                  }),
-                ),
-              ),
-            ),
-          ],
+                );
+              },
+            );
+          },
         ),
       ),
     );

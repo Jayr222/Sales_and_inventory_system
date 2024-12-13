@@ -6,9 +6,8 @@ class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       //App Bar
-    appBar: AppBar(
+      appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         toolbarHeight: 80,
         leading: Padding(
@@ -47,7 +46,7 @@ class HistoryScreen extends StatelessWidget {
       //Main body
       backgroundColor: const Color(0xFF2C3E50),
 
-        //Main body
+      //Main body
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,7 +59,6 @@ class HistoryScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-
                     // First Container
                     Container(
                       width: 190,
@@ -76,14 +74,16 @@ class HistoryScreen extends StatelessWidget {
                         ),
                       ),
                       child: const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'DATA',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
                             ),
                             Icon(Icons.arrow_drop_up),
                           ],
@@ -105,25 +105,27 @@ class HistoryScreen extends StatelessWidget {
                         ),
                       ),
                       child: const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'DATA',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
                             ),
-                            Icon(Icons.arrow_drop_down,),
+                            Icon(
+                              Icons.arrow_drop_down,
+                            ),
                           ],
                         ),
                       ),
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 30),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -159,7 +161,10 @@ class HistoryScreen extends StatelessWidget {
                             ),
                             Text(
                               'Filter',
-                              style: TextStyle(color: Color(0xFF2C3E50), fontSize: 25, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  color: Color(0xFF2C3E50),
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),

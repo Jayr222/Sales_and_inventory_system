@@ -1,371 +1,226 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:barcode_widget/barcode_widget.dart';
 
 class InventoryScreen extends StatefulWidget {
   const InventoryScreen({super.key});
 
   @override
-  State<InventoryScreen> createState() => _InventoryScreenState();
+  _InventoryScreenState createState() => _InventoryScreenState();
 }
 
 class _InventoryScreenState extends State<InventoryScreen> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final TextEditingController _searchController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _amountController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  List<DocumentSnapshot> _products = [];
+  List<DocumentSnapshot> _filteredProducts = [];
+  bool _isLoading = false;
 
-  List<Widget> containerList = [];
-  List<int> amounts = [];
-
-  void addContainer(String name, String description, int amount) {
-    setState(() {
-      amounts.add(amount);
-
-      containerList.add(
-        StatefulBuilder(builder: (context, setStateContainer) {
-          return Container(
-            margin: const EdgeInsets.all(10),
-            width: double.infinity,
-            height: 220,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(25)),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 15.0),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'ITEM: $name', // Use name inputted
-                                    style: const TextStyle(
-                                      color: Color.fromARGB(255, 44, 62, 80),
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 30),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    setStateContainer(() {
-                                      if (amounts[containerList
-                                              .indexOf(containerList.last)] >
-                                          0) {
-                                        amounts[containerList.indexOf(
-                                            containerList
-                                                .last)]--; // Decrement amount
-                                      }
-                                    });
-                                  },
-                                  icon: const Icon(Icons.remove,
-                                      color: Color.fromARGB(255, 44, 62, 80)),
-                                ),
-                                IconButton(
-                                  onPressed: () {
-                                    setStateContainer(() {
-                                      amounts[containerList.indexOf(
-                                          containerList
-                                              .last)]++; // Increment amount
-                                    });
-                                  },
-                                  icon: const Icon(Icons.add,
-                                      color: Color.fromARGB(255, 44, 62, 80)),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 10.0),
-                                  child: IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        deleteContainer(containerList
-                                            .indexOf(containerList.last));
-                                      });
-                                    },
-                                    icon: const Icon(Icons.delete,
-                                        color: Color.fromARGB(255, 44, 62, 80)),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    sellItem(name);
-                                  },
-                                  icon: const Icon(
-                                    Icons.shopping_cart_outlined,
-                                    color: Colors.green,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 30, right: 100),
-                      child: Row(children: [
-                        Text(
-                          'Amount: ${amounts[containerList.indexOf(containerList.last)]}', // Display updated amount
-                          style: const TextStyle(
-                            color: Color.fromARGB(255, 44, 62, 80),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ]),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        _showDescriptionDialog(description);
-                      },
-                      icon: const Icon(Icons.arrow_drop_down,
-                          color: Color.fromARGB(255, 44, 62, 80)),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        }),
-      );
-    });
+  @override
+  void initState() {
+    super.initState();
+    _fetchProducts();
   }
 
-  void deleteContainer(int index) {
-    setState(() {
-      containerList.removeAt(index);
-      amounts.removeAt(index);
-    });
-  }
-
-  void sellItem(String name) {
-    // Find the index of the item in the inventory
-    int index = containerList.indexWhere((container) {
-      // Identify the item based on name (or any other unique property)
-      return container.toString().contains(name);
-    });
-
-    if (index != -1) {
-      // Decrease the amount of the item
+  Future<void> _fetchProducts() async {
+    setState(() => _isLoading = true);
+    try {
+      final querySnapshot = await _firestore.collection('products').get();
       setState(() {
-        if (amounts[index] > 0) {
-          amounts[index]--;
-        }
+        _products = querySnapshot.docs;
+        _filteredProducts = List.from(_products);
       });
+    } catch (e) {
+      print('Error fetching products: $e');
+    } finally {
+      setState(() => _isLoading = false);
     }
   }
 
-  void _showDescriptionDialog(String description) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          title: const Text(
-            "Product Description",
-            style: TextStyle(
-              color: Color.fromARGB(255, 44, 62, 80),
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-          ),
-          content: Container(
-            constraints: const BoxConstraints(
-              maxHeight: 300,
-              maxWidth: 400,
-            ),
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.description,
-                      size: 50, color: Color.fromARGB(255, 44, 62, 80)),
-                  const SizedBox(height: 20),
-                  Text(
-                    description,
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 44, 62, 80),
-                      fontSize: 16,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    child: Text(
-                      "Amount $amounts",
-                      style: const TextStyle(
-                        color: Color.fromARGB(255, 44, 62, 80),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          const Color.fromARGB(255, 44, 62, 80), // Button color
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 20),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text(
-                      'Close',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
+  void _filterProducts(String query) {
+    final filtered = _products.where((product) {
+      final name = product['name']?.toLowerCase() ?? '';
+      return name.contains(query.toLowerCase());
+    }).toList();
+    setState(() => _filteredProducts = filtered);
   }
 
-  void _showAddDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          title: const Text(
-            "Add Your Item",
-            style: TextStyle(color: Color.fromARGB(255, 44, 62, 80)),
-          ),
-          content: Container(
-            constraints: const BoxConstraints(
-              minHeight: 200,
-              maxWidth: 400,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Name of Item',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                TextFormField(
-                  controller: _descriptionController,
-                  decoration: const InputDecoration(
-                    labelText: 'Description of Item',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                TextFormField(
-                  controller: _amountController,
-                  decoration: const InputDecoration(
-                    labelText: 'Amount of Item',
-                    border: OutlineInputBorder(),
-                  ),
-                  keyboardType: TextInputType.number,
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
+  Future<void> _addProduct() async {
+    if (_nameController.text.isEmpty ||
+        _descriptionController.text.isEmpty ||
+        _priceController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('All fields must be filled')),
+      );
+      return;
+    }
 
-                _nameController.clear();
-                _descriptionController.clear();
-                _amountController.clear();
-              },
-              child: const Text("Cancel",
-                  style: TextStyle(color: Color.fromARGB(255, 44, 62, 80))),
-            ),
-            TextButton(
-              onPressed: () {
-                String name = _nameController.text;
-                String description = _descriptionController.text;
-                int amount = int.tryParse(_amountController.text) ?? 0;
+    final product = {
+      'name': _nameController.text,
+      'description': _descriptionController.text,
+      'price': double.tryParse(_priceController.text) ?? 0.0,
+      'amount': 0,
+      'barcode': DateTime.now().millisecondsSinceEpoch.toString(),
+    };
 
-                if (name.isNotEmpty && description.isNotEmpty) {
-                  addContainer(name, description, amount);
-                  Navigator.of(context).pop();
+    try {
+      await _firestore.collection('products').add(product);
+      _fetchProducts();
+      _clearTextFields();
+    } catch (e) {
+      print('Error adding product: $e');
+    }
+  }
 
-                  _nameController.clear();
-                  _descriptionController.clear();
-                  _amountController.clear();
-                }
-              },
-              child: const Text(
-                "Add",
-                style: TextStyle(color: Color.fromARGB(255, 44, 62, 80)),
-              ),
-            ),
-          ],
-        );
-      },
-    );
+  void _clearTextFields() {
+    _nameController.clear();
+    _descriptionController.clear();
+    _priceController.clear();
+  }
+
+  Future<void> _updateProductAmount(
+      DocumentSnapshot product, int newAmount) async {
+    try {
+      await _firestore
+          .collection('products')
+          .doc(product.id)
+          .update({'amount': newAmount});
+      _fetchProducts();
+    } catch (e) {
+      print('Error updating product amount: $e');
+    }
+  }
+
+  Future<void> _deleteProduct(DocumentSnapshot product) async {
+    try {
+      await _firestore.collection('products').doc(product.id).delete();
+      _fetchProducts();
+    } catch (e) {
+      print('Error deleting product: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 44, 62, 80),
-        title: const Text("Inventory"),
-        actions: [
-          IconButton(
-            onPressed: () {
-              _showAddDialog();
-            },
-            icon: const Icon(Icons.add),
-          ),
-        ],
+        title: const Text('Inventory Management'),
       ),
-      body: ListView(
-        children: containerList,
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: const InputDecoration(
+                      hintText: 'Search products...',
+                      prefixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: _filterProducts,
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: _filteredProducts.length,
+                    itemBuilder: (context, index) {
+                      final product = _filteredProducts[index];
+                      return Card(
+                        child: ListTile(
+                          title: Text(product['name'] ?? 'Unnamed Product'),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  'Description: ${product['description'] ?? 'No Description'}'),
+                              Text(
+                                  'Price: \$${product['price']?.toStringAsFixed(2) ?? '0.00'}'),
+                              Text('Amount: ${product['amount'] ?? 0}'),
+                              const SizedBox(height: 10),
+                              BarcodeWidget(
+                                data: product['barcode'] ?? '',
+                                barcode: Barcode.code128(),
+                                width: 200,
+                                height: 50,
+                              ),
+                            ],
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.add_circle),
+                                onPressed: () => _updateProductAmount(
+                                  product,
+                                  (product['amount'] ?? 0) + 1,
+                                ),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.remove_circle),
+                                onPressed: product['amount'] > 0
+                                    ? () => _updateProductAmount(
+                                          product,
+                                          (product['amount'] ?? 0) - 1,
+                                        )
+                                    : null,
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () => _deleteProduct(product),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Add Product'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(hintText: 'Product Name'),
+                ),
+                TextField(
+                  controller: _descriptionController,
+                  decoration: const InputDecoration(hintText: 'Description'),
+                ),
+                TextField(
+                  controller: _priceController,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(hintText: 'Price'),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  _addProduct();
+                  Navigator.pop(context);
+                },
+                child: const Text('Add'),
+              ),
+            ],
+          ),
+        ),
+        child: const Icon(Icons.add),
       ),
     );
   }

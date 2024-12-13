@@ -15,29 +15,41 @@ class _PaymentScreenState extends State<PaymentScreen> {
   final List<Map<String, dynamic>> _cart = [];
   double _totalPrice = 0.0;
 
-  final Map<String, dynamic> _productsDatabase = {
-    '12345': {'name': 'Product A', 'price': 50.0},
-    '67890': {'name': 'Product B', 'price': 30.0},
-    '11122': {'name': 'Product C', 'price': 20.0},
-  };
-
+  // Inside _scanAndProcessPayment
   Future<void> _scanAndProcessPayment() async {
     try {
       var result = await BarcodeScanner.scan();
       String scannedCode = result.rawContent;
 
-      if (_productsDatabase.containsKey(scannedCode)) {
-        var product = _productsDatabase[scannedCode];
+      var productRef = FirebaseFirestore.instance.collection('products');
+      var productSnapshot =
+          await productRef.where('barcode', isEqualTo: scannedCode).get();
 
-        setState(() {
-          _cart.add({
-            'name': product['name'],
-            'price': product['price'],
+      if (productSnapshot.docs.isNotEmpty) {
+        var product = productSnapshot.docs.first.data();
+        print("Retrieved product: $product");
+
+        if (product['amount'] > 0) {
+          // Update the amount of the product in Firestore
+          await productRef.doc(productSnapshot.docs.first.id).update({
+            'amount': FieldValue.increment(-1), // Decrease amount by 1
           });
-          _totalPrice += product['price'];
-        });
 
-        _processPayment();
+          setState(() {
+            _cart.add({
+              'name': product['name'],
+              'price': product['price'] ?? 0.0,
+              'description': product['description'] ?? 'No description',
+              'amount': 1, // Default amount to 1 for simplicity
+              'barcode': product['barcode']
+            });
+            _totalPrice += product['price'] ?? 0.0; // Adding price to total
+          });
+
+          _showMessage('Product added to cart!');
+        } else {
+          _showMessage('Not enough stock for this product!');
+        }
       } else {
         _showMessage('Product not found!');
       }
@@ -46,6 +58,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     }
   }
 
+  // Method to trigger payment process
   void _processPayment() async {
     if (_cart.isNotEmpty) {
       try {
@@ -55,6 +68,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
         if (orderId != null) {
           // Save to Firestore
           await _saveTransactionHistory(orderId);
+
+          // Update Reports collection
+          await _updateReportsCollection(_totalPrice);
 
           _showMessage('Payment successful! Order ID: $orderId');
           setState(() {
@@ -70,20 +86,130 @@ class _PaymentScreenState extends State<PaymentScreen> {
     } else {
       _showMessage('No items in the cart to process payment!');
     }
+    print("Cart items: $_cart");
+  }
+
+  // Function to update the Reports collection
+  Future<void> _updateReportsCollection(double paymentAmount) async {
+    final reportsRef = FirebaseFirestore.instance.collection('reports');
+    final dailySalesRef = reportsRef.doc('daily_sales');
+    final monthlySalesRef = reportsRef.doc('monthly_sales');
+    final yearlySalesRef = reportsRef.doc('yearly_report');
+    final reportIDRef = reportsRef.doc('reportID');
+
+    final timestamp = FieldValue.serverTimestamp();
+
+    try {
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        final dailySalesDoc = await transaction.get(dailySalesRef);
+        final monthlySalesDoc = await transaction.get(monthlySalesRef);
+        final yearlySalesDoc = await transaction.get(yearlySalesRef);
+        final reportIDDoc = await transaction.get(reportIDRef);
+
+        if (dailySalesDoc.exists) {
+          transaction.update(
+            dailySalesRef,
+            {
+              'value': FieldValue.increment(paymentAmount),
+              'daily_sales_last_updated': timestamp,
+            },
+          );
+        } else {
+          transaction.set(
+            dailySalesRef,
+            {
+              'value': paymentAmount,
+              'daily_sales_last_updated': timestamp,
+            },
+          );
+        }
+
+        if (monthlySalesDoc.exists) {
+          transaction.update(
+            monthlySalesRef,
+            {
+              'value': FieldValue.increment(paymentAmount),
+              'monthly_sales_last_updated': timestamp,
+            },
+          );
+        } else {
+          transaction.set(
+            monthlySalesRef,
+            {
+              'value': paymentAmount,
+              'monthly_sales_last_updated': timestamp,
+            },
+          );
+        }
+
+        if (yearlySalesDoc.exists) {
+          transaction.update(
+            yearlySalesRef,
+            {
+              'value': FieldValue.increment(paymentAmount),
+              'yearly_report_last_updated': timestamp,
+            },
+          );
+        } else {
+          transaction.set(
+            yearlySalesRef,
+            {
+              'value': paymentAmount,
+              'yearly_report_last_updated': timestamp,
+            },
+          );
+        }
+
+        if (reportIDDoc.exists) {
+          transaction.update(
+            reportIDRef,
+            {
+              'daily_sales': FieldValue.increment(paymentAmount),
+              'monthly_sales': FieldValue.increment(paymentAmount),
+              'yearly_report': FieldValue.increment(paymentAmount),
+              'daily_sales_last_updated': timestamp,
+              'monthly_sales_last_updated': timestamp,
+              'yearly_report_last_updated': timestamp,
+            },
+          );
+        } else {
+          transaction.set(
+            reportIDRef,
+            {
+              'daily_sales': paymentAmount,
+              'monthly_sales': paymentAmount,
+              'yearly_report': paymentAmount,
+              'stock_value': 0,
+              'daily_sales_last_updated': timestamp,
+              'monthly_sales_last_updated': timestamp,
+              'yearly_report_last_updated': timestamp,
+            },
+          );
+        }
+      });
+
+      print("Reports updated successfully!");
+    } catch (error) {
+      print("Error updating reports: $error");
+    }
   }
 
   Future<void> _saveTransactionHistory(String orderId) async {
-    final timestamp = DateTime.now().toIso8601String();
-    final transaction = {
-      'orderId': orderId,
-      'timestamp': timestamp,
-      'totalPrice': _totalPrice,
-      'cartItems': _cart,
-    };
-
-    await FirebaseFirestore.instance
-        .collection('transactions')
-        .add(transaction);
+    for (var item in _cart) {
+      try {
+        await FirebaseFirestore.instance.collection('transactions').add({
+          'name': item['name'] ?? 'Unnamed product',
+          'amount': item['amount'] ?? 'N/A',
+          'price': item['price'] ?? 0,
+          'barcode': item['barcode'] ?? 'No barcode',
+          'description': item['description'] ?? 'No description',
+          'date': Timestamp.now(),
+          'order_id': orderId,
+        });
+      } catch (error) {
+        print("Error saving transaction: $error");
+      }
+    }
   }
 
   // Step 1: Get PayPal Access Token
@@ -164,7 +290,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         children: [
           ElevatedButton(
             onPressed: _scanAndProcessPayment,
-            child: const Text('Scan and Process Payment'),
+            child: const Text('Scan and Add Product'),
           ),
           const SizedBox(height: 20),
           Text(
@@ -183,6 +309,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 );
               },
             ),
+          ),
+          ElevatedButton(
+            onPressed: _processPayment,
+            child: const Text('Process Payment'),
           ),
         ],
       ),

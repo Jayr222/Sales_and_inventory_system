@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart'; // Import intl for date formatting
 
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key});
@@ -49,9 +50,9 @@ class HistoryScreen extends StatelessWidget {
       ),
       body: Container(
         color: const Color.fromARGB(255, 255, 255, 255), // Background color
-        child: FutureBuilder<QuerySnapshot>(
-          // Fetching data from Firestore
-          future: transactions.get(),
+        child: StreamBuilder<QuerySnapshot>(
+          // Real-time data from Firestore
+          stream: transactions.snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -75,12 +76,24 @@ class HistoryScreen extends StatelessWidget {
                 var transactionData =
                     transaction.data() as Map<String, dynamic>;
 
-                // Extract relevant fields from the transaction data
-                var transactionId = transaction.id;
-                var amount = transactionData['amount'] ??
-                    'N/A'; // Assuming the field 'amount' exists
-                var date = (transactionData['date'] as Timestamp?)?.toDate() ??
-                    DateTime.now(); // Assuming a 'date' field exists
+                // Extract relevant fields
+                var name = transactionData['name'] ?? 'Unnamed Product';
+                var amount = transactionData['amount'] ?? 'N/A';
+                var price = transactionData['price'] ?? 0.0;
+                var barcode = transactionData['barcode'] ?? 'No Barcode';
+                var description =
+                    transactionData['description'] ?? 'No Description';
+                var date = transactionData['date'] != null
+                    ? (transactionData['date'] as Timestamp).toDate()
+                    : null;
+
+                // Format the date if available
+                String formattedDate = date != null
+                    ? DateFormat('yyyy-MM-dd – HH:mm').format(date)
+                    : 'Not Available';
+
+                // Calculate total price
+                var totalPrice = price * (amount is int ? amount : 1);
 
                 return Card(
                   margin:
@@ -89,9 +102,23 @@ class HistoryScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15)),
                   elevation: 5,
                   child: ListTile(
-                    title: Text('Transaction #$transactionId'),
-                    subtitle: Text('Amount: $amount\nDate: ${date.toLocal()}'),
-                    trailing: Icon(Icons.arrow_forward_ios),
+                    title: Text(
+                      name,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Amount: $amount'),
+                        Text('Price: \$$price'),
+                        Text('Total: \$$totalPrice'),
+                        Text('Barcode: $barcode'),
+                        Text('Description: $description'),
+                        Text('Date: $formattedDate'),
+                      ],
+                    ),
+                    trailing: const Icon(Icons.arrow_forward_ios),
                   ),
                 );
               },

@@ -1,52 +1,54 @@
 import 'package:flutter/material.dart';
 
 class ContactInfoField extends StatelessWidget {
-
   final String label;
   final String value;
   final IconData icon;
 
-  const ContactInfoField({
-    super.key,
-    required this.label,
-    required this.value,
-    required this.icon
-  });
+  const ContactInfoField(
+      {super.key,
+      required this.label,
+      required this.value,
+      required this.icon});
 
   @override
-    Widget build(BuildContext context) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-              style: const TextStyle(
-              fontSize: 14,
-              color: Color.fromARGB(255, 44, 62, 80),
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 14,
+            color: Color.fromARGB(255, 44, 62, 80),
+          ),
+        ),
+        const SizedBox(height: 5),
+        TextField(
+          enabled: false, // This makes the field read-only
+          decoration: InputDecoration(
+            hintStyle: const TextStyle(
+              color: Color.fromARGB(255, 157, 157, 157),
+            ),
+            hintText: value,
+            suffixIcon: Icon(
+              icon,
+              color: const Color.fromARGB(255, 44, 62, 80),
+            ),
+            filled: true,
+            fillColor:
+                const Color(0xFFF1F1F1), // Background color for the field
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide.none, // No visible border
             ),
           ),
-          const SizedBox(height: 5),
-          TextField(
-              enabled: false, // This makes the field read-only
-              decoration: InputDecoration(
-                hintStyle: const TextStyle(
-                  color: Color.fromARGB(255, 157, 157, 157),
-                ),
-                hintText: value,
-                suffixIcon: Icon(icon, color: const Color.fromARGB(255, 44, 62, 80),),
-                filled: true,
-                fillColor: const Color(0xFFF1F1F1), // Background color for the field
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide.none, // No visible border
-                ),
-              ),
-          ),
-            const SizedBox(height: 20),
-          ],
-        );
-      }
-    }
+        ),
+        const SizedBox(height: 20),
+      ],
+    );
+  }
+}
 
 class LogoutScreen extends StatelessWidget {
   const LogoutScreen({super.key});
@@ -54,7 +56,7 @@ class LogoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            appBar: AppBar(
+      appBar: AppBar(
         backgroundColor: Colors.white,
         toolbarHeight: 80, // Set the height of the AppBar
         title: Padding(
@@ -89,7 +91,8 @@ class LogoutScreen extends StatelessWidget {
                     fontWeight: FontWeight.w300,
                     fontSize: 30,
                     fontFamily: 'AntonSC',
-                    color: Color.fromARGB(255, 44, 62, 80), // You can adjust the size as needed
+                    color: Color.fromARGB(
+                        255, 44, 62, 80), // You can adjust the size as needed
                   ),
                 ),
               ),
@@ -105,7 +108,8 @@ class LogoutScreen extends StatelessWidget {
               icon: const DecoratedBox(
                 decoration: BoxDecoration(
                   color: Color(0xFF2C3E50),
-                  shape: BoxShape.circle, // Rounded corners for circular background
+                  shape: BoxShape
+                      .circle, // Rounded corners for circular background
                 ),
                 child: Center(
                   child: Icon(
@@ -151,12 +155,15 @@ class LogoutScreen extends StatelessWidget {
                                   color: Colors.grey.withOpacity(0.5),
                                   blurRadius: 5.0,
                                   spreadRadius: 2.0,
-                                  offset: const Offset(0, 3), // shadow direction: bottom right
+                                  offset: const Offset(
+                                      0, 3), // shadow direction: bottom right
                                 ),
                               ],
                             ),
                           ),
-                          const SizedBox(width: 15), // Add spacing between profile picture and text
+                          const SizedBox(
+                              width:
+                                  15), // Add spacing between profile picture and text
                           const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -189,78 +196,94 @@ class LogoutScreen extends StatelessWidget {
                       decoration: const BoxDecoration(
                         color: Colors.white,
                       ),
-                      child: Column(mainAxisAlignment: MainAxisAlignment.center,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           //Username
                           //- USERNAME
-                          Row(mainAxisAlignment: MainAxisAlignment.center,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(top: 25.0),
                                 child: Container(
-                                  width: 350,
-                                  height: 450,
-                                  decoration: const BoxDecoration(
-                                    color: Color.fromARGB(255, 255, 255, 255),),
-                                  child: Column(mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      const Padding(
-                                        padding: EdgeInsets.only(top: 10.0),
-                                        child: ContactInfoField(
-                                          label: "Your Username: ", 
-                                          value: "sxenogaming06@gmail.com", 
-                                          icon: Icons.email,),
-                                      ),
-                                  
-                                      const Divider(thickness: 1, color: Color.fromARGB(255, 44, 62, 80)),
-                                  
-                                      const Padding(
-                                        padding: EdgeInsets.only(top: 10.0),
-                                        child: ContactInfoField(
-                                          label: "Your Phone Number: ", 
-                                          value: "09616060087", 
-                                          icon: Icons.phone),
-                                      ),
-                                  
-                                      const Divider(thickness: 1, color: Color.fromARGB(255, 44, 62, 80)),
-                                  
-                                      const Padding(
-                                        padding: EdgeInsets.only(top: 10.0),
-                                        child: ContactInfoField(
-                                          label: "Your Workplace: ", 
-                                          value: "753 int 81 Raxabago Street, Tondo", 
-                                          icon: Icons.house),
-                                      ),                    
-                                      Row(mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(top: 10.0),
-                                            child: MaterialButton(onPressed: () {
-                                              print("Heading to Edit Account Screen");
-                                            },
-                                            color: const Color.fromARGB(255, 44, 62, 80),
-                                            textColor: Colors.white,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(50),
-                                              side: const BorderSide(color: Colors.black)
-                                            ),
-                                            child: const Padding(
-                                              padding:  EdgeInsets.all(20.0),
-                                              child: Text("Edit Account"),
-                                            ),
-                                            ),
+                                    width: 350,
+                                    height: 450,
+                                    decoration: const BoxDecoration(
+                                      color: Color.fromARGB(255, 255, 255, 255),
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        const Padding(
+                                          padding: EdgeInsets.only(top: 10.0),
+                                          child: ContactInfoField(
+                                            label: "Your Username: ",
+                                            value: "sxenogaming06@gmail.com",
+                                            icon: Icons.email,
                                           ),
-                                        ],
-                                      )
-                                    ],
-                                  )
-                                ),
+                                        ),
+                                        const Divider(
+                                            thickness: 1,
+                                            color: Color.fromARGB(
+                                                255, 44, 62, 80)),
+                                        const Padding(
+                                          padding: EdgeInsets.only(top: 10.0),
+                                          child: ContactInfoField(
+                                              label: "Your Phone Number: ",
+                                              value: "09616060087",
+                                              icon: Icons.phone),
+                                        ),
+                                        const Divider(
+                                            thickness: 1,
+                                            color: Color.fromARGB(
+                                                255, 44, 62, 80)),
+                                        const Padding(
+                                          padding: EdgeInsets.only(top: 10.0),
+                                          child: ContactInfoField(
+                                              label: "Your Workplace: ",
+                                              value:
+                                                  "753 int 81 Raxabago Street, Tondo",
+                                              icon: Icons.house),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 10.0),
+                                              child: MaterialButton(
+                                                onPressed: () {
+                                                  print(
+                                                      "Heading to Edit Account Screen");
+                                                },
+                                                color: const Color.fromARGB(
+                                                    255, 44, 62, 80),
+                                                textColor: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50),
+                                                    side: const BorderSide(
+                                                        color: Colors.black)),
+                                                child: const Padding(
+                                                  padding: EdgeInsets.all(20.0),
+                                                  child: Text("Edit Account"),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    )),
                               )
                             ],
                           )
                           //divider
                           //Email
-                          //- Email                               
+                          //- Email
                           //dividera
                         ],
                       ),

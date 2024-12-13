@@ -1,354 +1,225 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/services/firestore_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:barcode_widget/barcode_widget.dart';
 
 class InventoryScreen extends StatefulWidget {
   const InventoryScreen({super.key});
 
   @override
-  State<InventoryScreen> createState() => _InventoryScreenState();
+  _InventoryScreenState createState() => _InventoryScreenState();
 }
 
 class _InventoryScreenState extends State<InventoryScreen> {
-  final FirestoreService firestoreService = FirestoreService();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final TextEditingController _searchController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _amountController = TextEditingController();
-  bool isLoading = true;
-  List<Map<String, dynamic>> inventoryItems = [];
-  List<String> documentIds = [];
-  String searchQuery = "";
+  final TextEditingController _priceController = TextEditingController();
+  List<DocumentSnapshot> _products = [];
+  List<DocumentSnapshot> _filteredProducts = [];
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _fetchItemsFromFirestore();
+    _fetchProducts();
   }
 
-  void _fetchItemsFromFirestore() async {
-    setState(() => isLoading = true);
+  Future<void> _fetchProducts() async {
+    setState(() => _isLoading = true);
     try {
-      var items = await firestoreService.getInventoryItems();
+      final querySnapshot = await _firestore.collection('products').get();
       setState(() {
-        inventoryItems = items;
-
-        documentIds = List<String>.from(items.map((item) => item['id']));
+        _products = querySnapshot.docs;
+        _filteredProducts = List.from(_products);
       });
     } catch (e) {
-      print('Error fetching items: $e');
+      print('Error fetching products: $e');
     } finally {
-      setState(() => isLoading = false);
+      setState(() => _isLoading = false);
     }
   }
 
-  void addItem(Map<String, dynamic> itemData) {
-    firestoreService.addInventoryItem(itemData);
-    setState(() {
-      inventoryItems.add(itemData);
-    });
+  void _filterProducts(String query) {
+    final filtered = _products.where((product) {
+      final name = product['name']?.toLowerCase() ?? '';
+      return name.contains(query.toLowerCase());
+    }).toList();
+    setState(() => _filteredProducts = filtered);
   }
 
-  void updateItemAmount(int index, int newAmount) {
-    String docId = documentIds[index];
-    firestoreService.updateInventoryItem(docId, {'amount': newAmount});
-    setState(() {
-      inventoryItems[index]['amount'] = newAmount;
-    });
+  Future<void> _addProduct() async {
+    if (_nameController.text.isEmpty ||
+        _descriptionController.text.isEmpty ||
+        _priceController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('All fields must be filled')),
+      );
+      return;
+    }
+
+    final product = {
+      'name': _nameController.text,
+      'description': _descriptionController.text,
+      'price': double.tryParse(_priceController.text) ?? 0.0,
+      'amount': 0,
+      'barcode': DateTime.now().millisecondsSinceEpoch.toString(),
+    };
+
+    try {
+      await _firestore.collection('products').add(product);
+      _fetchProducts();
+      _clearTextFields();
+    } catch (e) {
+      print('Error adding product: $e');
+    }
   }
 
-  void deleteItem(int index) {
-    String docId = documentIds[index];
-    firestoreService.deleteInventoryItem(docId);
-    setState(() {
-      inventoryItems.removeAt(index);
-      documentIds.removeAt(index);
-    });
+  void _clearTextFields() {
+    _nameController.clear();
+    _descriptionController.clear();
+    _priceController.clear();
   }
 
-  void _showAddDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          title: const Text(
-            "Add Your Item",
-            style: TextStyle(color: Color.fromARGB(255, 44, 62, 80)),
-          ),
-          content: Container(
-            constraints: const BoxConstraints(
-              minHeight: 200,
-              maxWidth: 400,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Name of Item',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                TextFormField(
-                  controller: _descriptionController,
-                  decoration: const InputDecoration(
-                    labelText: 'Description of Item',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                TextFormField(
-                  controller: _amountController,
-                  decoration: const InputDecoration(
-                    labelText: 'Amount of Item',
-                    border: OutlineInputBorder(),
-                  ),
-                  keyboardType: TextInputType.number,
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _nameController.clear();
-                _descriptionController.clear();
-                _amountController.clear();
-              },
-              child: const Text("Cancel",
-                  style: TextStyle(color: Color.fromARGB(255, 44, 62, 80))),
-            ),
-            TextButton(
-              onPressed: () {
-                String name = _nameController.text;
-                String description = _descriptionController.text;
-                int amount = int.tryParse(_amountController.text) ?? 0;
-
-                if (name.isEmpty || description.isEmpty || amount <= 0) {
-                  return;
-                }
-
-                Map<String, dynamic> newItem = {
-                  'name': name,
-                  'description': description,
-                  'amount': amount,
-                };
-
-                addItem(newItem);
-
-                _nameController.clear();
-                _descriptionController.clear();
-                _amountController.clear();
-
-                Navigator.of(context).pop();
-              },
-              child: const Text("Add"),
-            ),
-          ],
-        );
-      },
-    );
+  Future<void> _updateProductAmount(
+      DocumentSnapshot product, int newAmount) async {
+    try {
+      await _firestore
+          .collection('products')
+          .doc(product.id)
+          .update({'amount': newAmount});
+      _fetchProducts();
+    } catch (e) {
+      print('Error updating product amount: $e');
+    }
   }
 
-  void _showDescriptionDialog(String description) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Item Description'),
-          content: Text(description),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Close'),
-            ),
-          ],
-        );
-      },
-    );
+  Future<void> _deleteProduct(DocumentSnapshot product) async {
+    try {
+      await _firestore.collection('products').doc(product.id).delete();
+      _fetchProducts();
+    } catch (e) {
+      print('Error deleting product: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 44, 62, 80),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        toolbarHeight: 80,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 25.0),
-          child: Image.asset(
-            'lib/assets/Shoppingicon.png',
-            width: 70,
-            height: 70,
-            fit: BoxFit.contain,
-          ),
-        ),
-        title: const Text(
-          'INVENTORY',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
-            color: Color.fromARGB(255, 44, 62, 80),
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.circle_notifications,
-                color: Color.fromARGB(255, 44, 62, 80), size: 35),
-            onPressed: () {},
-          ),
-        ],
+        title: const Text('Inventory Management'),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: TextField(
-              decoration: const InputDecoration(
-                labelText: 'Search',
-                border: OutlineInputBorder(),
-                suffixIcon: Icon(Icons.search),
-              ),
-              onChanged: (query) {
-                setState(() {
-                  searchQuery = query;
-                });
-              },
-            ),
-          ),
-          isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : Expanded(
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: const InputDecoration(
+                      hintText: 'Search products...',
+                      prefixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: _filterProducts,
+                  ),
+                ),
+                Expanded(
                   child: ListView.builder(
-                    itemCount: inventoryItems
-                        .where((item) =>
-                            item['name']
-                                .toLowerCase()
-                                .contains(searchQuery.toLowerCase()) ||
-                            item['description']
-                                .toLowerCase()
-                                .contains(searchQuery.toLowerCase()))
-                        .toList()
-                        .length,
+                    itemCount: _filteredProducts.length,
                     itemBuilder: (context, index) {
-                      final item = inventoryItems
-                          .where((item) =>
-                              item['name']
-                                  .toLowerCase()
-                                  .contains(searchQuery.toLowerCase()) ||
-                              item['description']
-                                  .toLowerCase()
-                                  .contains(searchQuery.toLowerCase()))
-                          .toList()[index];
-
-                      int itemAmount = item['amount'];
-
-                      return Container(
-                        margin: const EdgeInsets.all(10),
-                        width: double.infinity,
-                        height: 220,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Container(
-                                    width: 100,
-                                    height: 100,
-                                    decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      borderRadius: BorderRadius.circular(25),
-                                    ),
-                                  ),
+                      final product = _filteredProducts[index];
+                      return Card(
+                        child: ListTile(
+                          title: Text(product['name'] ?? 'Unnamed Product'),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  'Description: ${product['description'] ?? 'No Description'}'),
+                              Text(
+                                  'Price: \$${product['price']?.toStringAsFixed(2) ?? '0.00'}'),
+                              Text('Amount: ${product['amount'] ?? 0}'),
+                              const SizedBox(height: 10),
+                              BarcodeWidget(
+                                data: product['barcode'] ?? '',
+                                barcode: Barcode.code128(),
+                                width: 200,
+                                height: 50,
+                              ),
+                            ],
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.add_circle),
+                                onPressed: () => _updateProductAmount(
+                                  product,
+                                  (product['amount'] ?? 0) + 1,
                                 ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 15.0,
-                                      horizontal: 15.0,
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'ITEM: ${item['name']}',
-                                              style: const TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 44, 62, 80),
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 30),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Tooltip(
-                                              message: 'Remove 1 Item',
-                                              child: IconButton(
-                                                onPressed: itemAmount > 0
-                                                    ? () => updateItemAmount(
-                                                          index,
-                                                          itemAmount - 1,
-                                                        )
-                                                    : null,
-                                                icon: const Icon(
-                                                    Icons.remove_circle),
-                                              ),
-                                            ),
-                                            Text(
-                                              '$itemAmount',
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 25,
-                                              ),
-                                            ),
-                                            Tooltip(
-                                              message: 'Add 1 Item',
-                                              child: IconButton(
-                                                onPressed: () =>
-                                                    updateItemAmount(
-                                                        index, itemAmount + 1),
-                                                icon: const Icon(
-                                                    Icons.add_circle),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.remove_circle),
+                                onPressed: product['amount'] > 0
+                                    ? () => _updateProductAmount(
+                                          product,
+                                          (product['amount'] ?? 0) - 1,
+                                        )
+                                    : null,
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () => _deleteProduct(product),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },
                   ),
                 ),
-        ],
-      ),
+              ],
+            ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _showAddDialog,
-        backgroundColor: const Color.fromARGB(255, 44, 62, 80),
+        onPressed: () => showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Add Product'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(hintText: 'Product Name'),
+                ),
+                TextField(
+                  controller: _descriptionController,
+                  decoration: const InputDecoration(hintText: 'Description'),
+                ),
+                TextField(
+                  controller: _priceController,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(hintText: 'Price'),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  _addProduct();
+                  Navigator.pop(context);
+                },
+                child: const Text('Add'),
+              ),
+            ],
+          ),
+        ),
         child: const Icon(Icons.add),
       ),
     );

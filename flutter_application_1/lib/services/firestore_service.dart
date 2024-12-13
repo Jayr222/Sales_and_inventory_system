@@ -1,66 +1,72 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class FirestoreService {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Adds a new inventory item
-  Future<void> addInventoryItem(Map<String, dynamic> itemData) async {
+  // Method to add a product with a custom ID (barcode)
+  Future<void> addProductWithCustomId(
+      String barcode, Map<String, dynamic> productData) async {
+    if (barcode.isEmpty) {
+      throw 'Barcode cannot be empty.';
+    }
     try {
-      // Validate the item data before adding to Firestore
-      if (itemData['name'] == null || itemData['name'].isEmpty) {
-        throw 'Item name is required.';
-      }
-      if (itemData['amount'] == null || itemData['amount'] < 0) {
-        throw 'Amount should be a positive number.';
-      }
-
-      await firestore.collection('inventory').add(itemData);
-      print('Inventory item added successfully!');
+      await _firestore.collection('products').doc(barcode).set(productData);
+      debugPrint('Product added successfully with barcode: $barcode');
     } catch (e) {
-      print('Error adding inventory item: $e');
-      rethrow; // Allow to catch errors in UI or elsewhere
+      debugPrint('Failed to add product: $e');
+      rethrow;
     }
   }
 
-  // Fetches all inventory items
-  Future<List<Map<String, dynamic>>> getInventoryItems() async {
+  // Example method to demonstrate adding a product with a custom ID
+  Future<void> addProduct() async {
+    String barcode = "1234567890"; // Set your custom barcode value
+    Map<String, dynamic> productData = {
+      "name": "Sample Product",
+      "price": 100.0,
+      "stock": 50,
+    };
+
     try {
-      final snapshot = await firestore.collection('inventory').get();
-      // Map each document to a Map object with ID included
-      return snapshot.docs.map((doc) {
-        final data = doc.data();
-        data['id'] = doc.id; // Include the document ID for updates/deletes
-        return data;
-      }).toList();
+      await addProductWithCustomId(barcode, productData);
     } catch (e) {
-      print('Error fetching inventory items: $e');
-      return [];
+      debugPrint('Error in addProduct: $e');
     }
   }
 
-  // Updates an inventory item
-  Future<void> updateInventoryItem(
-      String docId, Map<String, dynamic> updatedData) async {
+  /// Updates a product item
+  Future<void> updateProduct(
+      String barcode, Map<String, dynamic> updatedData) async {
+    if (barcode.isEmpty) {
+      throw 'Barcode cannot be empty.';
+    }
+    if (updatedData.isEmpty) {
+      throw 'Updated data cannot be empty.';
+    }
     try {
       if (updatedData['amount'] != null && updatedData['amount'] < 0) {
         throw 'Amount should be a positive number.';
       }
-      await firestore.collection('inventory').doc(docId).update(updatedData);
-      print('Inventory item updated successfully!');
+      await _firestore.collection('products').doc(barcode).update(updatedData);
+      debugPrint('Product item with barcode $barcode updated successfully!');
     } catch (e) {
-      print('Error updating inventory item: $e');
-      rethrow; // Allow to catch errors in UI or elsewhere
+      debugPrint('Error updating product item: $e');
+      rethrow;
     }
   }
 
-  // Deletes an inventory item
-  Future<void> deleteInventoryItem(String docId) async {
+  /// Deletes a product item
+  Future<void> deleteProduct(String barcode) async {
+    if (barcode.isEmpty) {
+      throw 'Barcode cannot be empty.';
+    }
     try {
-      await firestore.collection('inventory').doc(docId).delete();
-      print('Inventory item deleted successfully!');
+      await _firestore.collection('products').doc(barcode).delete();
+      debugPrint('Product item with barcode $barcode deleted successfully!');
     } catch (e) {
-      print('Error deleting inventory item: $e');
-      rethrow; // Allow to catch errors in UI or elsewhere
+      debugPrint('Error deleting product item: $e');
+      rethrow;
     }
   }
 }
