@@ -17,7 +17,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  String _selectedRole = 'Staff';
+  final String _selectedRole = 'Staff';
   bool _isLoading = false;
 
   Future<void> _signUp() async {
@@ -172,30 +172,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 10, horizontal: 10),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Role:',
-                        style: TextStyle(color: Colors.black, fontSize: 14),
-                      ),
-                    ),
-                    DropdownButton<String>(
-                      value: _selectedRole,
-                      items: <String>['Admin', 'Manager', 'Staff']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedRole = newValue!;
-                          print("Selected role: $_selectedRole");
-                        });
-                      },
                     ),
                     const SizedBox(height: 50),
                     Center(

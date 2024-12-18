@@ -73,6 +73,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
           await _updateReportsCollection(_totalPrice);
 
           _showMessage('Payment successful! Order ID: $orderId');
+
+          // Generate receipt after successful payment
+          _generateReceipt(orderId);
+
           setState(() {
             _cart.clear();
             _totalPrice = 0.0;
@@ -87,6 +91,39 @@ class _PaymentScreenState extends State<PaymentScreen> {
       _showMessage('No items in the cart to process payment!');
     }
     print("Cart items: $_cart");
+  }
+
+  // Function to generate receipt
+  void _generateReceipt(String orderId) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Receipt - Order ID: $orderId'),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Items Purchased:'),
+            // Displaying the items and their prices
+            ..._cart.map((item) {
+              return Text(
+                  '${item['name']} - ₱${item['price'].toStringAsFixed(2)}');
+            }).toList(),
+            Divider(),
+            Text(
+                'Total Amount: ₱${_totalPrice.toStringAsFixed(2)}'), // Fixed total price format
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Close'),
+          ),
+        ],
+      ),
+    );
   }
 
   // Function to update the Reports collection
@@ -294,7 +331,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           ),
           const SizedBox(height: 20),
           Text(
-            'Total Price: \$$_totalPrice',
+            'Total Price: ₱$_totalPrice', // Changed to Peso (₱)
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const Divider(),
@@ -305,7 +342,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 var item = _cart[index];
                 return ListTile(
                   title: Text(item['name']),
-                  subtitle: Text('Price: \$${item['price']}'),
+                  subtitle:
+                      Text('Price: ₱${item['price']}'), // Changed to Peso (₱)
                 );
               },
             ),

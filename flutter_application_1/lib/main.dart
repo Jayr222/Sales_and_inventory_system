@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPageScreen(),
         '/signup': (context) => const SignUpScreen(),
         '/stock_management': (context) => const LoginPageScreen(),
-        '/inventory': (context) => InventoryScreen(),
+        '/inventory': (context) => const InventoryScreen(),
       },
     );
   }

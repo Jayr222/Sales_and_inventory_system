@@ -33,8 +33,8 @@ class _ManagerDashboardState extends State<ManagerDashboard> {
 
     // Pages corresponding to each bottom navigation item
     final List<Widget> pages = [
-      HomeScreen(),
-      InventoryScreen(),
+      const HomeScreen(),
+      const InventoryScreen(),
       const HistoryScreen(),
       const PaymentScreen(),
       RoleManagementScreen(

@@ -6,7 +6,7 @@ class RoleManagementScreen extends StatelessWidget {
   final AdminService _adminService = AdminService();
   final String currentUserEmail;
 
-  RoleManagementScreen({required this.currentUserEmail});
+  RoleManagementScreen({super.key, required this.currentUserEmail});
 
   @override
   Widget build(BuildContext context) {

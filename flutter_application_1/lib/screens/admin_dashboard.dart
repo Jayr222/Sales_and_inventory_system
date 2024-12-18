@@ -35,8 +35,8 @@ class _AdminDashboardState extends State<AdminDashboard> {
 
     // Pages corresponding to each bottom navigation item
     final List<Widget> pages = [
-      HomeScreen(),
-      InventoryScreen(),
+      const HomeScreen(),
+      const InventoryScreen(),
       const HistoryScreen(),
       const SettingsScreen(),
       const PaymentScreen(),

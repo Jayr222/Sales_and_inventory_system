@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'forgot_password_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/screens/staff_dashboard.dart';
 import 'sign_up_screen.dart';
@@ -20,6 +21,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  // Login function to authenticate the user
   Future<void> _login() async {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
@@ -28,7 +30,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
       );
       print("Login successful: ${userCredential.user?.email}");
 
-      // Fetch the user role from Firestore
+      // Fetch user role from Firestore
       DocumentSnapshot userDoc = await _firestore
           .collection('users')
           .doc(userCredential.user?.uid)
@@ -37,7 +39,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
       if (userDoc.exists) {
         String role = userDoc.get('role');
 
-        // Navigate to the correct dashboard based on the user's role
+        // Navigate to the appropriate dashboard
         if (role == 'Admin') {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => const AdminDashboard()));
@@ -57,18 +59,45 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
       }
     } catch (e) {
       print("Login failed: $e");
-      // Optionally show an error message to the user here
     }
   }
 
+  // Google sign-in placeholder
   Future<void> _loginWithGoogle() async {
     print("Google sign-in tapped");
-    // Add Google sign-in logic here
+    // Implement Google sign-in logic here
   }
 
+  // Facebook sign-in placeholder
   Future<void> _loginWithFacebook() async {
     print("Facebook sign-in tapped");
-    // Add Facebook sign-in logic here
+    // Implement Facebook sign-in logic here
+  }
+
+  // Forgot Password function
+  Future<void> _forgotPassword() async {
+    String email = _emailController.text.trim();
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please enter your email address")),
+      );
+      return;
+    }
+
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Password reset email sent! Check your inbox."),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Error: ${e.toString()}"),
+        ),
+      );
+    }
   }
 
   @override
@@ -101,20 +130,19 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                       height: 75,
                     ),
                   ),
-                  // Use Expanded or a fixed size for the container
+                  // Login container
                   Container(
                     padding: const EdgeInsets.symmetric(
                         vertical: 30.0, horizontal: 20.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25.0),
-                      color: const Color(0xFFFFFFFF),
+                      color: Colors.white,
                       boxShadow: [
                         BoxShadow(
-                          color: const Color.fromARGB(255, 255, 255, 255)
-                              .withOpacity(0.1),
-                          spreadRadius: 10,
-                          blurRadius: 20,
-                          offset: const Offset(0, 7),
+                          color: Colors.grey.withOpacity(0.3),
+                          spreadRadius: 5,
+                          blurRadius: 10,
+                          offset: const Offset(0, 5),
                         ),
                       ],
                     ),
@@ -182,7 +210,13 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                           alignment: Alignment.centerRight,
                           child: TextButton(
                             onPressed: () {
-                              print("Forgot password tapped");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ForgotPasswordScreen(),
+                                ),
+                              );
                             },
                             child: const Text('Forgot your password?',
                                 style: TextStyle(
@@ -196,13 +230,9 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                           child: ElevatedButton(
                             onPressed: _login,
                             style: ElevatedButton.styleFrom(
-                              textStyle: const TextStyle(
-                                fontSize: 20,
-                              ),
-                              foregroundColor:
-                                  const Color.fromARGB(255, 255, 253, 253),
-                              backgroundColor:
-                                  const Color.fromARGB(255, 32, 31, 31),
+                              textStyle: const TextStyle(fontSize: 20),
+                              foregroundColor: Colors.white,
+                              backgroundColor: Colors.black,
                               minimumSize: Size(
                                   MediaQuery.of(context).size.width - 40, 50),
                             ),

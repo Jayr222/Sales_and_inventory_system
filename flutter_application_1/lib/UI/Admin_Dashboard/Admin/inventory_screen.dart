@@ -62,7 +62,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
       'name': _nameController.text,
       'description': _descriptionController.text,
       'price': double.tryParse(_priceController.text) ?? 0.0,
-      'amount': 0,
+      'amount': 0, // Initial amount set to 0
       'barcode': DateTime.now().millisecondsSinceEpoch.toString(),
     };
 
@@ -72,6 +72,34 @@ class _InventoryScreenState extends State<InventoryScreen> {
       _clearTextFields();
     } catch (e) {
       print('Error adding product: $e');
+    }
+  }
+
+  Future<void> _updateProduct(DocumentSnapshot product) async {
+    if (_nameController.text.isEmpty ||
+        _descriptionController.text.isEmpty ||
+        _priceController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('All fields must be filled')),
+      );
+      return;
+    }
+
+    final updatedProduct = {
+      'name': _nameController.text,
+      'description': _descriptionController.text,
+      'price': double.tryParse(_priceController.text) ?? 0.0,
+    };
+
+    try {
+      await _firestore
+          .collection('products')
+          .doc(product.id)
+          .update(updatedProduct);
+      _fetchProducts();
+      _clearTextFields();
+    } catch (e) {
+      print('Error updating product: $e');
     }
   }
 
@@ -101,6 +129,58 @@ class _InventoryScreenState extends State<InventoryScreen> {
     } catch (e) {
       print('Error deleting product: $e');
     }
+  }
+
+  void _showAddOrEditDialog(DocumentSnapshot? product) {
+    if (product != null) {
+      _nameController.text = product['name'] ?? '';
+      _descriptionController.text = product['description'] ?? '';
+      _priceController.text = product['price']?.toString() ?? '';
+    } else {
+      _clearTextFields();
+    }
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(product != null ? 'Edit Product' : 'Add Product'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: _nameController,
+              decoration: const InputDecoration(hintText: 'Product Name'),
+            ),
+            TextField(
+              controller: _descriptionController,
+              decoration: const InputDecoration(hintText: 'Description'),
+            ),
+            TextField(
+              controller: _priceController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(hintText: 'Price (₱)'),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (product != null) {
+                _updateProduct(product);
+              } else {
+                _addProduct();
+              }
+              Navigator.pop(context);
+            },
+            child: Text(product != null ? 'Update' : 'Add'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -139,7 +219,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                               Text(
                                   'Description: ${product['description'] ?? 'No Description'}'),
                               Text(
-                                  'Price: \$${product['price']?.toStringAsFixed(2) ?? '0.00'}'),
+                                  'Price: ₱${product['price']?.toStringAsFixed(2) ?? '0.00'}'),
                               Text('Amount: ${product['amount'] ?? 0}'),
                               const SizedBox(height: 10),
                               BarcodeWidget(
@@ -173,6 +253,10 @@ class _InventoryScreenState extends State<InventoryScreen> {
                                 icon: const Icon(Icons.delete),
                                 onPressed: () => _deleteProduct(product),
                               ),
+                              IconButton(
+                                icon: const Icon(Icons.edit),
+                                onPressed: () => _showAddOrEditDialog(product),
+                              ),
                             ],
                           ),
                         ),
@@ -183,43 +267,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
               ],
             ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Add Product'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(hintText: 'Product Name'),
-                ),
-                TextField(
-                  controller: _descriptionController,
-                  decoration: const InputDecoration(hintText: 'Description'),
-                ),
-                TextField(
-                  controller: _priceController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(hintText: 'Price'),
-                ),
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Cancel'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  _addProduct();
-                  Navigator.pop(context);
-                },
-                child: const Text('Add'),
-              ),
-            ],
-          ),
-        ),
+        onPressed: () => _showAddOrEditDialog(null),
         child: const Icon(Icons.add),
       ),
     );
