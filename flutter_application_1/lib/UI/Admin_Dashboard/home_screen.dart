@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/screens/daily_sales_screen.dart';
 import 'package:flutter_application_1/screens/monthly_sales_screen.dart';
-import 'package:flutter_application_1/screens/yearly_sales_screen.dart'; 
+import 'package:flutter_application_1/screens/yearly_sales_screen.dart';
 // Import Firestore
 
 class HomeScreen extends StatefulWidget {
@@ -175,56 +175,59 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          _buildStatBox(
-                            "DAILY SALES",
-                            Icons.add_chart,
-                            dailySales.toStringAsFixed(2),
-                            () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const DailySalesScreen(),
-                                ),
-                              );
-                            },
-                          ),
-                          _buildStatBox(
-                            "MONTHLY SALES",
-                            Icons.point_of_sale,
-                            monthlySales.toStringAsFixed(2),
-                            () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const MonthlySalesScreen(),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          _buildStatBox(
-                            "YEARLY SALES",
-                            Icons.note_alt_outlined,
-                            yearlyReport.toStringAsFixed(2),
-                            () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const YearlySalesScreen(),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _buildStatBox(
+                              "DAILY SALES",
+                              Icons.add_chart,
+                              dailySales.toStringAsFixed(2),
+                              () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const DailySalesScreen(),
+                                  ),
+                                );
+                              },
+                            ),
+                            _buildStatBox(
+                              "MONTHLY SALES",
+                              Icons.point_of_sale,
+                              monthlySales.toStringAsFixed(2),
+                              () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const MonthlySalesScreen(),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _buildStatBox(
+                              "YEARLY SALES",
+                              Icons.note_alt_outlined,
+                              yearlyReport.toStringAsFixed(2),
+                              () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const YearlySalesScreen(),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                         const SizedBox(height: 20),
                         Container(
                           alignment: Alignment.centerLeft,
@@ -267,52 +270,53 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // Stateless box to display information
-  Widget _buildStatBox(String label, IconData icon, String value, VoidCallback onTap) {
-  return GestureDetector(
-    onTap: onTap,
-    child: Container(
-      width: 150,
-      height: 150,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(
-          color: const Color.fromARGB(255, 44, 62, 80),
-          width: 2,
+  Widget _buildStatBox(
+      String label, IconData icon, String value, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 150,
+        height: 150,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(
+            color: const Color.fromARGB(255, 44, 62, 80),
+            width: 2,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              blurRadius: 6,
+              spreadRadius: 1,
+            ),
+          ],
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            blurRadius: 6,
-            spreadRadius: 1,
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 40, color: const Color.fromARGB(255, 44, 62, 80)),
-          const SizedBox(height: 10),
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
-              color: Color.fromARGB(255, 44, 62, 80),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 40, color: const Color.fromARGB(255, 44, 62, 80)),
+            const SizedBox(height: 10),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+                color: Color.fromARGB(255, 44, 62, 80),
+              ),
             ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 16,
-              color: Color.fromARGB(255, 44, 62, 80),
+            const SizedBox(height: 10),
+            Text(
+              value,
+              style: const TextStyle(
+                fontSize: 16,
+                color: Color.fromARGB(255, 44, 62, 80),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 }

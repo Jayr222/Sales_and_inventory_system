@@ -28,11 +28,12 @@ class ReportService {
       });
 
       // 2. Fetch the reports document
-      final reportDoc =
-          await _firestore.collection('reports').doc('reportID').get();
+      final reportRef = _firestore.collection('reports').doc('reportID');
+      final reportDoc = await reportRef.get();
+
       if (!reportDoc.exists) {
         // If reportID doesn't exist, create a new one
-        await _firestore.collection('reports').doc('reportID').set({
+        await reportRef.set({
           'daily_sales': 0,
           'monthly_sales': 0,
           'yearly_report': 0,
@@ -40,31 +41,39 @@ class ReportService {
           'daily_sales_last_updated': FieldValue.serverTimestamp(),
           'monthly_sales_last_updated': FieldValue.serverTimestamp(),
           'yearly_report_last_updated': FieldValue.serverTimestamp(),
+          'transactions': [], // Initialize transactions array
         });
       }
 
-      final reportData = reportDoc.data()!;
-      double newDailySales = reportData['daily_sales'] + saleAmount;
-      double newMonthlySales = reportData['monthly_sales'] + saleAmount;
-      double newYearlySales = reportData['yearly_report'] + saleAmount;
-
-      // Update the sales for daily, monthly, or yearly based on the sale type
+      // Update sales for daily, monthly, or yearly based on the sale type
       if (saleType == 'daily') {
-        await _firestore.collection('reports').doc('reportID').update({
-          'daily_sales': newDailySales,
+        await reportRef.update({
+          'daily_sales': FieldValue.increment(saleAmount),
           'daily_sales_last_updated': FieldValue.serverTimestamp(),
         });
       } else if (saleType == 'monthly') {
-        await _firestore.collection('reports').doc('reportID').update({
-          'monthly_sales': newMonthlySales,
+        await reportRef.update({
+          'monthly_sales': FieldValue.increment(saleAmount),
           'monthly_sales_last_updated': FieldValue.serverTimestamp(),
         });
       } else if (saleType == 'yearly') {
-        await _firestore.collection('reports').doc('reportID').update({
-          'yearly_report': newYearlySales,
+        await reportRef.update({
+          'yearly_report': FieldValue.increment(saleAmount),
           'yearly_report_last_updated': FieldValue.serverTimestamp(),
         });
       }
+
+      // Add the new transaction to the transactions array
+      await reportRef.update({
+        'transactions': FieldValue.arrayUnion([
+          {
+            'id': DateTime.now().millisecondsSinceEpoch.toString(), // Unique ID
+            'amount': saleAmount,
+            'type': saleType,
+            'time': FieldValue.serverTimestamp(),
+          }
+        ]),
+      });
     } catch (e) {
       print('Error updating sales reports: $e');
     }
@@ -93,6 +102,27 @@ class ReportService {
     } catch (e) {
       print('Error fetching reports: $e');
       throw Exception("Error fetching reports: $e");
+    }
+  }
+
+  // Method to fetch all transactions for displaying breakdown
+  Future<List<Map<String, dynamic>>> getTransactions() async {
+    try {
+      // Fetch the report document (reportID)
+      DocumentSnapshot reportDoc =
+          await _firestore.collection('reports').doc('reportID').get();
+
+      if (!reportDoc.exists) {
+        throw Exception('Report document not found');
+      }
+
+      final reportData = reportDoc.data()! as Map<String, dynamic>;
+
+      // Return the transactions array
+      return List<Map<String, dynamic>>.from(reportData['transactions'] ?? []);
+    } catch (e) {
+      print('Error fetching transactions: $e');
+      throw Exception("Error fetching transactions: $e");
     }
   }
 }
