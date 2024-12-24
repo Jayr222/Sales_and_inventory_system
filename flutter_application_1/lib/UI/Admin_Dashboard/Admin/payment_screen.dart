@@ -27,7 +27,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
       if (productSnapshot.docs.isNotEmpty) {
         var product = productSnapshot.docs.first.data();
-        print("Retrieved product: $product");
 
         if (product['amount'] > 0) {
           // Update the amount of the product in Firestore
@@ -37,13 +36,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
           setState(() {
             _cart.add({
-              'name': product['name'],
-              'price': product['price'] ?? 0.0,
-              'description': product['description'] ?? 'No description',
-              'amount': 1, // Default amount to 1 for simplicity
-              'barcode': product['barcode']
+              'name': product['name'] ??
+                  'Unknown Product', // Ensuring the name is added
+              'price': product['price'] ?? 0.0, // Ensuring price is added
+              'description':
+                  product['description'] ?? 'No description', // Default value
+              'amount': 1, // Default amount of 1 for simplicity
+              'barcode': product['barcode'] ??
+                  'No barcode', // Default value for barcode
             });
-            _totalPrice += product['price'] ?? 0.0; // Adding price to total
+            _totalPrice += product['price'] ?? 0.0; // Update total price
           });
 
           _showMessage('Product added to cart!');
@@ -74,9 +76,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
           _showMessage('Payment successful! Order ID: $orderId');
 
-          // Generate receipt after successful payment
-          _generateReceipt(orderId);
+          // Generate receipt before clearing cart
+          _generateReceipt(
+              orderId, _totalPrice); // Passing the correct totalPrice
 
+          // Clear cart and reset total price only after receipt is generated
           setState(() {
             _cart.clear();
             _totalPrice = 0.0;
@@ -94,7 +98,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   // Function to generate receipt
-  void _generateReceipt(String orderId) {
+  void _generateReceipt(String orderId, double totalPrice) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -103,27 +107,59 @@ class _PaymentScreenState extends State<PaymentScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Items Purchased:'),
-            // Displaying the items and their prices
+            const Text('Items Purchased:'),
+            // Loop through the cart and display each item's name and price
             ..._cart.map((item) {
               return Text(
-                  '${item['name']} - ₱${item['price'].toStringAsFixed(2)}');
-            }).toList(),
-            Divider(),
-            Text(
-                'Total Amount: ₱${_totalPrice.toStringAsFixed(2)}'), // Fixed total price format
+                  '${item['name']} - ₱${item['price'].toStringAsFixed(2)}'); // Show name and price
+            }),
+            const Divider(),
+            // Display the total amount
+            Text('Total Amount: ₱${totalPrice.toStringAsFixed(2)}'),
+            // Display the time of purchase
+            Text('Purchased on: ${DateTime.now().toString()}'),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop();
+              _printReceipt(orderId, totalPrice); // Call print function
+            },
+            child: const Text('Print Receipt'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Close the dialog
             },
             child: const Text('Close'),
           ),
         ],
       ),
     );
+  }
+
+  void _printReceipt(String orderId, double totalPrice) {
+    try {
+      // In a real-world scenario, you would integrate with a printer SDK or service
+      // This is a simulated print functionality
+      print('------- RECEIPT -------');
+      print('Order ID: $orderId');
+      print('Items:');
+      for (var item in _cart) {
+        print('${item['name']} - ₱${item['price'].toStringAsFixed(2)}');
+      }
+      print('Total Amount: ₱${totalPrice.toStringAsFixed(2)}');
+      print('Printed on: ${DateTime.now()}');
+      print('----------------------');
+
+      // Show a success message
+      _showMessage('Receipt printed successfully!');
+
+      // Close the dialog
+      Navigator.of(context).pop();
+    } catch (e) {
+      _showMessage('Error printing receipt: $e');
+    }
   }
 
   // Function to update the Reports collection
@@ -264,57 +300,56 @@ class _PaymentScreenState extends State<PaymentScreen> {
     );
 
     if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
-      return data['access_token'];
+      var jsonResponse = jsonDecode(response.body);
+      return jsonResponse['access_token'];
     } else {
       throw Exception('Failed to get access token');
     }
   }
 
-  Map<String, String> headersWithBasicAuth(String clientId, String secret) {
-    var basicAuth = 'Basic ${base64Encode(utf8.encode('$clientId:$secret'))}';
-    return {
-      'Authorization': basicAuth,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    };
-  }
-
-  Future<String?> _createPayPalOrder(String accessToken, double amount) async {
-    const orderUrl = 'https://api-m.sandbox.paypal.com/v2/checkout/orders';
+  // Step 2: Create PayPal Order
+  Future<String?> _createPayPalOrder(
+      String accessToken, double totalAmount) async {
+    const createOrderUrl =
+        'https://api-m.sandbox.paypal.com/v2/checkout/orders';
 
     var response = await http.post(
-      Uri.parse(orderUrl),
+      Uri.parse(createOrderUrl),
       headers: {
         'Authorization': 'Bearer $accessToken',
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: jsonEncode({
         'intent': 'CAPTURE',
         'purchase_units': [
           {
-            'amount': {
-              'currency_code': 'PHP',
-              'value': amount.toStringAsFixed(2),
-            }
+            'amount': {'currency_code': 'USD', 'value': totalAmount.toString()}
           }
-        ]
+        ],
       }),
     );
 
     if (response.statusCode == 201) {
-      var data = jsonDecode(response.body);
-      return data['id'];
+      var jsonResponse = jsonDecode(response.body);
+      return jsonResponse['id'];
     } else {
       throw Exception('Failed to create PayPal order');
     }
   }
 
+  // Utility function to handle authentication headers
+  Map<String, String> headersWithBasicAuth(String clientId, String secret) {
+    return {
+      'Authorization':
+          'Basic ${base64Encode(utf8.encode('$clientId:$secret'))}',
+      'Content-Type': 'application/x-www-form-urlencoded'
+    };
+  }
+
   void _showMessage(String message) {
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
-    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
   }
 
   @override
@@ -323,36 +358,23 @@ class _PaymentScreenState extends State<PaymentScreen> {
       appBar: AppBar(
         title: const Text('Payment Screen'),
       ),
-      body: Column(
-        children: [
-          ElevatedButton(
-            onPressed: _scanAndProcessPayment,
-            child: const Text('Scan and Add Product'),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            'Total Price: ₱$_totalPrice', // Changed to Peso (₱)
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          const Divider(),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _cart.length,
-              itemBuilder: (context, index) {
-                var item = _cart[index];
-                return ListTile(
-                  title: Text(item['name']),
-                  subtitle:
-                      Text('Price: ₱${item['price']}'), // Changed to Peso (₱)
-                );
-              },
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: _scanAndProcessPayment,
+              child: const Text('Scan and Add Item'),
             ),
-          ),
-          ElevatedButton(
-            onPressed: _processPayment,
-            child: const Text('Process Payment'),
-          ),
-        ],
+            const SizedBox(height: 20),
+            Text('Total: ₱${_totalPrice.toStringAsFixed(2)}'),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _processPayment,
+              child: const Text('Process Payment'),
+            ),
+          ],
+        ),
       ),
     );
   }

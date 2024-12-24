@@ -14,6 +14,13 @@ allprojects {
         google()
         mavenCentral()
     }
+     configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.name == 'esc_pos_printer') {
+                details.useVersion '4.1.0'  // Replace with the version you want to use
+            }
+        }
+    }
 }
 
 rootProject.buildDir = "../build"
