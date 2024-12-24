@@ -356,25 +356,74 @@ class _PaymentScreenState extends State<PaymentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Payment Screen'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: _scanAndProcessPayment,
-              child: const Text('Scan and Add Item'),
-            ),
-            const SizedBox(height: 20),
-            Text('Total: ₱${_totalPrice.toStringAsFixed(2)}'),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _processPayment,
-              child: const Text('Process Payment'),
-            ),
-          ],
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        toolbarHeight: 80,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 25.0),
+          child: Image.asset(
+            'lib/assets/Shoppingicon.png',
+            width: 70,
+            height: 70,
+            fit: BoxFit.contain,
+          ),
         ),
+        title: const Text(
+          'PAYMENTS',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 15,
+            color: Color.fromARGB(255, 44, 62, 80),
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+            child: IconButton(
+              icon: const Icon(
+                Icons.circle_notifications,
+                color: Color.fromARGB(255, 44, 62, 80),
+                size: 35,
+              ),
+              onPressed: () {
+                // Add functionality to notification icon
+              },
+            ),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          ElevatedButton(
+            onPressed: _scanAndProcessPayment,
+            child: const Text('Scan and Add Product'),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            'Total Price: ₱$_totalPrice', // Changed to Peso (₱)
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const Divider(),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _cart.length,
+              itemBuilder: (context, index) {
+                var item = _cart[index];
+                return ListTile(
+                  title: Text(item['name']),
+                  subtitle:
+                      Text('Price: ₱${item['price']}'), // Changed to Peso (₱)
+                );
+              },
+            ),
+          ),
+          ElevatedButton(
+            onPressed: _processPayment,
+            child: const Text('Process Payment'),
+          ),
+        ],
       ),
     );
   }

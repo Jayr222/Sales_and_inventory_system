@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/screens/daily_sales_screen.dart';
+import 'package:flutter_application_1/screens/monthly_sales_screen.dart';
+import 'package:flutter_application_1/screens/yearly_sales_screen.dart'; 
+// Import Firestore
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -136,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
           'ADMIN DASHBOARD',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 18,
+            fontSize: 15,
             color: Color.fromARGB(255, 44, 62, 80),
           ),
         ),
@@ -171,27 +175,56 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            _buildStatBox("INVENTORY", Icons.inventory,
-                                stockValue.toStringAsFixed(2)),
-                            _buildStatBox("MONTHLY SALES", Icons.point_of_sale,
-                                monthlySales.toStringAsFixed(2)),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            _buildStatBox("DAILY SALES", Icons.add_chart,
-                                dailySales.toStringAsFixed(2)),
-                            _buildStatBox(
-                                "YEARLY REPORT",
-                                Icons.note_alt_outlined,
-                                yearlyReport.toStringAsFixed(2)),
-                          ],
-                        ),
+                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _buildStatBox(
+                            "DAILY SALES",
+                            Icons.add_chart,
+                            dailySales.toStringAsFixed(2),
+                            () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const DailySalesScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                          _buildStatBox(
+                            "MONTHLY SALES",
+                            Icons.point_of_sale,
+                            monthlySales.toStringAsFixed(2),
+                            () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const MonthlySalesScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _buildStatBox(
+                            "YEARLY SALES",
+                            Icons.note_alt_outlined,
+                            yearlyReport.toStringAsFixed(2),
+                            () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const YearlySalesScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                         const SizedBox(height: 20),
                         Container(
                           alignment: Alignment.centerLeft,
@@ -234,8 +267,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // Stateless box to display information
-  Widget _buildStatBox(String label, IconData icon, String value) {
-    return Container(
+  Widget _buildStatBox(String label, IconData icon, String value, VoidCallback onTap) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
       width: 150,
       height: 150,
       decoration: BoxDecoration(
@@ -277,6 +312,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 }
