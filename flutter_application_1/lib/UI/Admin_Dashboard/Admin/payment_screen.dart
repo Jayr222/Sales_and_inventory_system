@@ -288,6 +288,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         'Authorization': 'Bearer $accessToken',
         'Content-Type': 'application/json',
       },
+
       body: jsonEncode({
         'intent': 'CAPTURE',
         'purchase_units': [
@@ -321,7 +322,40 @@ class _PaymentScreenState extends State<PaymentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Payment Screen'),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        toolbarHeight: 80,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 25.0),
+          child: Image.asset(
+            'lib/assets/Shoppingicon.png',
+            width: 70,
+            height: 70,
+            fit: BoxFit.contain,
+          ),
+        ),
+        title: const Text(
+          'PAYMENTS',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 15,
+            color: Color.fromARGB(255, 44, 62, 80),
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+            child: IconButton(
+              icon: const Icon(
+                Icons.circle_notifications,
+                color: Color.fromARGB(255, 44, 62, 80),
+                size: 35,
+              ),
+              onPressed: () {
+                // Add functionality to notification icon
+              },
+            ),
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -332,7 +366,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           const SizedBox(height: 20),
           Text(
             'Total Price: ₱$_totalPrice', // Changed to Peso (₱)
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold,),
           ),
           const Divider(),
           Expanded(

@@ -32,7 +32,7 @@ class SettingsScreen extends StatelessWidget {
                 'SETTINGS',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: 15,
                   color: Color.fromARGB(255, 44, 62, 80),
                 ),
               ),
