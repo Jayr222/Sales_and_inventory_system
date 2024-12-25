@@ -2,8 +2,67 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/screens/admin_dashboard.dart';
 
-class YearlySalesScreen extends StatelessWidget {
+class YearlySalesScreen extends StatefulWidget {
   const YearlySalesScreen({super.key});
+
+  @override
+  _YearlySalesScreenState createState() => _YearlySalesScreenState();
+}
+
+class _YearlySalesScreenState extends State<YearlySalesScreen> {
+  // A map to store the total sales by year
+  Map<int, double> yearlySales = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchYearlySales();
+  }
+
+  // Method to fetch and aggregate sales by year
+  Future<void> _fetchYearlySales() async {
+    try {
+      // Fetch all transactions from Firestore
+      var transactionsQuery =
+          FirebaseFirestore.instance.collection('transactions').get();
+
+      var querySnapshot = await transactionsQuery;
+
+      // Map to hold the aggregated sales data
+      Map<int, double> salesByYear = {};
+
+      for (var doc in querySnapshot.docs) {
+        var data = doc.data();
+
+        // Safely handle 'date' field, ensuring it's a Firestore Timestamp
+        var date = data['date'];
+        DateTime? dateTime =
+            date != null && date is Timestamp ? date.toDate() : null;
+
+        if (dateTime != null) {
+          int year = dateTime.year; // Extract the year from the DateTime
+
+          double amount = data['amount'] ?? 0.0;
+          double price = data['price'] ?? 0.0;
+
+          double totalSale = amount * price;
+
+          // Aggregate the sales for the respective year
+          if (salesByYear.containsKey(year)) {
+            salesByYear[year] = salesByYear[year]! + totalSale;
+          } else {
+            salesByYear[year] = totalSale;
+          }
+        }
+      }
+
+      setState(() {
+        yearlySales = salesByYear;
+      });
+    } catch (error) {
+      print("Error fetching yearly sales: $error");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,33 +106,15 @@ class YearlySalesScreen extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('daily_sales_data')
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (snapshot.hasError) {
-                  return const Center(child: Text("Error loading sales data"));
-                }
-                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return const Center(child: Text("No sales data available"));
-                }
-                final salesData = snapshot.data!.docs;
+            child: ListView.builder(
+              itemCount: yearlySales.keys.length,
+              itemBuilder: (context, index) {
+                int year = yearlySales.keys.elementAt(index);
+                double totalSales = yearlySales[year] ?? 0.0;
 
-                return ListView.builder(
-                  itemCount: salesData.length,
-                  itemBuilder: (context, index) {
-                    final sale =
-                        salesData[index].data() as Map<String, dynamic>;
-                    return ListTile(
-                      title: Text("Product: ${sale['product']}"),
-                      subtitle: Text("Amount: \$${sale['amount']}"),
-                      trailing: Text("Time: ${sale['time']}"),
-                    );
-                  },
+                return ListTile(
+                  title: Text("Year: $year"),
+                  subtitle: Text("Total Sales: PHP $totalSales"),
                 );
               },
             ),
@@ -89,21 +130,15 @@ class YearlySalesScreen extends StatelessWidget {
                   ),
                 );
               },
-              style: ButtonStyle(
-                backgroundColor: const WidgetStatePropertyAll<Color>(
-                  Color.fromARGB(255, 255, 255, 255), // Background color
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(
+                    255, 255, 255, 255), // Background color
+                side: const BorderSide(
+                  color: Color.fromARGB(255, 44, 62, 80), // Border color
+                  width: 2,
                 ),
-                side: WidgetStateProperty.all<BorderSide>(
-                  const BorderSide(
-                    color: Color.fromARGB(255, 44, 62, 80), // Border color
-                    width: 2,
-                  ),
-                ),
-                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(10.0), // Rounded corners
-                  ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0), // Rounded corners
                 ),
               ),
               child: const Text(

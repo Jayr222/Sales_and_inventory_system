@@ -47,11 +47,11 @@ class _DailySalesScreenState extends State<DailySalesScreen> {
 
         transactionList.add({
           'order_id': data['order_id'],
-          'amount': data['amount'],
-          'price': data['price'],
+          'amount': data['amount'], // Represents the quantity purchased
+          'price': data['price'], // Assumes price is in PHP
           'date': dateTime, // Store the DateTime or null if not available
           'description': data['description'],
-          'name': data['name'],
+          'item_name': data['name'], // Changed from 'Customer' to 'Item Name'
         });
       }
 
@@ -91,10 +91,13 @@ class _DailySalesScreenState extends State<DailySalesScreen> {
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Amount: PHP ${transaction['amount']}'),
-                          Text('Price: PHP ${transaction['price']}'),
+                          Text(
+                              'Amount: ${transaction['amount']}'), // No PHP prefix
+                          Text(
+                              'Price: PHP ${transaction['price']}'), // Assumes price is in PHP
                           Text('Description: ${transaction['description']}'),
-                          Text('Customer: ${transaction['name']}'),
+                          Text(
+                              'Item Name: ${transaction['item_name']}'), // Updated label
                           Text(
                               'Date: ${transaction['date'] != null ? transaction['date']!.toLocal() : 'N/A'}'), // Check if date is null
                         ],

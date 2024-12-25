@@ -1,120 +1,118 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_application_1/screens/admin_dashboard.dart';
+import 'package:flutter/material.dart';
 
-class MonthlySalesScreen extends StatelessWidget {
+class MonthlySalesScreen extends StatefulWidget {
   const MonthlySalesScreen({super.key});
+
+  @override
+  State<MonthlySalesScreen> createState() => _MonthlySalesScreenState();
+}
+
+class _MonthlySalesScreenState extends State<MonthlySalesScreen> {
+  List<Map<String, dynamic>> _monthlyTransactions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchMonthlyTransactions();
+  }
+
+  // Method to fetch transactions for the current month only
+  Future<void> _fetchMonthlyTransactions() async {
+    try {
+      // Get the first and last day of the current month
+      DateTime now = DateTime.now();
+      DateTime startOfMonth = DateTime(now.year, now.month, 1); // First day
+      DateTime endOfMonth =
+          DateTime(now.year, now.month + 1, 0, 23, 59, 59, 999); // Last day
+
+      // Query Firestore to fetch transactions within the current month
+      var transactionsQuery = FirebaseFirestore.instance
+          .collection('transactions')
+          .where('date', isGreaterThanOrEqualTo: startOfMonth)
+          .where('date', isLessThanOrEqualTo: endOfMonth);
+
+      var querySnapshot = await transactionsQuery.get();
+
+      List<Map<String, dynamic>> transactionList = [];
+
+      for (var doc in querySnapshot.docs) {
+        var data = doc.data();
+
+        // Safely handle 'date' field, ensuring it's not null and is a Firestore Timestamp
+        var date = data['date'];
+        DateTime? dateTime =
+            date != null && date is Timestamp ? date.toDate() : null;
+
+        transactionList.add({
+          'order_id': data['order_id'],
+          'amount': data['amount'],
+          'price': data['price'],
+          'date': dateTime, // Store the DateTime or null if not available
+          'description': data['description'],
+          'item_name': data['name'], // Changed from 'Customer' to 'Item Name'
+        });
+      }
+
+      setState(() {
+        _monthlyTransactions = transactionList;
+      });
+    } catch (error) {
+      print("Error fetching transactions: $error");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        toolbarHeight: 80,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 25.0),
-          child: Image.asset(
-            'lib/assets/Shoppingicon.png',
-            width: 70,
-            height: 70,
-            fit: BoxFit.contain,
-          ),
-        ),
-        title: const Text(
-          'MONTHLY SALES',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 15,
-            color: Color.fromARGB(255, 44, 62, 80),
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
-            child: IconButton(
-              icon: const Icon(
-                Icons.circle_notifications,
-                color: Color.fromARGB(255, 44, 62, 80),
-                size: 35,
-              ),
-              onPressed: () {
-                // Add functionality to notification icon
-              },
-            ),
-          ),
-        ],
+        title: const Text('Monthly Sales'),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('daily_sales_data')
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (snapshot.hasError) {
-                  return const Center(child: Text("Error loading sales data"));
-                }
-                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return const Center(child: Text("No sales data available"));
-                }
-                final salesData = snapshot.data!.docs;
-
-                return ListView.builder(
-                  itemCount: salesData.length,
-                  itemBuilder: (context, index) {
-                    final sale =
-                        salesData[index].data() as Map<String, dynamic>;
-                    return ListTile(
-                      title: Text("Product: ${sale['product']}"),
-                      subtitle: Text("Amount: \$${sale['amount']}"),
-                      trailing: Text("Time: ${sale['time']}"),
-                    );
-                  },
-                );
-              },
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Monthly Transactions:',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AdminDashboard(),
-                  ),
-                );
-              },
-              style: ButtonStyle(
-                backgroundColor: const WidgetStatePropertyAll<Color>(
-                  Color.fromARGB(255, 255, 255, 255), // Background color
-                ),
-                side: WidgetStateProperty.all<BorderSide>(
-                  const BorderSide(
-                    color: Color.fromARGB(255, 44, 62, 80), // Border color
-                    width: 2,
-                  ),
-                ),
-                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(10.0), // Rounded corners
-                  ),
-                ),
-              ),
-              child: const Text(
-                'Go Back to Dashboard',
-                style: TextStyle(
-                  color: Color.fromARGB(255, 44, 62, 80), // Text color
-                ),
+            const SizedBox(height: 10),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _monthlyTransactions.length,
+                itemBuilder: (context, index) {
+                  var transaction = _monthlyTransactions[index];
+                  return Card(
+                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: ListTile(
+                      title: Text('Order ID: ${transaction['order_id']}'),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                              'Item Name: ${transaction['item_name']}'), // Updated label
+                          Text(
+                              'Amount: ${transaction['amount']}'), // No PHP prefix
+                          Text(
+                              'Price: PHP ${transaction['price']}'), // Assuming price is in PHP
+                          Text('Description: ${transaction['description']}'),
+                          Text(
+                              'Date: ${transaction['date'] != null ? transaction['date']!.toLocal() : 'N/A'}'), // Check if date is null
+                        ],
+                      ),
+                      leading: const Icon(Icons.shopping_cart),
+                    ),
+                  );
+                },
               ),
             ),
-          ),
-        ],
+            ElevatedButton(
+              onPressed: _fetchMonthlyTransactions,
+              child: const Text('Refresh Transactions'),
+            ),
+          ],
+        ),
       ),
     );
   }
